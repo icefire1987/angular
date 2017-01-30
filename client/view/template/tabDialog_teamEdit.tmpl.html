@@ -1,0 +1,157 @@
+<md-dialog aria-label="edit Team" id="dialog_teamEdit" flex>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-list>
+                    <md-list-item>
+                        <img alt="{{ dialogCtrl.team.name }}" ng-src="/server/tmp/{{ dialogCtrl.team.avatar }}" class="md-avatar" ng-if="dialogCtrl.team.avatar"/>
+                        <span>{{dialogCtrl.team.name}} bearbeiten</span>
+                    </md-list-item>
+                </md-list>
+
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dialogCtrl.ctrl.hide()">
+                    <md-icon aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-tabs md-border-bottom md-dynamic-height>
+                <md-tab label="Stammdaten">
+                    <md-content class="md-padding">
+                        <form name="teamCreate">
+                        <md-input-container class="md-block">
+                            <label>Teamname</label>
+                            <input required md-auto-focus="" name="teamCreate_name" ng-model="dialogCtrl.input.name" autocomplete="false" ng-change="dialogCtrl.change()" ng-disabled="dialogCtrl.team.right_team_edit_data!=1">
+                            <div ng-messages="teamCreate.teamCreate_name.$error">
+                                <div ng-message="required">Pflichtfeld</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Beschreibung</label>
+                            <textarea ng-model="dialogCtrl.input.description" md-maxlength="150" md-select-on-focus ng-change="dialogCtrl.change()" ng-disabled="dialogCtrl.team.right_team_edit_data!=1"></textarea>
+                        </md-input-container>
+                        </form>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Einstellungen">
+                    <md-content class="md-padding">
+                        <md-input-container class="md-block">
+                            <label>Beitrittsbedingung</label>
+                            <md-select name="teamCreate_openJoin" ng-model="dialogCtrl.input.openJoin" required ng-change="dialogCtrl.change()" ng-disabled="dialogCtrl.team.right_team_edit_data!=1">
+                                <md-option value="1" ng-selected="true">Jeder darf beitreten</md-option>
+                                <md-option value="0">Beitritt muss von Gruppeadmin geprüft werden</md-option>
+                            </md-select>
+                            <div ng-messages="teamCreate.teamCreate_openJoin.$error">
+                                <div ng-message="required">Pflichtfeld</div>
+
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Wer darf posten?</label>
+                            <md-select ng-disabled="dialogCtrl.user.right_team_edit_role" name="teamEdit_post" ng-model="user.postRoleID" aria-label="userrole" ng-init="dialogCtrl.toggler.init(user.roleID)" ng-change="dialogCtrl.toggler.change('xy')">
+                                <md-option ng-repeat="role in dialogCtrl.roles" ng-value="role.id" aria-label="Userrole">{{role.name}}</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Avatar">
+                    <md-content class="md-padding">
+                        <md-progress-linear md-mode="indeterminate" ng-show="dialogCtrl.cropper.loading" class="md-accent"></md-progress-linear>
+
+                        <div layout="row" layout-align="space-between" ng-show="dialogCtrl.cropper.cropping" >
+
+                            <div flex="50" class="md-padding" >
+                                <div class="cropperWrapper" style="max-height: 250px;">
+
+                                    <img id="cropperImage" ng-src="{{dialogCtrl.cropper.source}}">
+                                </div>
+                            </div>
+                            <div flex="50" class="md-padding" layout="row" style="height:300px;">
+                                    <div class="cropperPreview" id="cropperPreview_teamavatar"></div>
+                                    <div layout="column" >
+                                        <md-button ng-click="dialogCtrl.input.avatar = dialogCtrl.cropper.getCroppedCanvas();dialogCtrl.change()" ng-disabled="dialogCtrl.cropper.loading"><md-icon ng-class="{'md-success': dialogCtrl.input.avatar, 'md-warn':!dialogCtrl.input.avatar}">check</md-icon> Avatar übernehmen</md-button>
+                                        <md-button ng-click="dialogCtrl.input.avatar = null" ng-show="dialogCtrl.input.avatar" class="md-accent">Avatar entfernen</md-button>
+                                    </div>
+                            </div>
+                        </div>
+                        <h3>Bildquelle</h3>
+                        <md-tabs style="background: #eee;border:1px solid grey">
+                            <md-tab label="Flickr">
+                                <md-content class="md-padding">
+                                    <form layout="row" name="form_flickr" ng-submit="dialogCtrl.flickr.search()">
+                                        <md-input-container class="md-block" flex>
+                                            <label>Flickr<md-icon>copyright</md-icon> durchsuchen</label>
+                                            <input ng-model="dialogCtrl.flickr.input.query" ng-disabled="dialogCtrl.team.right_team_edit_data!=1">
+                                        </md-input-container>
+                                        <div>
+                                            <md-button class="md-raised md-primary" aria-label="search team" type="submit" ng-disabled="dialogCtrl.team.right_team_edit_data!=1">
+                                                <md-icon>search</md-icon>
+                                            </md-button>
+                                        </div>
+                                    </form>
+                                    <md-progress-circular md-mode="indeterminate" ng-show="dialogCtrl.flickr.loading"></md-progress-circular>
+                                    <div class='md-padding' layout="row" ng-if="dialogCtrl.flickr.result.length>0" flex>
+                                        <div layout="row" flex>
+                                            <div ng-repeat="photo in dialogCtrl.flickr.result">
+                                                <md-card >
+                                                    <md-card-content layout="row" layout-align="space-between">
+                                                        <div class="md-media-md card-media" >
+                                                            <img id="{{'image_' + photo.id}}" ng-src="{{photo.imageurl}}" ng-click="dialogCtrl.setCropSource(photo.imageurl,'external')" style="width:100%;height:auto">
+                                                        </div>
+                                                    </md-card-content>
+                                                </md-card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='md-padding' layout="row" ng-if="dialogCtrl.flickr.result.length==0 && dialogCtrl.flickr.result" flex>
+                                        <div layout="row" flex>
+                                            <h3>Keine Bilder gefunden</h3>
+                                        </div>
+                                    </div>
+                                </md-content>
+                            </md-tab>
+                            <md-tab label="Lokale Datei">
+                                <md-content class="md-padding">
+                                    <div layout="row">
+                                        <input class="ng-hide" id="input-file-id" type="file" nv-file-select uploader="dialogCtrl.uploader" ng-disabled="dialogCtrl.team.right_team_edit_data!=1"/>
+                                        <label for="input-file-id" class="md-button md-raised md-primary" ng-disabled="dialogCtrl.team.right_team_edit_data!=1">Choose Files</label>
+                                    </div>
+                                </md-content>
+                            </md-tab>
+                        </md-tabs>
+
+                    </md-content>
+                </md-tab>
+                <md-tab label="Mitglieder">
+                    <md-content class="md-padding">
+                        <md-list>
+                            <md-list-item ng-repeat="(key,user) in dialogCtrl.users">
+                                <p>{{user.username}}</p>
+
+                                <md-select ng-disabled="dialogCtrl.team.right_team_edit_role==0 || (dialogCtrl.team.userCreate == user.id)" name="teamEdit_role" ng-model="user.roleID" aria-label="userrole" ng-init="dialogCtrl.toggler.init(user.roleID)" ng-change="dialogCtrl.toggler.change('xy')">
+                                    <md-option ng-repeat="role in dialogCtrl.roles" ng-value="role.id" aria-label="Userrole">{{role.name}}</md-option>
+                                </md-select>
+                                <md-button ng-if="dialogCtrl.toggler.saveable" class="md-raised md-primary" ng-click="dialogCtrl.toggler.save(dialogCtrl.saveUserRole(dialogCtrl.team.id,user.id,user.roleID))" title="ok"><md-icon>check</md-icon></md-button>
+                                <md-button ng-if="dialogCtrl.toggler.resetable" class="md-raised md-warn" ng-click="dialogCtrl.toggler.reset(user,'roleID')">
+                                    <md-icon>close</md-icon>
+                                    <md-tooltip>Abbrechen</md-tooltip>
+                                </md-button>
+
+                                <md-button ng-disabled="dialogCtrl.team.right_team_edit_role==0 || (dialogCtrl.user.id == user.id)" class="md-raised md-warn" ng-click="dialogCtrl.userKick(key,user.id)">
+                                    <md-icon>delete</md-icon>
+                                    <md-tooltip>Nutzer aus Team entfernen</md-tooltip>
+                                </md-button>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex class="log" md-colors="{color:'accent'}"></span>
+            <md-button type="submit" ng-disabled="dialogCtrl.changed==false" ng-click="dialogCtrl.submit()">
+                Änderungen speichern
+            </md-button>
+        </md-dialog-actions>
+</md-dialog>

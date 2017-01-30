@@ -1,0 +1,73 @@
+ <md-sidenav md-is-locked-open="toolCtrl.sidebar.lockedOpen" class="md-whiteframe-4dp" md-component-id="menu-left" layout="column">
+     <md-list>
+         <md-list-item ui-sref="protected.dashboard">
+             <md-icon>dashboard</md-icon>
+             <span>Dashboard</span>
+         </md-list-item>
+         <md-list-item ui-sref="protected.news">
+             <md-icon>textsms</md-icon>
+             <span>News</span>
+         </md-list-item>
+         <md-list-item ui-sref="protected.team">
+             <md-icon>group</md-icon>
+             <span>Team</span>
+         </md-list-item>
+         <md-divider ></md-divider>
+         <md-list-item ui-sref="protected.logistik">
+             <md-icon>store</md-icon>
+             <span>Logistik</span>
+         </md-list-item>
+         <md-list-item ui-sref="protected.produktion">
+             <md-icon>memory</md-icon>
+             <span>Produktion</span>
+         </md-list-item>
+         <md-list-item ui-sref="protected.operations">
+             <md-icon>traffic</md-icon>
+             <span>Operations</span>
+         </md-list-item>
+         <md-divider ></md-divider>
+         <md-list-item ui-sref="protected.reporting">
+             <md-icon>equalizer</md-icon>
+             <span>Reporting</span>
+         </md-list-item>
+         <md-list-item ui-sref="protected.verwaltung">
+             <md-icon>settings</md-icon>
+             <span>Verwaltung</span>
+         </md-list-item>
+         <md-divider ></md-divider>
+         <md-list-item md-colors="::{backgroundColor: 'default-grey-400'}" id="searchBox">
+             <md-icon>search</md-icon>
+<div flex="50">
+             <md-input-container class="md-block">
+                 <label>LT-Name</label>
+                 <md-icon>shopping_cart</md-icon>
+                 <input  name="popup_lt" ng-model="toolCtrl.input.popup_lt">
+                 <div ng-messages="popup.popup_lt.$error">
+                     <div ng-message="required">Pflichtfeld</div>
+                 </div>
+             </md-input-container>
+             <md-input-container class="md-block">
+                 <label>Scancode</label>
+                 <md-icon>local_offer</md-icon>
+                 <input  name="popup_article" ng-model="toolCtrl.input.popup_article">
+                 <div ng-messages="popup.popup_article.$error">
+                     <div ng-message="required">Pflichtfeld</div>
+                 </div>
+             </md-input-container>
+</div>
+         </md-list-item>
+     </md-list>
+ </md-sidenav>
+ <md-content flex layout="column" id="content">
+     <md-progress-linear ng-show="requestRunning" class="md-accent" md-mode="indeterminate"></md-progress-linear>
+     <div flex ui-view="protected_content"></div>
+
+ </md-content>
+
+
+
+
+
+
+<link rel="stylesheet" href="/client/style/tool.css">
+<link rel="stylesheet" href="/client/style/tool-sidebar.css">

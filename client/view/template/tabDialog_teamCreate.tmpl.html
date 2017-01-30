@@ -1,0 +1,139 @@
+<md-dialog aria-label="create Team" id="dialog_teamCreate" flex>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>neues Team erstellen</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dialogCtrl.callback.ui_cancel()">
+                    <md-icon aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-tabs md-border-bottom md-dynamic-height>
+                <md-tab label="Stammdaten">
+                    <md-content class="md-padding">
+                        <form name="teamCreate">
+                        <md-input-container class="md-block">
+                            <label>Teamname</label>
+                            <input required md-auto-focus="" name="teamCreate_name" ng-model="dialogCtrl.input.teamname" autocomplete="false">
+                            <div ng-messages="teamCreate.teamCreate_name.$error">
+                                <div ng-message="required">Pflichtfeld</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Beschreibung</label>
+                            <textarea ng-model="dialogCtrl.input.description" md-maxlength="150" md-select-on-focus></textarea>
+                        </md-input-container>
+                        </form>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Einstellungen">
+                    <md-content class="md-padding">
+                        <md-input-container class="md-block">
+                            <md-checkbox ng-model="dialogCtrl.input.dojoin">Team beitreten</md-checkbox>
+                            <md-input-container class="md-block">
+                                <label>als</label>
+
+                                <md-select name="teamCreate_role" ng-model="dialogCtrl.input.roleID">
+                                    <md-option ng-repeat="role in dialogCtrl.roles" ng-value="role.id">{{role.name}}</md-option>
+                                </md-select>
+                                <div ng-messages="teamCreate.teamCreate_openJoin.$error">
+                                    <div ng-message="required">Pflichtfeld</div>
+
+                                </div>
+                            </md-input-container>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Beitrittsbedingung</label>
+                            <md-select name="teamCreate_openJoin" ng-model="dialogCtrl.input.openJoin" required>
+                                <md-option value="1" ng-selected="true">Jeder darf beitreten</md-option>
+                                <md-option value="0">Beitritt muss von Gruppeadmin geprüft werden</md-option>
+                            </md-select>
+                            <div ng-messages="teamCreate.teamCreate_openJoin.$error">
+                                <div ng-message="required">Pflichtfeld</div>
+
+                            </div>
+                        </md-input-container>
+
+                    </md-content>
+                </md-tab>
+                <md-tab label="Avatar">
+                    <md-content class="md-padding">
+                        <md-progress-linear md-mode="indeterminate" ng-show="dialogCtrl.cropper.loading" class="md-accent"></md-progress-linear>
+                        <div layout="row" layout-align="space-between" ng-show="dialogCtrl.cropper.cropping" >
+
+                            <div flex="50" class="md-padding" >
+                                <div class="cropperWrapper" style="max-height: 250px;">
+
+                                    <img id="cropperImage" ng-src="{{dialogCtrl.cropper.source}}">
+                                </div>
+                            </div>
+                            <div flex="50" class="md-padding" layout="row" style="height:300px;">
+
+                                    <div class="cropperPreview" id="cropperPreview_teamavatar"></div>
+                                    <div layout="column" >
+                                        <md-button ng-click="dialogCtrl.input.avatar = dialogCtrl.cropper.getCroppedCanvas()" ng-disabled="dialogCtrl.cropper.loading"><md-icon ng-class="{'md-success': dialogCtrl.input.avatar, 'md-warn':!dialogCtrl.input.avatar}">check</md-icon> Avatar übernehmen</md-button>
+                                        <md-button ng-click="dialogCtrl.input.avatar = null" ng-show="dialogCtrl.input.avatar" class="md-accent">Avatar entfernen</md-button>
+                                    </div>
+
+
+                            </div>
+                        </div>
+                        <h3>Bildquelle</h3>
+                        <md-tabs style="background: #eee;border:1px solid grey">
+                            <md-tab label="Flickr">
+                                <md-content class="md-padding">
+                                    <form layout="row" name="form_flickr" ng-submit="dialogCtrl.flickr.search()">
+                                        <md-input-container class="md-block" flex>
+                                            <label>Flickr<md-icon>copyright</md-icon> durchsuchen</label>
+                                            <input ng-model="dialogCtrl.flickr.input.query">
+                                        </md-input-container>
+                                        <div>
+                                            <md-button class="md-raised md-primary" aria-label="search team" type="submit">
+                                                <md-icon>search</md-icon>
+                                            </md-button>
+                                        </div>
+                                    </form>
+                                    <md-progress-circular md-mode="indeterminate" ng-show="dialogCtrl.flickr.loading"></md-progress-circular>
+                                    <div class='md-padding' layout="row" ng-if="dialogCtrl.flickr.result.length>0" flex>
+                                        <div layout="row" flex>
+                                            <div ng-repeat="photo in dialogCtrl.flickr.result">
+                                                <md-card >
+                                                    <md-card-content layout="row" layout-align="space-between">
+                                                        <div class="md-media-md card-media" >
+                                                            <img id="{{'image_' + photo.id}}" ng-src="{{photo.imageurl}}" ng-click="dialogCtrl.setCropSource(photo.imageurl,'external')" style="width:100%;height:auto">
+                                                        </div>
+                                                    </md-card-content>
+                                                </md-card>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='md-padding' layout="row" ng-if="dialogCtrl.flickr.result.length==0 && dialogCtrl.flickr.result" flex>
+                                        <div layout="row" flex>
+                                            <h3>Keine Bilder gefunden</h3>
+                                        </div>
+                                    </div>
+                                </md-content>
+                            </md-tab>
+                            <md-tab label="Lokale Datei">
+                                <md-content class="md-padding">
+                                    <div layout="row">
+                                        <input class="ng-hide" id="input-file-id" type="file" nv-file-select="" uploader="dialogCtrl.uploader.localAvatar"/>
+                                        <label for="input-file-id" class="md-button md-raised md-primary">Choose Files</label>
+                                    </div>
+                                </md-content>
+                            </md-tab>
+                        </md-tabs>
+
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex class="log" md-colors="{color:'accent'}"></span>
+            <md-button type="submit" ng-disabled="teamCreate.$invalid" ng-click="dialogCtrl.callback.ui_answer()">
+                Team anlegen
+            </md-button>
+        </md-dialog-actions>
+
+</md-dialog>

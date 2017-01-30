@@ -1,0 +1,12 @@
+<h2>One</h2>
+
+<h3>API-Test</h3>
+
+<ul>
+    <li><a href="" ng-click="mainCtrl.api.call('/user/all')">/user/all</a></li>
+    <li><a href="" ng-click="mainCtrl.api.call('/user/username/klausi')">/user/username/klausi</a></li>
+    <li><a href="" ng-click="mainCtrl.api.call('/protected')">/protected</a></li>
+    <li><a href="" ng-click="mainCtrl.api.call('/user/token/'+mainCtrl.auth.token)">/user/token/{{mainCtrl.auth.token}}</a></li>
+    <li><a href="" ng-click="mainCtrl.server.post('/mail/send',{body:{mailHeader:{to:'christopher.jurthe@zuumeo.com',subject:'Allo'},mailBody:{title:'abc',content:'xyz'}},templateurl:{directory:'simple'}})">/server/mail/{title:'xyz'}</a></li>
+</ul>
+<div class="well">{{mainCtrl.api.output}}</div>

@@ -1,0 +1,117 @@
+<div class="md-padding" layout="column" ng-init="toolCtrl.team.init()">
+    <md-card class="md-padding">
+        <form ng-submit="toolCtrl.locals.submit.teamsearch()" layout="row">
+            <md-input-container class="md-block" flex>
+                <label>Team suchen</label>
+                <md-icon>search</md-icon>
+                <input name="teamname" ng-model="toolCtrl.team.input.teamname">
+            </md-input-container>
+
+            <div>
+                <md-button class="md-raised md-primary" aria-label="search team" type="submit">
+                    <md-icon>send</md-icon>
+                </md-button>
+            </div>
+        </form>
+        <div ng-if="toolCtrl.team.searchResult" layout="column">
+            <md-title class="md-block">Suchergebnis</md-title>
+            <div class="md-padding">
+                <md-subhead ng-if="!toolCtrl.team.searchResult.length">
+                    Es wurde kein Team gefunden.
+                </md-subhead>
+            </div>
+
+            <md-list>
+                <md-list-item class="header">
+                    <md-checkbox ng-disabled="true" aria-label="check all"></md-checkbox>
+                    <div class="md-avatar" layout=row" layout-align="center center" ><span> </span></div>
+                    <h3 flex="40">Teamname</h3>
+                    <h3 flex>Gründer</h3>
+                </md-list-item>
+
+                <md-list-item ng-repeat="team in toolCtrl.team.searchResult">
+                    <md-checkbox class="md-exclude" ng-model="toolCtrl.team.input.join_teamIDs[team.id]" ng-change="toolCtrl.helpers.selectedClearFalse(toolCtrl.team.input.join_teamIDs)"></md-checkbox>
+
+                    <img alt="{{ team.name }}" ng-src="/server/tmp/{{ team.avatar }}" class="md-avatar" ng-if="team.avatar"/>
+                    <div style="background:hsl({{ team.avatar_alt }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-hide="team.avatar"><span>{{team.name_short}}</span></div>
+                    <p flex="40">{{ team.name }}</p>
+                    <p flex>
+                        <span>
+                            {{ team.username }}
+                            <md-tooltip md-direction="down">{{team.email}}</md-tooltip>
+                        </span>
+
+                    </p>
+
+                </md-list-item>
+            </md-list>
+        </div>
+
+
+        <md-card-actions>
+            <md-button class="md-raised  md-primary" aria-label="create team" ng-click="toolCtrl.team.dialog.create.show($event)">
+                <md-icon>edit</md-icon>
+                Team erstellen
+            </md-button>
+            <md-button class=" md-accent md-raised" aria-label="join team" ng-click="toolCtrl.team.dialog.join.show($event)" ng-show="toolCtrl.helpers.object_len(toolCtrl.team.input.join_teamIDs)>0">
+                <md-icon>group_add</md-icon>
+                {{toolCtrl.helpers.object_len(toolCtrl.team.input.join_teamIDs)}} Team{{(toolCtrl.helpers.object_len(toolCtrl.team.input.join_teamIDs)>1 ? 's' : '')}} beitreten
+            </md-button>
+         </md-card-actions>
+    </md-card>
+
+    <md-card>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>
+                    <span>Teamverwaltung</span>
+                </h2>
+                <span flex></span>
+                <div ng-show="toolCtrl.helpers.object_len(toolCtrl.team.input.myTeams_selected_teamIDs)>0">
+                    <span class="md-subhead" >
+                    {{toolCtrl.helpers.object_len(toolCtrl.team.input.myTeams_selected_teamIDs) + (toolCtrl.helpers.object_len(toolCtrl.team.input.myTeams_selected_teamIDs)<2 ? ' markiertes Team' : ' markierte Teams') }}
+                </span>
+                    <md-button class="md-icon-button md-accent md-hue-3" aria-label="delete team" ng-click="toolCtrl.team.dialog.delete.show($event)">
+                        <md-tooltip md-direction="down">
+                            markierte Teams löschen
+                        </md-tooltip>
+                        <md-icon>delete</md-icon>
+                    </md-button>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-content class="md-padding">
+            <div class="md-padding">
+                <div>
+                    <span ng-if="toolCtrl.team.myTeams.length == undefined">Du bist in keinem Team Mitglied</span>
+                    <md-list>
+                        <md-list-item ng-repeat="team in toolCtrl.team.myTeams" layout="row">
+                            <md-checkbox class="md-exclude" ng-model="toolCtrl.team.input.myTeams_selected_teamIDs[team.id]" ng-change="toolCtrl.helpers.selectedClearFalse(toolCtrl.team.input.myTeams_selected_teamIDs)" ng-disabled="team.userCreate != toolCtrl.user.id && !team.right_team_edit_data"></md-checkbox>
+                            <img alt="{{ team.name }}" ng-src="/server/tmp/{{ team.avatar }}" class="md-avatar" ng-if="team.avatar"/>
+                            <div style="background:hsl({{ team.avatar_alt }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-hide="team.avatar"><span>{{team.name_short}}</span></div>
+
+                            <div flex="30" layout="row">
+                                <p>{{ team.name }}</p>
+                            </div>
+                            <div flex layout="row">
+                                <p flex>
+                                    {{ team.role }}
+                                    <md-icon class="md-accent" ng-if="team.userCreate == toolCtrl.user.id">home</md-icon>
+                                    <md-tooltip ng-if="team.userCreate == toolCtrl.user.id" md-direction="down">
+                                        Du bist Gründer der Gruppe
+                                    </md-tooltip>
+                                </p>
+                                <md-button ng-disabled="team.right_team_edit==null" title="{{(team.right_team_edit==null?'keine Rechte':'')}}" ng-click="toolCtrl.team.dialog.edit.show($event,{teamID: team.id})" class="md-primary md-raised">
+                                    bearbeiten
+                                </md-button>
+                                <md-button class="md-warn md-raised" ng-disabled="team.userCreate == toolCtrl.user.id" ng-click="toolCtrl.team.dialog.leave.show($event,{teamID: team.id})">
+                                    austreten
+                                </md-button>
+                            </div>
+                            </md-list-item>
+                    </md-list>
+                </div>
+            </div>
+        </md-content>
+    </md-card>
+</div>

@@ -1,0 +1,18 @@
+* {
+
+}
+html, body{
+    height:100%;
+    min-height:100%;
+}
+#public{
+    background: url(/server/media/backgrounds/pinecat.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    -webkit-transition: all 500ms ease-in 200ms;
+    -moz-transition: all 500ms ease-in 200ms;
+    -o-transition: all 500ms ease-in 200ms;
+    transition: all 500ms ease-in 200ms;
+}

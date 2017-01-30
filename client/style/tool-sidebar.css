@@ -1,0 +1,7 @@
+md-sidenav md-list-item md-icon{
+    margin:0;
+}
+
+#searchBox md-input-container{
+    margin:12px 0
+}

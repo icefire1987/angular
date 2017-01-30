@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Chris">
+        <title>INDEX</title>
+
+
+        <link rel="stylesheet" href="/client/node_modules/angular-material/angular-material.min.css">
+        <link rel="stylesheet" href="/client/style/main.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet">
+        <link rel="stylesheet" href="/client/node_modules/cropperjs/dist/cropper.min.css">
+    </head>
+    <body ng-app="myApp" class="ng-cloak" ng-controller="mainCtrl as mainCtrl" layout="column">
+        <md-toolbar ng-controller="toolbarCtrl as toolbarCtrl">
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="show Menu" ng-click="toolbarCtrl.sidebar.toggle()">
+                    <md-icon > menu </md-icon>
+                </md-button>
+                <!--<span>Zuumeo-Studio</span>-->
+                <span>Zuumeo Studio</span>
+                <span flex></span>
+                <span ng-show="mainCtrl.getSessionDuration()" layout="row">
+                    <md-icon>exit_to_app</md-icon>
+                    <h3 class="md-subhead">{{ mainCtrl.getSessionDuration() | date:'HH:mm:ss'}}</h3>
+                    <md-tooltip>automatischer Logout: {{ mainCtrl.getSessionDuration() | date:'HH:mm:ss'}}</md-tooltip>
+                </span>
+                <md-menu>
+                    <md-button ng-click="$mdOpenMenu($event)" aria-label="Open User Menu">
+                        <md-icon> account_circle </md-icon>
+                    </md-button>
+                    <md-menu-content width="4" >
+                        <md-menu-item>
+                            <md-button ui-sref="protected.editprofile">
+                                <md-icon> edit </md-icon>
+                                Profil bearbeiten
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ui-sref="public.logout">
+                                <md-icon> exit_to_app </md-icon>
+                                Logout
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+
+            </div>
+        </md-toolbar>
+
+
+        <div flex layout="row" layout-fill ui-view></div>
+
+        <script src="/client/env.js"></script>
+        <script src="/server/node_modules/angular/angular.js"></script>
+        <script src="/server/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script src="/server/node_modules/ngstorage/ngStorage.min.js"></script>
+        <script src="/server/node_modules/angular-messages/angular-messages.min.js"></script>
+        <script src="/client/node_modules/jquery/dist/jquery.min.js"></script>
+        <script src="/client/node_modules/angular-animate/angular-animate.min.js"></script>
+        <script src="/client/node_modules/angular-aria/angular-aria.min.js"></script>
+        <script src="/client/node_modules/angular-material/angular-material.js"></script>
+        <script src="/client/node_modules/chart.js/dist/Chart.min.js"></script>
+        <script src="/client/node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+        <script src="/client/node_modules/cropperjs/dist/cropper.min.js"></script>
+        <script src="/client/node_modules/angular-file-upload/dist/angular-file-upload.min.js"></script>
+        <script src="/client/app.js"></script>
+
+        <script src="/client/controller/controller.main.js"></script>
+        <script src="/client/controller/controller.toolbar.js"></script>
+        <script src="/client/controller/controller.tool.js"></script>
+        <script src="/client/service/service.auth.js"></script>
+        <script src="/client/service/service.component.js"></script>
+        <script src="/client/service/service.api.js"></script>
+        <script src="/client/service/service.cropper.js"></script>
+        <script src="/client/service/service.date.js"></script>
+        <script src="/client/service/service.flickr.js"></script>
+        <script src="/client/service/service.helper.js"></script>
+        <script src="/client/service/service.image.js"></script>
+        <script src="/client/service/service.log.js"></script>
+        <script src="/client/service/service.team.js"></script>
+        <script src="/client/service/interceptor.http.js"></script>
+    </body>
+</html>

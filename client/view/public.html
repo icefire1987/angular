@@ -1,0 +1,40 @@
+<md-content flex id="public" layout="column" layout-align="start center">
+    <md-progress-linear ng-show="requestRunning" class="md-accent" md-mode="indeterminate"></md-progress-linear>
+    <md-card ng-hide="true">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">Public</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <ul>
+                <li>
+                    <a ui-sref="public.main" ui-sref-active="active">Public-Main</a>
+                </li>
+                <li>
+                    <a ui-sref="public.login" ui-sref-active="active">Login</a>
+                </li>
+                <li>
+                    <a href="" ng-click="ctrl.auth.logout()">Logout</a>
+                </li>
+                <li>
+                    <a ui-sref="protected" ui-sref-active="active">Protected</a>
+                </li>
+                <li>
+                    <a ui-sref="protected.main" ui-sref-active="active">Protected_Main</a>
+                </li>
+
+            </ul>
+            </md-card-content>
+
+
+    </md-card>
+    <md-card>
+        <div ui-view="login"></div>
+
+    </md-card>
+    <md-card>
+        <div ui-view="logout"></div>
+    </md-card>
+
+</md-content>

@@ -1,0 +1,52 @@
+
+#team-vertical_container{
+    position:absolute;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.cropperPreview{
+    min-width:100px;
+    min-height: 100px;
+    height: 200px;
+    border-radius:50%;
+    border:1px solid grey;
+    overflow: hidden;
+
+}
+.cropperPreview img{
+    min-width:100px;
+    min-height: 100px;
+}
+/* Force same height as width , margin belongs to setted width */
+.cropperPreview:after{
+    content: '';
+    display: block;
+    margin-top: 100%;
+}
+.cropperWrapper{
+    width:100%;
+}
+.cropperWrapper img{
+    max-width:100%;
+}
+.md-success{
+    color: limegreen;
+}
+.md-error{
+    color: darkred;
+}
+#dialogContent_dialog_teamCreate md-tabs-content-wrapper{
+    overflow:scroll;
+    max-height:80vh;
+}
+.user-avatar {
+    border-radius: 99%;
+}
+
+md-icon svg {
+    fill: inherit;
+}
+md-list-item.header{
+    border-bottom: 1px solid grey
+}
