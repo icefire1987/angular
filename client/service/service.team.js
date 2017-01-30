@@ -14,6 +14,19 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
     vm.getRoles = function(){
         return $http.get("/api/team/roles");
     };
+    vm.getUsers = function(obj){
+        if(obj){
+            return $http.get("/api/team/users/"+obj.key+"/"+obj.value);
+        }
+    };
+    vm.search = function(obj){
+        console.log("search Team")
+        console.log(obj)
+        if(obj){
+            return $http.get("/api/team/"+obj.key+"/"+obj.value);
+        }
+        return $http.get("/api/team/"+vm.input.teamname);
+    };
 
     vm.cropInit = function(imageElement,type){
         var obj = {};
@@ -126,24 +139,43 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
 
     vm.dialog.edit =  componentService.getInstance("dialogTab");
     vm.dialog.edit.config = {
-        controller: function (teamdata,roles,users,user) {
+        controller: function (roles,user) {
+
             var dialogCtrl = this;
-            dialogCtrl.callback = callback;
+            dialogCtrl.callback = vm.dialog.callback;
+
+
             dialogCtrl.roles = roles.data;
             dialogCtrl.flickr = flickrService;
             dialogCtrl.cropper = cropperService;
-            dialogCtrl.input = angular.copy(teamdata.data[0]);
 
-            dialogCtrl.input.avatar_exist = angular.copy(teamdata.data[0].avatar);
             dialogCtrl.changed = false;
             dialogCtrl.change = function(){
                 dialogCtrl.changed = true;
             };
+            dialogCtrl.input = {};
             dialogCtrl.input.roleID = 10;
             dialogCtrl.input.avatar_alt = helperService.randomInt(1, 255);
             dialogCtrl.input.avatar = null;
             dialogCtrl.input.avatarFile = null;
             dialogCtrl.input.dojoin = true;
+
+            vm.search({key:'id', value: vm.dialog.edit.locals.view.teamID}).then(
+                function(res){
+                    console.log(res.data[0])
+                    dialogCtrl.input = res.data[0];
+                    dialogCtrl.input.avatar_exist = angular.copy(res.data[0].avatar);
+
+                }
+            );
+            vm.getUsers({key:'teamID', value: vm.dialog.edit.locals.view.teamID}).then(
+                function(res){
+                    console.log(res.data[0])
+                    dialogCtrl.users = res.data[0];
+
+                }
+            );
+
             dialogCtrl.uploader = {};
 
             dialogCtrl.uploader.localAvatar = new FileUploader();
@@ -179,18 +211,16 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
         controllerAs: 'dialogCtrl',
         templateUrl: '/client/view/template/tabDialog_teamEdit.tmpl.html',
         parent: angular.element(document.body),
-        targetEvent: event,
+        targetEvent: null,
         clickOutsideToClose:false,
         fullscreen: true,
         locals: {
-            teamdata : vm.search({key:'id', value: teamID}),
             roles: vm.getRoles(),
-            users: vm.getUsers({key:'teamID', value: teamID}),
             user: authService.getUser().obj
         }
     };
 
-    vm.dialog.create.callback.ok = function () {
+    vm.dialog.edit.callback.ok = function () {
         if(vm.input.avatar){
             var file = imageService.dataURLToFile(vm.input.avatar);
             vm.input.avatarFile = file;
@@ -301,12 +331,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
         vm.input = data;
     };
 
-    vm.search = function(obj){
-        if(obj){
-            return $http.get("/api/team/"+obj.key+"/"+obj.value);
-        }
-        return $http.get("/api/team/"+vm.input.teamname);
-    };
+
 
 
     vm.getRights = function(){
@@ -401,11 +426,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
         });
     };
 
-    vm.getUsers = function(obj){
-        if(obj){
-            return $http.get("/api/team/users/"+obj.key+"/"+obj.value);
-        }
-    }
+
 
     return vm;
 });

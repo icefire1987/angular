@@ -307,6 +307,7 @@ module.exports = function (app, express) {
     });
     router.get('/team/id/:id',ensureAuthorized, function(req,res){
         console.log("get Team by id")
+        console.log(req.params)
         Team.get('id',req.params.id,{}, function(err,teams){
             if(err){
                 err.debug = err.message
@@ -314,6 +315,8 @@ module.exports = function (app, express) {
                     error: err
                 });
             }else if(teams){
+                console.log("teams:");
+                console.log(teams)
                 res.json(teams);
             }else{
                 res.json({})

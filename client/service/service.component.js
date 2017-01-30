@@ -34,7 +34,7 @@ angular.module('myApp').service('componentService', function ($mdMedia,$mdDialog
             }
         };
         inner_vm.config = {};
-        inner_vm.locals = {};
+        inner_vm.locals = {view:{}};
         inner_vm.callback = {
             ok : function(){console.log("default ok")},
             cancel: function(){console.log("default cancel")},
