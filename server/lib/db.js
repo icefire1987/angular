@@ -10,7 +10,7 @@ module.exports = {
             host: 'localhost',
             user: 'root',
             password: 'root',
-            database: 'demo_angular',
+            database: 'zuumeo_studio',
             queueLimit: 40
         });
         return pool;
