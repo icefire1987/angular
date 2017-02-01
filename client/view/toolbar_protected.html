@@ -1,0 +1,40 @@
+<md-toolbar ng-controller="toolbarCtrl as toolbarCtrl">
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="show Menu" ng-click="toolbarCtrl.sidebar.toggle()">
+            <md-icon > menu </md-icon>
+        </md-button>
+        <!--<span>Zuumeo-Studio</span>-->
+        <a ui-sref="protected.main">Zuumeo Studio</a>
+        <span flex></span>
+
+
+        <span ng-show="mainCtrl.getSessionDuration()" layout="row">
+            <md-icon>exit_to_app</md-icon>
+            <h3 class="md-subhead">{{ mainCtrl.getSessionDuration() | date:'HH:mm:ss'}}</h3>
+            <md-tooltip>automatischer Logout: {{ mainCtrl.getSessionDuration() | date:'HH:mm:ss'}}</md-tooltip>
+        </span>
+
+        <md-menu>
+            <md-button ng-click="$mdOpenMenu($event)" aria-label="Open User Menu">
+                <md-icon> account_circle </md-icon>
+            </md-button>
+            <md-menu-content width="4" >
+                <md-menu-item>
+                    <md-button ui-sref="protected.editprofile">
+                        <md-icon> edit </md-icon>
+                        Profil bearbeiten
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ui-sref="public.logout">
+                        <md-icon> exit_to_app </md-icon>
+                        Logout
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+
+
+
+    </div>
+</md-toolbar>

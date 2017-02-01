@@ -86,21 +86,31 @@
                     <span ng-if="toolCtrl.team.myTeams.length == undefined">Du bist in keinem Team Mitglied</span>
                     <md-list>
                         <md-list-item ng-repeat="team in toolCtrl.team.myTeams" layout="row">
-                            <md-checkbox class="md-exclude" ng-model="toolCtrl.team.input.myTeams_selected_teamIDs[team.id]" ng-change="toolCtrl.helpers.selectedClearFalse(toolCtrl.team.input.myTeams_selected_teamIDs)" ng-disabled="team.userCreate != toolCtrl.user.id && !team.right_team_edit_data"></md-checkbox>
-                            <img alt="{{ team.name }}" ng-src="/server/tmp/{{ team.avatar }}" class="md-avatar" ng-if="team.avatar"/>
-                            <div style="background:hsl({{ team.avatar_alt }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-hide="team.avatar"><span>{{team.name_short}}</span></div>
-
-                            <div flex="30" layout="row">
+                            <md-checkbox class="md-exclude" ng-model="toolCtrl.team.input.myTeams_selected_teamIDs[team.id]" ng-change="toolCtrl.helpers.selectedClearFalse(toolCtrl.team.input.myTeams_selected_teamIDs)" ng-disabled="team.userCreate != toolCtrl.user.id"></md-checkbox>
+                            <div layout="row">
+                                <img alt="{{ team.name }}" ng-src="/server/tmp/{{ team.avatar }}" class="md-avatar" ng-if="team.avatar"/>
+                                <div style="background:hsl({{ team.avatar_alt }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-hide="team.avatar"><span>{{team.name_short}}</span></div>
+                            </div>
+                            <div flex layout="row">
                                 <p>{{ team.name }}</p>
                             </div>
                             <div flex layout="row">
-                                <p flex>
-                                    {{ team.role }}
-                                    <md-icon class="md-accent" ng-if="team.userCreate == toolCtrl.user.id">home</md-icon>
-                                    <md-tooltip ng-if="team.userCreate == toolCtrl.user.id" md-direction="down">
-                                        Du bist Gründer der Gruppe
-                                    </md-tooltip>
-                                </p>
+                                <md-icon class="md-accent" ng-if="team.userCreate == toolCtrl.user.id">home</md-icon>
+                                <md-tooltip ng-if="team.userCreate == toolCtrl.user.id" md-direction="down">
+                                    Du bist Gründer der Gruppe
+                                </md-tooltip>
+                            </div>
+                            <div flex layout="row">
+                                <p>{{ team.role }}</p>
+                            </div>
+
+                            <div flex layout="row">
+                                <md-switch class="md-accent" md-no-ink aria-label="mute" ng-model="team.mute">
+                                    <md-icon ng-if="team.mute">volume_up</md-icon>
+                                    <md-icon ng-if="!team.mute">volume_off</md-icon>
+                                </md-switch>
+                            </div>
+                            <div flex layout="row">
                                 <md-button ng-disabled="team.right_team_edit==null" title="{{(team.right_team_edit==null?'keine Rechte':'')}}" ng-click="toolCtrl.team.dialog.edit.show($event,{teamID: team.id})" class="md-primary md-raised">
                                     bearbeiten
                                 </md-button>

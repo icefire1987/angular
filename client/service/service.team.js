@@ -142,13 +142,12 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
         controller: function (roles,user) {
 
             var dialogCtrl = this;
-            dialogCtrl.callback = vm.dialog.callback;
-
+            dialogCtrl.callback = vm.dialog.edit.callback;
 
             dialogCtrl.roles = roles.data;
             dialogCtrl.flickr = flickrService;
             dialogCtrl.cropper = cropperService;
-
+            dialogCtrl.toggler = helperService.toggler();
             dialogCtrl.changed = false;
             dialogCtrl.change = function(){
                 dialogCtrl.changed = true;
@@ -162,16 +161,15 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
 
             vm.search({key:'id', value: vm.dialog.edit.locals.view.teamID}).then(
                 function(res){
-                    console.log(res.data[0])
-                    dialogCtrl.input = res.data[0];
-                    dialogCtrl.input.avatar_exist = angular.copy(res.data[0].avatar);
+                    dialogCtrl.team = res.data[0];
 
+                    dialogCtrl.input = angular.copy(res.data[0]);
+                    dialogCtrl.input.avatar_exist = angular.copy(res.data[0].avatar);
                 }
             );
             vm.getUsers({key:'teamID', value: vm.dialog.edit.locals.view.teamID}).then(
                 function(res){
-                    console.log(res.data[0])
-                    dialogCtrl.users = res.data[0];
+                    dialogCtrl.users = res.data;
 
                 }
             );
@@ -206,7 +204,30 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
                 obj.image.addEventListener('cropstart', function () {
                     dialogCtrl.input.avatar = null;
                 });
-            }
+            };
+            dialogCtrl.userKick = function(objID,userID){
+                console.log("do kick")
+                vm.input = {};
+                vm.input.teamID = dialogCtrl.team.id;
+                vm.input.userID = userID;
+                vm.leave().then(
+                    function(response){
+                        dialogCtrl.users.splice(objID,1);
+                    }
+                );
+            };
+            dialogCtrl.saveUserRole = function(teamID,userID,roleID){
+                vm.userUpdate(teamID,userID,{roleID:roleID}).then(
+                    function(data){
+                        vm.dialog.edit.controller.log({text: 'Rolle gespeichert'});
+                    },
+                    function(err){
+                        console.log("err join")
+                        console.log(err);
+                        vm.dialog.edit.controller.log({text: err.data.debug});
+                    }
+                );
+            };
         },
         controllerAs: 'dialogCtrl',
         templateUrl: '/client/view/template/tabDialog_teamEdit.tmpl.html',
@@ -220,35 +241,26 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
         }
     };
 
-    vm.dialog.edit.callback.ok = function () {
-        if(vm.input.avatar){
+    vm.dialog.edit.callback.ok = function (data) {
+        vm.input = data;
+        console.log(vm.dialog.edit.locals.view.teamID)
+
+        if(vm.input.avatar && (vm.input.avatar != vm.input.avatar_exist)){
             var file = imageService.dataURLToFile(vm.input.avatar);
             vm.input.avatarFile = file;
         }
-        vm.create().then(
+        vm.update().then(
             function(res){
-                if(vm.input.dojoin){
-                    vm.input.teamIDArr = [res.data.data.id];
-                    vm.join().then(
-                        function(data){
-                            vm.init();
-                            vm.dialog.create.callback.hide();
-                        },
-                        function(err){
-                            console.log("err join")
-                            console.log(err);
-                            vm.dialog.create.controller.log({text: err.data.debug});
-                        }
-                    );
-                }else{
-                    vm.init();
-                    vm.dialog.create.callback.hide();
-                }
+                console.log("update done")
+                console.log(res)
+                vm.init();
+
+
+
             },
             function(err){
-                console.log("err create")
+                console.log("err update")
                 console.log(err);
-                vm.dialog.create.controller.log({text: err.data.debug});
             }
         )
     };
@@ -391,6 +403,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
                 teamname: vm.input.name,
                 description: vm.input.description,
                 openJoin: vm.input.openJoin,
+                userCreate: vm.input.userCreate,
                 avatar_alt: vm.input.avatar_alt,
                 avatar: filename
             }

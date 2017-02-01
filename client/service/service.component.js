@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 11.11.16.
  */
-angular.module('myApp').service('componentService', function ($mdMedia,$mdDialog,$mdToast) {
+angular.module('myApp').service('componentService', function ($mdMenu,$mdMedia,$mdDialog,$mdToast) {
     var vm = this;
 
     vm.menuLeft = {};
@@ -56,6 +56,7 @@ angular.module('myApp').service('componentService', function ($mdMedia,$mdDialog
             $mdDialog.show(inner_vm.config).then(inner_vm.callback.ok,inner_vm.callback.cancel);
         }
     };
+
 
 
 

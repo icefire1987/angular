@@ -33,12 +33,15 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         roles: []
                     },
                     views: {
+                        'toolbar': {
+                            templateUrl: '/client/view/toolbar_public.html',
+                            controller: 'toolbarCtrl as toolbarCtrl'
+                        },
                         '': {
                             templateUrl: '/client/view/public.html',
                             //controller: 'mainCtrl as mainCtrl'
                         }
                     },
-
                 }
             },
             {
@@ -46,18 +49,22 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                 val: {
                     url: '/main',
                     views: {
-                        'login': {
-                            templateUrl: '/client/view/login.html',
-
-                        },
-                        'content1': {
-                            templateUrl: '/client/view/one.html',
-
+                        'card': {
+                            templateUrl: '/client/view/public_main.html',
                         }
                     }
-
                 }
-
+            },
+            {
+                name: 'public.contact',
+                val: {
+                    url: '/contact',
+                    views: {
+                        'card': {
+                            templateUrl: '/client/view/public_contact.html',
+                        }
+                    }
+                }
             },
             {
                 name: 'public.login',
@@ -66,11 +73,10 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
 
                     views: {
                         'login': {
-                            templateUrl: '/client/view/login.html',
+                            templateUrl: '/client/view/public_login.html',
 
                         }
                     }
-
                 }
 
             },
@@ -117,13 +123,16 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                                             $state.go("protected.main");
                                             break;
                                     }
-
                                 }
                             );
 
                         }]
                     },
                     views: {
+                        'toolbar': {
+                            templateUrl: '/client/view/toolbar_protected.html',
+                            controller: 'toolbarCtrl as toolbarCtrl'
+                        },
                         '': {
                             templateUrl: '/client/view/protected.html',
                             controller: 'toolCtrl as toolCtrl'
@@ -137,11 +146,10 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     url: '/main',
                     views: {
                         'tool-content': {
-                            templateUrl: '/client/view/one.html'
+                            templateUrl: '/client/view/toolbar_public.html'
 
                         }
                     }
-
                 }
             },
             {
@@ -154,7 +162,6 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
 
                         }
                     }
-
                 }
             },
             {
@@ -167,7 +174,6 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
 
                         }
                     }
-
                 }
             },
             {
@@ -181,7 +187,6 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
 
                         }
                     }
-
                 }
             },
             {
@@ -194,7 +199,30 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
 
                         }
                     }
+                }
+            },
+            {
+                name: 'protected.logistik',
+                val: {
+                    url: '/logistik',
+                    views: {
+                        'protected_content': {
+                            templateUrl: '/client/view/protected_logistik.html'
 
+                        }
+                    }
+                }
+            },
+            {
+                name: 'protected.produktion',
+                val: {
+                    url: '/produktion',
+                    views: {
+                        'protected_content': {
+                            templateUrl: '/client/view/protected_produktion.html'
+
+                        }
+                    }
                 }
             }
         ];

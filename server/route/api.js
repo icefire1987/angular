@@ -562,7 +562,10 @@ module.exports = function (app, express) {
                         });
 
                     } else if (teams == null || (teams.id == req.query.teamid)) {
-                        req.query.userCreate = global_user.id;
+                        if(!req.query.userCreate){
+                            req.query.userCreate = global_user.id;
+                        }
+
                         Team.post(req.query, function (err, data) {
                             if (data) {
                                 upload.single('file')(req,res,function(err) {

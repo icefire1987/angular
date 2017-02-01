@@ -1,0 +1,32 @@
+<md-toolbar ng-controller="toolbarCtrl as toolbarCtrl">
+    <div class="md-toolbar-tools">
+        <md-menu>
+            <md-button ng-click="$mdOpenMenu($event)" aria-label="Open  Menu">
+                <md-icon> menu </md-icon>
+            </md-button>
+            <md-menu-content width="4" >
+                <md-menu-item>
+                    <md-button ui-sref="public.main">
+                        <md-icon> home </md-icon>
+                        Home
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ui-sref="public.login">
+                        <md-icon> vpn_key </md-icon>
+                        Login
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ui-sref="public.contact">
+                        <md-icon> mail </md-icon>
+                        Kontakt
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+        <!--<span>Zuumeo-Studio</span>-->
+        <a ui-sref="public.login">Zuumeo Studio</a>
+        <span flex></span>
+    </div>
+</md-toolbar>

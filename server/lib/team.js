@@ -109,6 +109,9 @@ module.exports = {
         if(data.openJoin == undefined){
             data.openJoin = "0";
         }
+        if(data.dateCreate == undefined){
+            data.dateCreate = new Date();
+        }
         if(data.description == undefined){
             data.description = "";
         }
@@ -119,7 +122,7 @@ module.exports = {
             name: data.teamname,
             openJoin : data.openJoin,
             description: data.description,
-            dateCreate: new Date(),
+            dateCreate: data.dateCreate,
             userCreate: data.userCreate,
             avatar: data.avatar,
             avatar_alt : data.avatar_alt
@@ -171,7 +174,10 @@ module.exports = {
     },
 
     join: function(teamID,userID,roleID,callback){
-        var query = 'INSERT INTO teams_user SET userID=?, teamID = ? , roleID = ?, dateJoin=NOW() ON DUPLICATE KEY UPDATE id=id ';
+        console.log("teamID " + teamID );
+        console.log("userID " + userID );
+        console.log("roleID " + roleID );
+        var query = 'REPLACE INTO teams_user SET userID=?, teamID = ? , roleID = ?, dateJoin=NOW()';
         if(!teamID && !userID){
             var err =  {debug : "Team und User not set"};
             return callback(err,null);

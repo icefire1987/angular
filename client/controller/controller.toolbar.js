@@ -2,7 +2,6 @@
  * Created by Chris on 11.11.16.
  */
 myApp.controller('toolbarCtrl', function(componentService){
-    console.log("toolbar");
 
     vm = this;
     vm.sidebar = {};
@@ -10,4 +9,7 @@ myApp.controller('toolbarCtrl', function(componentService){
     vm.sidebar.toggle = function(){
         componentService.toggle(vm.sidebar.componentId);
     }
+
+
+
 });

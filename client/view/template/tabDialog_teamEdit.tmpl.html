@@ -10,7 +10,7 @@
 
                 </h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="dialogCtrl.ctrl.hide()">
+                <md-button class="md-icon-button" ng-click="dialogCtrl.callback.ui_cancel()">
                     <md-icon aria-label="Close dialog">close</md-icon>
                 </md-button>
             </div>
@@ -114,7 +114,7 @@
                             <md-tab label="Lokale Datei">
                                 <md-content class="md-padding">
                                     <div layout="row">
-                                        <input class="ng-hide" id="input-file-id" type="file" nv-file-select uploader="dialogCtrl.uploader" ng-disabled="dialogCtrl.team.right_team_edit_data!=1"/>
+                                        <input class="ng-hide" id="input-file-id" type="file" nv-file-select uploader="dialogCtrl.uploader.localAvatar" ng-disabled="dialogCtrl.team.right_team_edit_data!=1"/>
                                         <label for="input-file-id" class="md-button md-raised md-primary" ng-disabled="dialogCtrl.team.right_team_edit_data!=1">Choose Files</label>
                                     </div>
                                 </md-content>
@@ -128,7 +128,6 @@
                         <md-list>
                             <md-list-item ng-repeat="(key,user) in dialogCtrl.users">
                                 <p>{{user.username}}</p>
-
                                 <md-select ng-disabled="dialogCtrl.team.right_team_edit_role==0 || (dialogCtrl.team.userCreate == user.id)" name="teamEdit_role" ng-model="user.roleID" aria-label="userrole" ng-init="dialogCtrl.toggler.init(user.roleID)" ng-change="dialogCtrl.toggler.change('xy')">
                                     <md-option ng-repeat="role in dialogCtrl.roles" ng-value="role.id" aria-label="Userrole">{{role.name}}</md-option>
                                 </md-select>
@@ -150,7 +149,7 @@
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex class="log" md-colors="{color:'accent'}"></span>
-            <md-button type="submit" ng-disabled="dialogCtrl.changed==false" ng-click="dialogCtrl.submit()">
+            <md-button type="submit" ng-disabled="dialogCtrl.changed==false" ng-click="dialogCtrl.callback.ui_answer(dialogCtrl.input)">
                 Änderungen speichern
             </md-button>
         </md-dialog-actions>
