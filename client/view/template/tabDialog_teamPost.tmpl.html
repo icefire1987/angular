@@ -1,0 +1,54 @@
+<md-dialog aria-label="edit Team" id="dialog_teamPost" flex>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-list>
+                    <md-list-item>
+                        <img alt="{{ dialogCtrl.team.name }}" ng-src="/server/tmp/{{ dialogCtrl.team.avatar }}" class="md-avatar" ng-if="dialogCtrl.team.avatar"/>
+                        <span>{{dialogCtrl.team.name}} informieren</span>
+                    </md-list-item>
+                </md-list>
+
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dialogCtrl.callback.ui_cancel()">
+                    <md-icon aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-tabs md-border-bottom md-dynamic-height>
+                <md-tab label="Stammdaten">
+                    <md-content class="md-padding">
+                        <form name="teamCreate">
+                        <md-input-container class="md-block">
+                            <label>Titel</label>
+                            <input required md-auto-focus="" name="teamCreate_name" ng-model="dialogCtrl.input.title" autocomplete="false" ng-change="dialogCtrl.change()" ng-disabled="dialogCtrl.team.right_team_post!=1">
+                            <div ng-messages="teamCreate.teamCreate_name.$error">
+                                <div ng-message="required">Pflichtfeld</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Nachricht</label>
+                            <textarea ng-model="dialogCtrl.input.message" md-maxlength="350" md-select-on-focus ng-change="dialogCtrl.change()" ng-disabled="dialogCtrl.team.right_team_post!=1"></textarea>
+                        </md-input-container>
+                        </form>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Mitglieder">
+                    <md-content class="md-padding">
+                        <md-list>
+                            <md-list-item ng-repeat="(key,user) in dialogCtrl.users">
+                                <p>{{user.username}}</p>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex class="log" md-colors="{color:'accent'}"></span>
+            <md-button type="submit" ng-disabled="dialogCtrl.changed==false" ng-click="dialogCtrl.callback.ui_answer(dialogCtrl.input)">
+                Nachricht senden
+            </md-button>
+        </md-dialog-actions>
+</md-dialog>

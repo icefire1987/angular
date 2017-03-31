@@ -1,23 +1,41 @@
  <md-sidenav md-is-locked-open="toolCtrl.sidebar.lockedOpen" class="md-whiteframe-4dp" md-component-id="menu-left" layout="column">
-     <md-list>
-         <md-list-item ui-sref="protected.dashboard">
+     <md-list flex>
+         <md-list-item ui-sref="protected.dashboard" ui-sref-active="active">
              <md-icon>dashboard</md-icon>
              <span>Dashboard</span>
          </md-list-item>
-         <md-list-item ui-sref="protected.news">
+         <md-list-item ui-sref="protected.news.all" ui-sref-active="active">
              <md-icon>textsms</md-icon>
              <span>News</span>
+             <md-badge ng-show="toolCtrl.helpers.object_len(toolCtrl.news.unread)>0">{{toolCtrl.helpers.object_len(toolCtrl.news.unread)}}</md-badge>
+
          </md-list-item>
-         <md-list-item ui-sref="protected.team">
+         <md-list-item ui-sref="protected.team" ui-sref-active="active">
              <md-icon>group</md-icon>
              <span>Team</span>
          </md-list-item>
+
          <md-divider ></md-divider>
-         <md-list-item ui-sref="protected.logistik">
+
+         <md-list-item ui-sref="protected.logistik" ui-sref-active="active">
              <md-icon>store</md-icon>
              <span>Logistik</span>
          </md-list-item>
-         <md-list-item ui-sref="protected.produktion">
+             <md-list-item ui-sref="protected.logistik.orders" ui-sref-active="active" class="child">
+                 <md-icon>assignment</md-icon>
+                 <span>Auftrag</span>
+             </md-list-item>
+             <md-list-item ui-sref="protected.logistik.inbound" ui-sref-active="active" class="child">
+                 <md-icon>repeat</md-icon>
+                 <span>Warenstrom</span>
+             </md-list-item>
+             <md-list-item ui-sref="protected.logistik.orders" ui-sref-active="active" class="child">
+                 <md-icon>storage</md-icon>
+                 <span>Stammdaten</span>
+             </md-list-item>
+         <md-divider ></md-divider>
+
+         <md-list-item ui-sref="protected.produktion" ui-sref-active="active">
              <md-icon>memory</md-icon>
              <span>Produktion</span>
          </md-list-item>
@@ -37,7 +55,7 @@
          <md-divider ></md-divider>
          <md-list-item md-colors="::{backgroundColor: 'default-grey-400'}" id="searchBox">
              <md-icon>search</md-icon>
-<div flex="50">
+            <div flex="50">
              <md-input-container class="md-block">
                  <label>LT-Name</label>
                  <md-icon>shopping_cart</md-icon>
@@ -54,20 +72,19 @@
                      <div ng-message="required">Pflichtfeld</div>
                  </div>
              </md-input-container>
-</div>
+            </div>
          </md-list-item>
      </md-list>
+     <md-content layout-margin >
+         <p ng-click="toolCtrl.simpleAlert.show($event,toolCtrl.helpers.object_values(toolCtrl.socket.users_connected))">Nutzer online: {{toolCtrl.helpers.object_len(toolCtrl.socket.users_connected)}}</p>
+     </md-content>
+
  </md-sidenav>
  <md-content flex layout="column" id="content">
      <md-progress-linear ng-show="requestRunning" class="md-accent" md-mode="indeterminate"></md-progress-linear>
      <div flex ui-view="protected_content"></div>
 
  </md-content>
-
-
-
-
-
 
 <link rel="stylesheet" href="/client/style/tool.css">
 <link rel="stylesheet" href="/client/style/tool-sidebar.css">

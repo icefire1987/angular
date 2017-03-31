@@ -111,10 +111,16 @@
                                 </md-switch>
                             </div>
                             <div flex layout="row">
+                                <md-button ng-disabled="team.right_team_post==null" title="{{(team.right_team_post==null?'keine Rechte':'')}}" ng-click="toolCtrl.team.dialog.post.show($event,{teamID: team.id})" class="md-primary md-raised">
+                                    <md-icon class="ng-scope material-icons">mail_outline</md-icon>
+                                    Nachricht
+                                </md-button>
                                 <md-button ng-disabled="team.right_team_edit==null" title="{{(team.right_team_edit==null?'keine Rechte':'')}}" ng-click="toolCtrl.team.dialog.edit.show($event,{teamID: team.id})" class="md-primary md-raised">
+                                    <md-icon class="ng-scope material-icons">edit</md-icon>
                                     bearbeiten
                                 </md-button>
                                 <md-button class="md-warn md-raised" ng-disabled="team.userCreate == toolCtrl.user.id" ng-click="toolCtrl.team.dialog.leave.show($event,{teamID: team.id})">
+                                    <md-icon class="ng-scope material-icons">exit_to_app</md-icon>
                                     austreten
                                 </md-button>
                             </div>

@@ -148,8 +148,10 @@
             </md-tabs>
         </md-dialog-content>
         <md-dialog-actions layout="row">
+
             <span flex class="log" md-colors="{color:'accent'}"></span>
             <md-button type="submit" ng-disabled="dialogCtrl.changed==false" ng-click="dialogCtrl.callback.ui_answer(dialogCtrl.input)">
+                <md-icon>check</md-icon>
                 Änderungen speichern
             </md-button>
         </md-dialog-actions>

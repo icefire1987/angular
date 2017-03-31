@@ -4,7 +4,7 @@
 angular.module('myApp').service('inputService', function () {
     var vm = this;
 
-    vm.cleanInput = function(inputval,toLowerCase){
+    vm.input_clean = function(inputval,toLowerCase){
         var clean = "";
         var sandbox = inputval;
         if(toLowerCase != null){

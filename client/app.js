@@ -9,10 +9,14 @@ if(window){
 }
 
 
-var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMaterial','chart.js','angularFileUpload']);
+var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMaterial','chart.js','angularFileUpload','btford.socket-io']);
 
     // Register environment in AngularJS as constant
     myApp.constant('__env', env);
+
+    myApp.factory('mySocket', function (socketFactory) {
+        return socketFactory();
+    });
 
     myApp.config(function ($stateProvider, $urlRouterProvider,$locationProvider,$provide,$httpProvider,$logProvider,$mdThemingProvider) {
 
@@ -183,8 +187,32 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     views: {
                         'protected_content': {
                             templateUrl: '/client/view/protected_news.html'
-
-
+                        }
+                    }
+                }
+            },
+            {
+                name: 'protected.news.all',
+                val: {
+                    url: '/',
+                    onEnter: function(newsService, $stateParams){
+                        newsService.getNews();
+                    }
+                }
+            },
+            {
+                name: 'protected.news.single',
+                val: {
+                    url: '/{teamid:int}',
+                    onEnter: function(newsService, $stateParams){
+                        if(newsService.teams.length==0) {
+                            newsService.getNews().then(
+                                function () {
+                                    newsService.showTeam($stateParams.teamid);
+                                }
+                            )
+                        }else{
+                            newsService.showTeam($stateParams.teamid);
                         }
                     }
                 }
@@ -247,7 +275,7 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
     });
 
     myApp.run(['$rootScope', '$state', 'authService', function ($rootScope, $state, authService) {
-        $rootScope.$on('$stateChangeStart', function (event) {
+        $rootScope.$on('$stateChangeStart', function (event,toState) {
             authService.authorize().then(
                 function(status){
                     console.log("run auth:"+status)

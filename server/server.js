@@ -11,6 +11,10 @@ var path = require('path');
 var port = 3000;
 
 var app = express();
+var server   = require('http').Server(app);
+
+var io       = require('socket.io')(server);
+var ioEvents = require('./lib/ioevents.js')(io);
 
 app.use(helmut());
 
@@ -35,16 +39,18 @@ app.use(function(req, res, next) {
 
 
 
-var api = require('./route/api')(app, express);
+var api = require('./route/api')(app, express,io);
 var index = require('./route/index')(app, express);
 var main = require('./route/main')(app, express);
 app.use('/api', api);
 app.use('/server', main);
-app.use('/*', index);
+app.use('/public', index);
+app.use('/protected', index);
 
 
 
-app.listen(port, function(){
+
+server.listen(port, function(){
     console.log('Server started on port '+port);
 });
 

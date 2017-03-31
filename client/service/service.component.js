@@ -52,12 +52,31 @@ angular.module('myApp').service('componentService', function ($mdMenu,$mdMedia,$
             }
         };
         this.show = function($event, viewData){
+            console.log("show dialogTab")
             inner_vm.locals.view = viewData;
+            console.log(inner_vm.config)
             $mdDialog.show(inner_vm.config).then(inner_vm.callback.ok,inner_vm.callback.cancel);
         }
     };
 
 
+    vm.dialogAlert = function(){
+        var inner_vm = this;
+        inner_vm.callback = {
+            ok : function(){console.log("default ok")},
+            cancel: function(){console.log("default cancel")}
+        };
+        this.show = function($event, viewData){
+            inner_vm.config = {
+                textContent: viewData,
+                title: 'Info',
+                clickOutsideToClose: true,
+                ok: 'OK'
+            };
+            var alert = $mdDialog.alert(inner_vm.config);
+            $mdDialog.show(alert).then(inner_vm.callback.ok,inner_vm.callback.cancel);
+        }
+    };
 
 
     vm.toggle = function(componentID){

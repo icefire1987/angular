@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="Chris">
-        <title>INDEX</title>
-
-
+        <title>Zuumeo Studio</title>
+<link href="/client/media/favicon/favicon.ico" rel="icon" type="image/x-icon" />
+        <!--<link rel="icon" type="image/png" sizes="96x96" href="/client/media/favicon/favicon-96x96.png">-->
         <link rel="stylesheet" href="/client/node_modules/angular-material/angular-material.min.css">
         <link rel="stylesheet" href="/client/style/main.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -19,7 +19,7 @@
         <div layout="row" ui-view="toolbar"></div>
 
         <div flex layout="row" layout-fill ui-view></div>
-
+        <script src="http://10.1.11.80:3000/socket.io/socket.io.js"></script>
         <script src="/client/env.js"></script>
         <script src="/server/node_modules/angular/angular.js"></script>
         <script src="/server/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
@@ -33,6 +33,8 @@
         <script src="/client/node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
         <script src="/client/node_modules/cropperjs/dist/cropper.min.js"></script>
         <script src="/client/node_modules/angular-file-upload/dist/angular-file-upload.min.js"></script>
+        <script src="/client/node_modules/angular-socket-io/socket.js"></script>
+
         <script src="/client/app.js"></script>
 
         <script src="/client/controller/controller.main.js"></script>
@@ -46,8 +48,12 @@
         <script src="/client/service/service.flickr.js"></script>
         <script src="/client/service/service.helper.js"></script>
         <script src="/client/service/service.image.js"></script>
+
         <script src="/client/service/service.log.js"></script>
+        <script src="/client/service/service.news.js"></script>
+        <script src="/client/service/service.socket.js"></script>
         <script src="/client/service/service.team.js"></script>
+        <script src="/client/service/service.user.js"></script>
         <script src="/client/service/interceptor.http.js"></script>
     </body>
 </html>

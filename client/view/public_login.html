@@ -3,7 +3,8 @@
         <span class="md-headline">Login</span>
     </md-card-title-text>
 </md-card-title>
-<md-card-content>
+
+<md-card-content ng-hide="mainCtrl.auth.var_fp">
     <form name="form_login" ng-submit="mainCtrl.auth.login()">
         <p class="help-block" ng-show="errors.login.username"><md-icon>alert</md-icon> Benutzername nicht gefunden</p>
         <p class="help-block" ng-show="errors.login.password"><md-icon>alert</md-icon>falsches Passwort</p>
@@ -26,7 +27,12 @@
             <md-button type="submit" ng-disabled="form_login.$invalid">Login</md-button>
         </md-card-actions>
     </form>
-    <form ng-submit="mainCtrl.auth.sendNewPassword()" name="form_forgot" ng-show="mainCtrl.auth.var_fp">
+
+</md-card-content>
+
+
+<md-card-content ng-show="mainCtrl.auth.var_fp">
+    <form ng-submit="mainCtrl.auth.sendNewPassword()" name="form_forgot" >
         <md-input-container class="md-block">
             <label>hinterlegte eMail-Adresse</label>
             <input type="email"required name="login_email" ng-model="mainCtrl.input.login_email">
@@ -40,7 +46,6 @@
         </md-card-actions>
     </form>
 </md-card-content>
-
 
 <!--
 

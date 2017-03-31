@@ -1,48 +1,80 @@
-<div class="md-padding" layout="column">
+<div class="md-padding" layout="column" ng-init="toolCtrl.getProfile()">
     <div layout="row">
-            <md-card>
-                <md-card-content>
-                    <h2>Passwort ändern</h2>
-                    <form name="passwordchange" ng-submit="toolCtrl.profileEdit()">
-                        <p class="help-block" ng-show="errors.passwordchange.password"><md-icon>alert</md-icon>falsches Passwort</p>
-                        <md-input-container class="md-block">
-                            <label>altes Passwort</label>
-                            <input required name="password_old" ng-model="toolCtrl.input.password_old">
-                            <div ng-messages="passwordchange.password_old.$error">
-                                <div ng-message="required">Pflichtfeld</div>
-
-                            </div>
-                        </md-input-container>
-                        <div layout="row">
-                            <md-input-container flex="50">
-                                <label>neues Passwort</label>
-                                <input minlength="6" required name="password_new1" ng-model="toolCtrl.input.password_new1">
-                                <div ng-messages="passwordchange.password_new1.$error">
-                                    <div ng-message="required">Pflichtfeld</div>
-                                    <div ng-message="minlength">Mindestens 6 Zeichen</div>
-                                </div>
-                            </md-input-container>
-
-                            <md-input-container flex="50">
-                                <label>neues Passwort bestätigen</label>
-                                <input minlength="6" required name="password_new2" ng-model="toolCtrl.input.password_new2"
-                                       ng-change="toolCtrl.comparePassword(toolCtrl.input.password_new1,toolCtrl.input.password_new2,passwordchange.password_new2)">
-                                <div ng-messages="passwordchange.password_new2.$error">
-                                    <div ng-message="required">Pflichtfeld</div>
-                                    <div ng-message="minlength">Mindestens 6 Zeichen</div>
-                                    <div ng-message="notequal">Eingabe nicht identisch</div>
-                                </div>
-
-                            </md-input-container>
-
+        <md-card flex="50">
+            <md-card-content>
+                <h2>Passwort ändern</h2>
+                <form name="passwordchange" ng-submit="toolCtrl.profileEditPassword()">
+                    <p class="help-block" ng-show="errors.passwordchange.password"><md-icon>alert</md-icon>falsches Passwort</p>
+                    <md-input-container class="md-block">
+                        <label>altes Passwort</label>
+                        <input required name="password_old" ng-model="toolCtrl.input.password_old">
+                        <div ng-messages="passwordchange.password_old.$error">
+                            <div ng-message="required">Pflichtfeld</div>
 
                         </div>
-                        <md-card-actions layout="row" layout-align="end center">
-                            <md-button type="submit" ng-disabled="passwordchange.$invalid">speichern</md-button>
-                        </md-card-actions>
-                    </form>
-                </md-card-content>
-            </md-card>
+                    </md-input-container>
+                    <div layout="row">
+                        <md-input-container flex="50">
+                            <label>neues Passwort</label>
+                            <input minlength="6" required name="password_new1" ng-model="toolCtrl.input.password_new1">
+                            <div ng-messages="passwordchange.password_new1.$error">
+                                <div ng-message="required">Pflichtfeld</div>
+                                <div ng-message="minlength">Mindestens 6 Zeichen</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container flex="50">
+                            <label>neues Passwort bestätigen</label>
+                            <input minlength="6" required name="password_new2" ng-model="toolCtrl.input.password_new2"
+                                   ng-change="toolCtrl.comparePassword(toolCtrl.input.password_new1,toolCtrl.input.password_new2,passwordchange.password_new2)">
+                            <div ng-messages="passwordchange.password_new2.$error">
+                                <div ng-message="required">Pflichtfeld</div>
+                                <div ng-message="minlength">Mindestens 6 Zeichen</div>
+                                <div ng-message="notequal">Eingabe nicht identisch</div>
+                            </div>
+
+                        </md-input-container>
+
+
+                    </div>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button type="submit" ng-disabled="passwordchange.$invalid">speichern</md-button>
+                    </md-card-actions>
+                </form>
+            </md-card-content>
+        </md-card>
+        <md-card flex="50">
+            <md-card-content>
+                <h2>Profildaten ändern</h2>
+                <form name="profilechange" ng-submit="toolCtrl.profileEditData()">
+                    <md-input-container class="md-block">
+                        <label>Vorname</label>
+                        <input minlength="3" required name="prename" ng-model="toolCtrl.input.prename">
+                        <div ng-messages="passwordchange.prename.$error">
+                            <div ng-message="required">Pflichtfeld</div>
+                            <div ng-message="minlength">Mindestens 3 Zeichen</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Nachname</label>
+                        <input minlength="3" required name="lastname" ng-model="toolCtrl.input.lastname">
+                        <div ng-messages="passwordchange.lastname.$error">
+                            <div ng-message="required">Pflichtfeld</div>
+                            <div ng-message="minlength">Mindestens 3 Zeichen</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Farbcode</label>
+                        <input ng-model="toolCtrl.input.colorhex" type="color" ng-change="toolCtrl.profileColorConvert()">
+                        <input ng-model="toolCtrl.input.avatar_alt" type="hidden">
+                    </md-input-container>
+                    {{toolCtrl.input.avatar_alt}}
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button type="submit" ng-disabled="profilechange.$invalid">speichern</md-button>
+                    </md-card-actions>
+                </form>
+            </md-card-content>
+        </md-card>
 
 </div>
 

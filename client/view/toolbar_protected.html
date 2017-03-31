@@ -1,10 +1,16 @@
 <md-toolbar ng-controller="toolbarCtrl as toolbarCtrl">
     <div class="md-toolbar-tools">
         <md-button class="md-icon-button" aria-label="show Menu" ng-click="toolbarCtrl.sidebar.toggle()">
-            <md-icon > menu </md-icon>
+            <div  ng-controller="toolCtrl as toolCtrl">
+
+                <md-icon class="md-badge"> menu <md-badge>{{toolCtrl.locals.messages}}</md-badge></md-icon>
+            </div>
+
+
         </md-button>
         <!--<span>Zuumeo-Studio</span>-->
         <a ui-sref="protected.main">Zuumeo Studio</a>
+
         <span flex></span>
 
 
@@ -33,8 +39,5 @@
                 </md-menu-item>
             </md-menu-content>
         </md-menu>
-
-
-
     </div>
 </md-toolbar>

@@ -92,12 +92,12 @@ angular.module('myApp').service('authService',
                             $http.get('/api/user/token/'+token)
                                 .success(function(data) {
                                     data.user.token = token;
-                                    vm.authenticate(data.user)
+                                    vm.authenticate(data.user);
                                     deferred.resolve(vm.token);
                                     return deferred.promise;
                                 })
                                 .error(function (err) {
-                                    console.log(err)
+                                    console.log(err);
                                     vm.authenticate(null);
                                     deferred.resolve(null);
                                 });
@@ -217,7 +217,8 @@ angular.module('myApp').service('authService',
             };
 
             vm.userSetPassword = function(userObj,password){
-                return $http.put("/api/user/"+userObj.id, {password: password}).then(
+                var defer=$q.defer();
+                $http.put("/api/user/"+userObj.id, {password: password}).then(
                     function(res){
                         console.log("password is set");
                         var mail = {
@@ -232,25 +233,23 @@ angular.module('myApp').service('authService',
                             templateurl:{directory:'simple'}
                         };
                         $http.post("/server/mail/send",mail).then(
-                            function(response){
-
+                            function(response) {
                                 console.log("ok")
-                                console.log(response)
-                                return response;
+                                console.log(response);
+                                defer.resolve(response);
                             },
                             function(err){
-
                                 console.log(err)
-                                return err;
+                                defer.reject(err);
                             }
                         );
                     },
                     function(err){
-
                         console.log(err);
-                        return err;
+                        defer.reject(err);
                     }
                 );
+                return defer.promise;
             };
 
             vm.changePassword = function(password_old,password_new){
@@ -277,6 +276,7 @@ angular.module('myApp').service('authService',
                 }
                 return vm.userSetPassword(vm.user.obj,new_password).then(
                     function(data){
+
                         return data
                     },
                     function(err){
@@ -293,15 +293,17 @@ angular.module('myApp').service('authService',
                 }
                 vm.getUserWithoutAuth(mailadress)
                     .success(function(res){
-                        if(res.data.user.email == mailadress){
+                        if(res.user.email == mailadress){
                             var new_password = vm.randomString(8);
-                            vm.userSetPassword(res.data.user,new_password)
-                                .success(function(data){
+
+                            vm.userSetPassword(res.user,new_password).then(
+                                function(data){
                                     defer.resolve(200);
-                                })
-                                .error(function(err){
+                                },
+                                function(err){
                                     defer.reject(400);
-                                });
+                                }
+                            );
                         }else{
                             console.log("no match");
                             defer.reject(null)
@@ -314,14 +316,7 @@ angular.module('myApp').service('authService',
             };
             
             vm.getUserWithoutAuth = function(mailadress){
-                return $http.get("/api/user/email/"+mailadress).then(
-                    function(data){
-                        return data;
-                    },
-                    function(err){
-                        return err;
-                    }
-                );
+                return $http.get("/api/user/email/"+mailadress);
             };
             vm.getUser = function(){
                 return vm.user;

@@ -46,7 +46,7 @@ function getToken(req,cb) {
 }
 function ensureAuthorized(req, res, next) {
     console.log("Headers:")
-    console.log(req.headers)
+    //console.log(req.headers)
     if(typeof req.headers["authorization"] == "undefined"){
         res.status(403).json({
             error: "header not found"
@@ -72,7 +72,8 @@ function ensureAuthorized(req, res, next) {
                     }
                     if (userdata != null) {
                         console.log("userdata:")
-                        console.log(userdata)
+                        //console.log(userdata)
+                        req.user = userdata;
                         global_user = userdata
                         next();
                     }
@@ -102,7 +103,7 @@ function cleanInput(inputval,toLowerCase){
 
 }
 
-module.exports = function (app, express) {
+module.exports = function (app, express, io) {
     var router = express.Router();
     router.get('/user', function(req, res, next){
         res.send("/user")
@@ -177,7 +178,7 @@ module.exports = function (app, express) {
                 });
             }
             if (userdata != null) {
-                if (Auth.comparePassword(data.password, userdata.salt, userdata.password)) {
+                if (Auth.comparePassword(data.password, userdata[0].salt, userdata[0].password)) {
                     res.status(200).json({
                         user: userdata
                     });
@@ -204,7 +205,8 @@ module.exports = function (app, express) {
                     id: userdata.id,
                     username: userdata.username,
                     email: userdata.email,
-                    roles: userdata.roles.split(",")
+                    roles: userdata.roles.split(","),
+                    login: userdata.login
                 }
 
                 if (Auth.comparePassword(data.password, userdata.salt, userdata.password)) {
@@ -242,7 +244,7 @@ module.exports = function (app, express) {
         var errors = [];
         var counter=0;
         for(var x=0;x<req.body.ids.length;x++){
-            Team.join(req.body.ids[x],global_user.id,req.body.roleID,function(err,result){
+            Team.join(req.body.ids[x],req.user.id,req.body.roleID,function(err,result){
                 counter++;
                 if(err){
                     errors.push(err);
@@ -262,32 +264,7 @@ module.exports = function (app, express) {
 
 
     });
-    router.put("/user/:userid",function(req,res,next){
-        if(req.params.userid != "undefined"){
-            var reqBody = {};
-            if(req.body.password != "undefined") {
-                var passObj = Auth.saltHashPassword(req.body.password);
-                reqBody.password = passObj.passwordHash;
-                reqBody.salt = passObj.salt;
-            }
-            User.put(req.params.userid, reqBody, function(err,result){
-                if(err){
-                    err.debug = err.message
-                    res.status(500).json({
-                        error: err
-                    });
-                }
 
-                if (result != null) {
-                    res.send(reqBody);
-                }
-            });
-        }else{
-            res.status(420).json({
-                error: {debug: "User unknown"}
-            });
-        }
-    });
 
     router.get('/team/name/:name',ensureAuthorized, function(req,res){
         console.log("get Team by name")
@@ -375,6 +352,22 @@ module.exports = function (app, express) {
 /* CLEAN API */
 
 // /User
+    router.get('/user/id/:userid', function(req, res, next){
+        User.get('id',req.params.userid,function(err,userdata) {
+            if (err){
+                var error = err;
+                error.debug = "Error getting data by username";
+                res.status(420).json(error);
+            }
+            if (userdata != null) {
+                var user = userdata;
+
+                res.json({
+                    user: user
+                });
+            }
+        });
+    });
     router.get('/user/username/:username', function(req, res, next){
         User.get('username',req.params.username,function(err,userdata) {
             if (err){
@@ -402,12 +395,13 @@ module.exports = function (app, express) {
                 error.debug = "Error getting data by email";
                 res.status(420).json(error);
             }
-            if (userdata != null) {
+            if (userdata[0] != null) {
+
                 var user = {
-                    id: userdata.id,
-                    username: userdata.username,
-                    email: userdata.email,
-                    roles: userdata.roles.split(",")
+                    id: userdata[0].id,
+                    username: userdata[0].username,
+                    email: userdata[0].email,
+                    roles: userdata[0].roles.split(",")
                 };
                 res.json({
                     user: user
@@ -416,7 +410,9 @@ module.exports = function (app, express) {
         });
     });
     router.get('/user/token/:token', function(req, res, next){
-        console.log("Token:" + req.params.token)
+        console.log("---");
+        console.log("Token:")
+        //console.log(req.params.token)
         if(req.params.token != "undefined"){
             Auth.getTokenObj(req.params.token,function(err,userdata) {
                 if (err) {
@@ -435,6 +431,32 @@ module.exports = function (app, express) {
         }else{
             res.status(420).json({
                 error: {debug: "Nicht eingeloggt"}
+            });
+        }
+    });
+    router.put("/user/:userid",function(req,res,next){
+        if(req.params.userid != "undefined"){
+            console.log(req.body);
+            if(req.body.password != undefined) {
+                var passObj = Auth.saltHashPassword(req.body.password);
+                req.body.password = passObj.passwordHash;
+                req.body.salt = passObj.salt;
+            }
+
+            User.put(req.params.userid, req.body, function(err,result){
+                if(err){
+                    err.debug = err.message
+                    res.status(500).json({
+                        error: err
+                    });
+                }
+                if (result != null) {
+                    res.json({userFeedback: "Daten bearbeitet", type: "success",data: result});
+                }
+            });
+        }else{
+            res.status(420).json({
+                error: {debug: "User unknown"}
             });
         }
     });
@@ -583,7 +605,7 @@ module.exports = function (app, express) {
                             debug: "Teamname bereits vergeben"
                         });
                     }
-                    var reqBody = {};
+
 
                 });
             }
@@ -596,8 +618,8 @@ module.exports = function (app, express) {
     router.get('/team/roles',ensureAuthorized, function(req,res){
         Team.static_roles(function(err,teams){
             if(err) {
-                console.log(err)
-                err.debug = err.message
+                console.log(err);
+                err.debug = err.message;
                 res.status(500).json({
                     error: err
                 });
@@ -609,37 +631,103 @@ module.exports = function (app, express) {
         });
 
     });
-    router.delete("/team/:teamid/user/:userid",ensureAuthorized,function(req,res,next){
+    router.delete("/team/:teamid/user/:userid",ensureAuthorized,function(req,res){
 
             Team.leave(req.params.teamid,req.params.userid,function(err,result){
                 if(err){
                     res.status(420).json(errors[0]);
-                    return;
+
                 }else{
                     res.json({ userFeedback: "Nutzer aus Team entfernt", type:"success"});
-                    return;
+
                 }
             });
     });
-    router.put('/team/:teamid/user/:userid',ensureAuthorized,function(req,res,err){
+    router.put('/team/:teamid/user/:userid',ensureAuthorized,function(req,res){
         Team.join(req.params.teamid,req.params.userid,req.body.roleID,function(err,result){
             if(err){
-                console.log(err)
-                err.debug = err.message
+                console.log(err);
+                err.debug = err.message;
                 res.status(500).json({
                     error: err
                 });
             }else if(result){
                 res.json({ userFeedback: "Rolle geändert", type:"success"});
-                return;
             }
         });
     });
-    router.get('/protected', ensureAuthorized, function(req,res,err){
-        res.send("da shit!")
+    router.put('/team/:teamid/post/',ensureAuthorized,function(req,res){
+
+        Team.sendMessage(req.user.id,req.params.teamid,req.body.params,function(err,result){
+            if(err){
+                console.log(err);
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(result){
+                res.json({ userFeedback: "Nachricht gesendet", type:"success"});
+                console.log("can u see it?");
+                io.userSocket[req.user.id].broadcast.emit('message_receive', {teamID: req.params.teamid, title: req.body.params.title});
+            }
+        });
     });
 
-    router.get('/*', function(req, res, next){
+    router.delete('/team/:teamid/post/:postid',ensureAuthorized,function(req,res){
+
+        Team.deleteMessage(req.user.id,req.params.teamid,req.params.postid,function(err,result){
+            if(err){
+                console.log(err);
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(result){
+                res.json({ userFeedback: "Nachricht gelöscht", type:"success"});
+                console.log("can u see it?");
+                //io.userSocket[req.user.id].broadcast.emit('message_receive', {teamID: req.params.teamid, title: req.body.params.title});
+            }
+        });
+    });
+
+
+    // NEWS
+
+    router.get('/team/:teamid/news/',ensureAuthorized, function(req,res){
+        Team.getNews(req.params.teamid, function(err,news){
+            if(err) {
+                console.log("1 " + err);
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(news){
+                User.newsRead(req.user.id, function(err,result){
+                    if(err) {
+                        console.log("2 " + err);
+                        err.debug = err.message;
+                        res.status(500).json({
+                            error: err
+                        });
+                    }else{
+                        res.json(news);
+                    }
+
+                });
+
+            }else{
+                res.json({})
+            }
+        });
+
+
+    });
+
+    router.get('/protected', ensureAuthorized, function(req,res){
+        res.send("da shit!");
+    });
+
+    router.get('/*', function(req, res){
         res.send("/")
 
     });

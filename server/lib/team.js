@@ -50,6 +50,7 @@ module.exports = {
                     'roles.right_team_edit as right_team_edit,' +
                     'roles.right_team_edit_role as right_team_edit_role,' +
                     'roles.right_team_edit_data as right_team_edit_data,' +
+                    'roles.right_team_post as right_team_post,' +
                     'roles.name as role ' +
                     'from teams ' +
                     'LEFT JOIN teams_user ON teams_user.teamID = teams.id AND teams_user.userID = ? ' +
@@ -68,6 +69,7 @@ module.exports = {
                         'roles.right_team_edit as right_team_edit,' +
                         'roles.right_team_edit_role as right_team_edit_role,' +
                         'roles.right_team_edit_data as right_team_edit_data,' +
+                        'roles.right_team_post as right_team_post,' +
                         'roles.name as role ' +
                     'FROM teams ' +
                     'LEFT JOIN teams_user ON teams_user.teamID = teams.id  AND userID=? ' +
@@ -77,6 +79,7 @@ module.exports = {
                     'ORDER BY (userCreate=IFNULL(userID,0)) DESC, teams.name ASC ';
                 queryValues.push(clean_value);
                 queryValues.push(clean_value);
+
                 break;
             default:
                 var query = 'select * from teams WHERE name=?';
@@ -257,6 +260,89 @@ module.exports = {
                     return callback(err,null);
                 }
             });
+        });
+    },
+    sendMessage : function(userID,teamID,data,callback){
+        var query = 'REPLACE INTO teams_post SET userID=?, teamID = ? , title = ?, message = ?, dateSend=NOW()';
+        if(!teamID && !userID){
+            var err =  {debug : "Team und User not set"};
+            return callback(err,null);
+        }
+        pool.getConnection(function (err, connection) {
+            if(!err){
+                connection.query(query, [userID,teamID,data.title,data.message], function (err, rows) {
+                    connection.release();
+                    if(err){
+                        return callback(err,null);
+                    }else if (rows.affectedRows > 0) {
+                        return callback(null,true);
+                    }else{
+                        var err =  {debug : "Team nicht gefunden"};
+                        return callback(err,null);
+                    }
+                });
+            }else{
+                var err =  {debug : err};
+                return callback(err,null);
+            }
+
+        });
+    },
+    deleteMessage : function(userID,teamID,postID,callback){
+        var query = 'DELETE FROM teams_post WHERE id=?';
+        if(!teamID || !userID || !postID){
+            var err =  {debug : "Team und User not set"};
+            return callback(err,null);
+        }
+        pool.getConnection(function (err, connection) {
+            if(!err){
+                connection.query(query, [postID], function (err, rows) {
+                    connection.release();
+                    if(err){
+                        return callback(err,null);
+                    }else if (rows.affectedRows > 0) {
+                        return callback(null,true);
+                    }else{
+                        var err =  {debug : "Team nicht gefunden"};
+                        return callback(err,null);
+                    }
+                });
+            }else{
+                var err =  {debug : err};
+                return callback(err,null);
+            }
+
+        });
+    },
+    getNews : function(teamID,callback){
+        var query = '' +
+            'SELECT teams_post.id, title,message,dateSend,user.username, max(dateSend) as latest, user.avatar, user.avatar_alt,user.prename, user.lastname,user.lastRead  ' +
+            'FROM teams_post LEFT JOIN user on teams_post.userID = user.id ' +
+            'WHERE teams_post.teamID = ? ' +
+
+            'GROUP by teams_post.id ORDER BY teams_post.dateSend DESC';
+        if(!teamID){
+            var err =  {debug : "Team und User not set"};
+            return callback(err,null);
+        }
+        pool.getConnection(function (err, connection) {
+            if(!err){
+                connection.query(query, [teamID], function (err, rows) {
+                    connection.release();
+                    if(err){
+                        return callback(err,null);
+                    }
+                    if (rows) {
+                        return callback(null,rows);
+                    }else{
+                        return callback(err,null);
+                    }
+                });
+            }else{
+                var err =  {debug : err};
+                return callback(err,null);
+            }
+
         });
     }
 };

@@ -207,7 +207,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
             };
             dialogCtrl.userKick = function(objID,userID){
                 console.log("do kick")
-                vm.input = {};
+                vm.setInput({});
                 vm.input.teamID = dialogCtrl.team.id;
                 vm.input.userID = userID;
                 vm.leave().then(
@@ -228,6 +228,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
                     }
                 );
             };
+
         },
         controllerAs: 'dialogCtrl',
         templateUrl: '/client/view/template/tabDialog_teamEdit.tmpl.html',
@@ -242,7 +243,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
     };
 
     vm.dialog.edit.callback.ok = function (data) {
-        vm.input = data;
+        vm.setInput(data);
         console.log(vm.dialog.edit.locals.view.teamID)
 
         if(vm.input.avatar && (vm.input.avatar != vm.input.avatar_exist)){
@@ -312,7 +313,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
 
     vm.dialog.leave.callback.ok = function () {
         console.log(vm.dialog.leave)
-        vm.input = {};
+        vm.setInput({});
         vm.input.teamID = vm.dialog.leave.locals.view.teamID;
         vm.input.userID = authService.getUser().obj.id;
         vm.leave().then(
@@ -320,6 +321,57 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
                 vm.init();
             }
         );
+    };
+
+    vm.dialog.post =  componentService.getInstance("dialogTab");
+    vm.dialog.post.config = {
+        controller: function (roles,callback) {
+            var dialogCtrl = this;
+            dialogCtrl.callback = callback;
+            dialogCtrl.roles = roles.data;
+            dialogCtrl.input = {};
+
+            dialogCtrl.change = function(){
+                dialogCtrl.changed = true;
+            };
+
+            vm.search({key:'id', value: vm.dialog.post.locals.view.teamID}).then(
+                function(res){
+                    dialogCtrl.team = res.data[0];
+                    dialogCtrl.input = angular.copy(res.data[0]);
+
+                }
+            );
+            vm.getUsers({key:'teamID', value: vm.dialog.post.locals.view.teamID}).then(
+                function(res){
+                    dialogCtrl.users = res.data;
+                }
+            );
+        },
+        controllerAs: 'dialogCtrl',
+        templateUrl: '/client/view/template/tabDialog_teamPost.tmpl.html',
+        parent: angular.element(document.body),
+        targetEvent: null,
+        clickOutsideToClose: false,
+        locals: {
+            roles: vm.getRoles(),
+            input: vm.input,
+            callback: vm.dialog.post.callback
+        }
+    };
+
+    vm.dialog.post.callback.ok = function (data) {
+        vm.setInput(data);
+        vm.post().then(
+            function(res){
+
+            },
+            function(err){
+                console.log("err post")
+                console.log(err);
+                vm.dialog.create.controller.log({text: err.data.debug});
+            }
+        )
     };
     vm.init = function(){
         vm.myTeams = {};
@@ -342,7 +394,12 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
     vm.setInput = function(data){
         vm.input = data;
     };
-
+    vm.initInput = function(){
+        vm.input = {
+            join_teamIDs: [],
+            myTeams_selected_teamIDs: []
+        };
+    };
 
 
 
@@ -369,7 +426,6 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
 
         }
 
-
         return $http.post("/api/team",formdata, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined},
@@ -393,7 +449,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
         }else{
             filename = vm.input.avatar_exist;
         }
-        console.log(vm.input);
+
 
         return $http.put("/api/team",formdata, {
             transformRequest: angular.identity,
@@ -423,6 +479,20 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
             }
         });
     };
+
+    vm.post = function(){
+        console.log("post")
+        console.log(vm.input)
+        return $http.put("/api/team/"+vm.input.id+"/post/", {
+            params: {
+                title: vm.input.title,
+                message: vm.input.message,
+                userID: vm.input.userID
+            }
+        });
+    };
+
+
     vm.leave = function(){
         return $http.delete("/api/team/"+vm.input.teamID+"/user/"+vm.input.userID);
     };

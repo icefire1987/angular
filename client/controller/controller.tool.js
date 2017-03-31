@@ -1,24 +1,33 @@
 /**
  * Created by Chris on 11.11.16.
  */
-myApp.controller('toolCtrl', function(authService,componentService,cropperService,teamService,helperService,imageService,flickrService,$http,$scope){
+myApp.controller('toolCtrl', function(authService,componentService,cropperService,teamService,helperService,imageService,flickrService,$http,$scope,socketService,newsService,userService,$state){
     console.log("tool")
 
     var vm = this;
-
-
     vm.locals = {
         submit : {}
     };
     vm.submit = {};
     vm.sidebar = componentService.getComponent("menuLeft");
+    vm.simpleAlert = componentService.getInstance("dialogAlert");
+
 
     vm.helpers = helperService;
 
     vm.user = authService.getUser().obj;
-
+    vm.profile = userService;
 
     vm.team = teamService;
+    vm.news = newsService;
+
+
+    vm.socket = socketService;
+    vm.socket.connect();
+    vm.socket.user = authService.getUser();
+
+    vm.news.unread = vm.socket.client.unread;
+
 
 
     /* Local - Vars START */
@@ -30,7 +39,6 @@ myApp.controller('toolCtrl', function(authService,componentService,cropperServic
                     for(var item in data.data){
                         data.data[item].name_short = vm.team.shortenName(data.data[item].name)
                     }
-
                     vm.team.searchResult = data.data;
                 }
             },
@@ -41,146 +49,24 @@ myApp.controller('toolCtrl', function(authService,componentService,cropperServic
     };
 
 
+
     /* Local - Vars END */
+    vm.attachSocketEvents = function(){
+        vm.socket.socketEventsAttachedTool = true;
+        vm.socket.mySocket.on('message_receive', function(data){
+            console.log(data)
+            vm.news.unread[data.teamID] = true;
+            vm.news.updateNews(data.teamID);
 
-
-/*
-
-
-
-    // DIALOGCTRL
-
-
-    vm.team.edit_dialog_show = function(teamID,event){
-        vm.dialog_edit.show({
-            controller: function(teamdata,roles,users,user) {
-
-                var dialogCtrl = this;
-                dialogCtrl.team = angular.copy(teamdata.data[0]);
-                dialogCtrl.roles = roles.data;
-                dialogCtrl.users = users.data;
-                dialogCtrl.user= user;
-                dialogCtrl.flickr = flickrService;
-                dialogCtrl.cropper = cropperService;
-                dialogCtrl.input = angular.copy(teamdata.data[0]);
-
-                dialogCtrl.input.avatar_exist = angular.copy(teamdata.data[0].avatar);
-                dialogCtrl.changed = false;
-                dialogCtrl.change = function(){
-                    dialogCtrl.changed = true;
-                };
-
-                dialogCtrl.ctrl = componentService.dialog_tab.ctrl;
-                dialogCtrl.toggler = helperService.toggler();
-                dialogCtrl.uploader = new FileUploader();
-
-                dialogCtrl.uploader.onAfterAddingFile = function(fileItem) {
-                    dialogCtrl.cropper.start();
-                    var reader = new FileReader();
-                    reader.onload = function(event){
-                        dialogCtrl.setCropSource(event.target.result,'local');
-
-                    }
-                    reader.readAsDataURL(fileItem._file);
-
-                };
-
-                dialogCtrl.submit = function(){
-                    teamService.input = dialogCtrl.input;
-                    if(dialogCtrl.input.avatar && (dialogCtrl.input.avatar != dialogCtrl.input.avatar_exist)){
-                        var file = imageService.dataURLToFile(dialogCtrl.input.avatar);
-                        dialogCtrl.input.avatarFile = file;
-                    }
-                    teamService.update().then(
-                        function(res){
-                            console.log("update done")
-                            console.log(res)
-
-
-                            vm.team.init();
-                            dialogCtrl.ctrl.hide();
-
-
-                        },
-                        function(err){
-                            console.log("err update")
-                            console.log(err);
-                            dialogCtrl.ctrl.log({text: err.data.debug});
-                        }
-                    )
-                };
-                dialogCtrl.userKick = function(objID,userID){
-                    console.log("do kick")
-                  teamService.input = {};
-                  teamService.input.teamID = dialogCtrl.team.id;
-                  teamService.input.userID = userID;
-                    teamService.leave().then(
-                        function(response){
-                            dialogCtrl.users.splice(objID,1);
-                        }
-                    );
-                };
-                dialogCtrl.setCropSource = function(source,type){
-                    dialogCtrl.cropper.start();
-                    dialogCtrl.input.avatar = null;
-                    dialogCtrl.input.avatarFile = null;
-                    var myImage = document.getElementById('cropperImage');
-                    myImage.onload = function(){
-                        dialogCtrl.cropInit(myImage,type);
-                    };
-                    dialogCtrl.cropper.setSource(source);
-                };
-                dialogCtrl.cropInit = function(imageElement,type){
-                    var obj = {};
-                    obj.type = type;
-                    obj.cropArea = 'cropper_teamavatar';
-                    obj.image = imageElement;
-                    obj.previewArea = '#cropperPreview_teamavatar';
-                    dialogCtrl.cropper.cropper(obj);
-                    obj.image.addEventListener('cropstart', function () {
-                        dialogCtrl.input.avatar = null;
-                    });
-                };
-                dialogCtrl.saveUserRole = function(teamID,userID,roleID){
-                    teamService.userUpdate(teamID,userID,{roleID:roleID}).then(
-                        function(data){
-                            dialogCtrl.ctrl.log({text: 'Rolle gespeichert'});
-                        },
-                        function(err){
-                            console.log("err join")
-                            console.log(err);
-                            dialogCtrl.ctrl.log({text: err.data.debug});
-                        }
-                    );
-                }
-            },
-            controllerAs: 'dialogCtrl',
-            templateUrl: '/client/view/template/tabDialog_teamEdit.tmpl.html',
-            parent: angular.element(document.body),
-            targetEvent: event,
-            clickOutsideToClose:false,
-            fullscreen: true,
-            locals: {
-                teamdata : teamService.search({key:'id', value: teamID}),
-                roles: teamService.getRoles(),
-                users: teamService.getUsers({key:'teamID', value: teamID}),
-                user: authService.getUser().obj
-            },
-            onComplete: function(){
-                console.log("done");
-            },
-            onShowing: function(){
-                console.log("show");
-            }
+            var audio = new Audio('/client/media/audio/newmessage.ogg');
+            audio.addEventListener('canplaythrough', function() {
+                audio.play();
+            });
         });
     };
-    // Instant Call
-
-
-
-
-*/
-
+    if (!vm.socket.socketEventsAttachedTool) {
+        vm.attachSocketEvents();
+    }
 
 
     vm.comparePassword = function(string1,string2,errorObj){
@@ -191,11 +77,31 @@ myApp.controller('toolCtrl', function(authService,componentService,cropperServic
         }
     }
 
-    vm.profileEdit = function(){
-        console.log("edit")
+    vm.profileEditPassword = function(){
+        console.log("edit pw")
         authService.changePassword(vm.input.password_old,vm.input.password_new2);
 
     };
+    vm.profileEditData = function(){
+        console.log("edit data")
+        userService.update(vm.input);
+    };
+
+    vm.getProfile = function(){
+        userService.getUser().then(
+            function(result){
+                vm.input = result.data.user[0];
+            }
+        );
+    };
+    vm.profileColorConvert = function(){
+        helperService.color.hex =  vm.input.colorhex;
+        helperService.color.hex_to_rgb().rgb_to_hsl();
+        vm.input.avatar_alt = helperService.color.hue;
+    };
+
+
+    // ROUTES
 
 
 

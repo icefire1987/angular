@@ -14,6 +14,16 @@ angular.module('myApp').service('helperService', function () {
         return Math.floor((Math.random()*(end-start+1))+start);
     };
 
+    vm.input_clean = function(inputval,toLowerCase){
+        var clean = "";
+        var sandbox = inputval;
+        if(toLowerCase != null){
+            sandbox = sandbox.toLowerCase();
+        }
+        var clean = sandbox;
+        return clean;
+
+    };
     vm.toggler = function(){
         var toggler = this;
         return {
@@ -79,6 +89,44 @@ angular.module('myApp').service('helperService', function () {
 
     };
 
+    vm.color = {
+        hex: "",
+        rgb: [],
+        hue: "",
+        hex_to_rgb : function(){
+            if(!vm.color.hex) return;
+            vm.color.rgb = [];
+            vm.color.rgb.push(parseInt(vm.color.hex.substring(1,3), 16));
+            vm.color.rgb.push(parseInt(vm.color.hex.substring(3,5), 16));
+            vm.color.rgb.push(parseInt(vm.color.hex.substring(5,7), 16));
+console.log(vm.color.rgb)
+            return this;
+        },
+        rgb_to_hsl : function(){
+            var min = Math.min.apply(null,vm.color.rgb);
+            var max = Math.max.apply(null,vm.color.rgb);
+            console.log(min + ":" + max)
+            //red
+            if (max == vm.color.rgb[0]) {
+                console.log("red")
+                vm.color.hue = (vm.color.rgb[1] < vm.color.rgb[2] ? 6 : 0) + (vm.color.rgb[1] - vm.color.rgb[2]) / (max - min);
+            //green
+            } else if (max == vm.color.rgb[1]) {
+                console.log("green")
+                vm.color.hue = 2 + (vm.color.rgb[2] - vm.color.rgb[0]) / (max - min);
+            //blue
+            } else {
+                console.log("blue")
+                vm.color.hue = 4 + (vm.color.rgb[0] - vm.color.rgb[1]) / (max - min);
+            }
+            vm.color.hue = vm.color.hue * 60;
+            if (vm.color.hue < 0) vm.color.hue = vm.color.hue + 360;
+            Math.round(vm.color.hue);
+            return this;
+        }
+    };
+
+
     vm.object_len = function(obj){
         if(obj){
             return Object.keys(obj).length
@@ -95,6 +143,7 @@ angular.module('myApp').service('helperService', function () {
 
         return arr;
     };
+
     vm.selectedClearFalse = function(obj){
         for(var x in obj){
             if(obj[x] === false){

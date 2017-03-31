@@ -38,7 +38,8 @@ angular.module('myApp').service('myHttpInterceptor',
                     if(response.data.error){
                         $injector.get('logService').log(
                             {
-                                userFeedback : response.data.error,
+                                //userFeedback : response.data.error,
+                                userFeedback : "Bitte log dich ein",
                                 msecondsToDisplay: 20000,
                                 classname: "danger"
 

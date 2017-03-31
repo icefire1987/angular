@@ -1,14 +1,14 @@
 /**
  * Created by Chris on 11.11.16.
  */
-myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateService,$localStorage,$http,logService,$rootScope,$interval){
+myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateService,$localStorage,$http,logService,$rootScope,$interval, helperService){
     $rootScope.errors = {};
     var vm = this;
         vm.input = {};
         vm.feedback = [];
         vm.feedback = logService.getFeedback();
         vm.user = authService.getUser();
-
+        vm.helpers = helperService;
         vm.clearError = function(type_string){
             $rootScope.errors[type_string] = "";
         }
@@ -66,13 +66,14 @@ myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateServi
         vm.auth['var_'+varname] = true;
     };
     vm.auth.sendNewPassword = function(){
-        var input_pass = vm.helpers.cleanInput(vm.input.login_email,true);
+        var input_pass = vm.helpers.input_clean(vm.input.login_email,true);
         logService.log({userFeedback: "Versende Mail ...", msecondsToDisplay: 30000, classname: "info", timer: "sendMail"});
         authService.sendNewPassword(input_pass).then(
             function(response){
                 console.log(response)
                 logService.cancel();
-                logService.log({userFeedback: "Mail versendet", classname: "success"})
+                logService.log({userFeedback: "Mail versendet", classname: "success"});
+                vm.auth.var_fp = false;
             },
             function(err){
                 console.log(err)

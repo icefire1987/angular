@@ -1,20 +1,22 @@
 /**
  * Created by Chris on 11.11.16.
  */
-angular.module('myApp').service('userService',
-    ['$localStorage',
-        function ($localStorage) {
 
-            var vm = this;
+angular.module('myApp').service('userService', function ($localStorage,$http,authService) {
 
-            vm.token = $localStorage.token;
-            vm.user = {};
+        var vm = this;
 
-            vm.getUser = function(){
+        vm.token = $localStorage.token;
 
 
-                return vm.user;
-            };
+        vm.getUser = function(){
+            return $http.get("/api/user/id/"+authService.getUser().obj.id);
+        };
 
-           return vm;
-        }]);
+        vm.update = function(data){
+            console.log("update")
+            return $http.put("/api/user/"+authService.getUser().obj.id,{prename: data.prename,lastname: data.lastname,avatar_alt: data.avatar_alt});
+        };
+
+       return vm;
+    });

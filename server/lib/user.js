@@ -32,7 +32,7 @@ module.exports = {
                 break;
         }
         pool.getConnection(function (err, connection) {
-            console.log(err)
+            console.log(err);
             connection.query(query, [value], function (err, rows) {
                 connection.release();
                 if(err){
@@ -90,8 +90,21 @@ module.exports = {
                 }
             });
         });
+    },
+    newsRead : function(userid,callback){
+        var query = 'UPDATE user SET lastRead=NOW() WHERE id=?';
+        pool.getConnection(function (err, connection) {
+            connection.query(query, [userid], function (err, rows) {
+                connection.release();
+                if(err){
+                    return callback(err,null);
+                }
+                if (rows.affectedRows > 0) {
+                    return callback(null,true);
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
     }
-    
-
-
 };
