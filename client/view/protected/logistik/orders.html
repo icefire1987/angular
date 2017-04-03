@@ -1,0 +1,22 @@
+
+<div layout="row" flex="50">
+        <md-card>
+            <md-card-content layout="row">
+                <md-list>
+                    <md-list-item>
+                        <md-button ng-click="toolCtrl.logistic.dialog.create.show($event)()">
+                            <md-icon>add</md-icon>
+                            <span>neuen Auftrag</span>
+                        </md-button>
+                        <md-list-item ng-repeat="order in toolCtrl.logistic.latestOrders">
+                            <span>{{order.number}}</span>
+                            <span>{{order.date}}</span>
+                            <span>{{order.customer}}</span>
+                            <span>{{order.articles.length}}</span>
+                        </md-list-item>
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+</div>
+

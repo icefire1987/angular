@@ -14,27 +14,25 @@
              <md-icon>group</md-icon>
              <span>Team</span>
          </md-list-item>
-
          <md-divider ></md-divider>
 
          <md-list-item ui-sref="protected.logistik" ui-sref-active="active">
              <md-icon>store</md-icon>
              <span>Logistik</span>
          </md-list-item>
-             <md-list-item ui-sref="protected.logistik.orders" ui-sref-active="active" class="child">
+             <md-list-item ui-sref="protected.logistik.orders" ui-sref-active="active" class="child" ng-if="'protected.logistik' | includedByState">
                  <md-icon>assignment</md-icon>
                  <span>Auftrag</span>
              </md-list-item>
-             <md-list-item ui-sref="protected.logistik.inbound" ui-sref-active="active" class="child">
+             <md-list-item ui-sref="protected.logistik.inbound" ui-sref-active="active" class="child" ng-if="'protected.logistik' | includedByState">
                  <md-icon>repeat</md-icon>
                  <span>Warenstrom</span>
              </md-list-item>
-             <md-list-item ui-sref="protected.logistik.orders" ui-sref-active="active" class="child">
+             <md-list-item ui-sref="protected.logistik.stockdata" ui-sref-active="active" class="child" ng-if="'protected.logistik' | includedByState">
                  <md-icon>storage</md-icon>
                  <span>Stammdaten</span>
              </md-list-item>
-         <md-divider ></md-divider>
-
+             <md-divider ng-if="'protected.logistik' | includedByState"></md-divider>
          <md-list-item ui-sref="protected.produktion" ui-sref-active="active">
              <md-icon>memory</md-icon>
              <span>Produktion</span>
@@ -52,7 +50,8 @@
              <md-icon>settings</md-icon>
              <span>Verwaltung</span>
          </md-list-item>
-         <md-divider ></md-divider>
+
+        <!-- <md-divider ></md-divider>
          <md-list-item md-colors="::{backgroundColor: 'default-grey-400'}" id="searchBox">
              <md-icon>search</md-icon>
             <div flex="50">
@@ -73,7 +72,7 @@
                  </div>
              </md-input-container>
             </div>
-         </md-list-item>
+         </md-list-item>-->
      </md-list>
      <md-content layout-margin >
          <p ng-click="toolCtrl.simpleAlert.show($event,toolCtrl.helpers.object_values(toolCtrl.socket.users_connected))">Nutzer online: {{toolCtrl.helpers.object_len(toolCtrl.socket.users_connected)}}</p>

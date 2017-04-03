@@ -93,7 +93,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
             }
         },
         controllerAs: 'dialogCtrl',
-        templateUrl: '/client/view/template/tabDialog_teamCreate.tmpl.html',
+        templateUrl: '/client/view/dialog/tabDialog_teamCreate.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: null,
         clickOutsideToClose: false,
@@ -231,7 +231,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
 
         },
         controllerAs: 'dialogCtrl',
-        templateUrl: '/client/view/template/tabDialog_teamEdit.tmpl.html',
+        templateUrl: '/client/view/dialog/tabDialog_teamEdit.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: null,
         clickOutsideToClose:false,
@@ -349,7 +349,7 @@ angular.module('myApp').service('teamService', function ($http,authService,compo
             );
         },
         controllerAs: 'dialogCtrl',
-        templateUrl: '/client/view/template/tabDialog_teamPost.tmpl.html',
+        templateUrl: '/client/view/dialog/tabDialog_teamPost.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: null,
         clickOutsideToClose: false,

@@ -9,6 +9,7 @@ var Auth = require('../lib/auth.js');
 var User = require('../lib/user.js');
 var Team = require('../lib/team.js');
 var mail = require('../lib/mail.js');
+var Customer = require('../lib/customer.js');
 var multer  = require('multer')
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -716,11 +717,48 @@ module.exports = function (app, express, io) {
                 });
 
             }else{
-                res.json({})
+                res.json({});
             }
         });
 
 
+    });
+
+    // CUSTOMERS
+
+    router.get('/customer/',ensureAuthorized, function(req,res){
+        console.log("Customer")
+        Customer.get(null,null,null, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                console.log(data)
+                res.json(data);
+            }else{
+                console.log("empty")
+                res.json([{id:1,name:"Zalando"}])
+            }
+        });
+    });
+    router.post('/customer/',ensureAuthorized, function(req,res){
+        if (req.query.name != "undefined") {
+            Customer.post(req.query, function(err,data){
+                if(err) {
+                    err.debug = err.message;
+                    res.status(500).json({
+                        error: err
+                    });
+                }else if(data){
+                    res.json(data);
+                }else{
+                    res.json({})
+                }
+            });
+        }
     });
 
     router.get('/protected', ensureAuthorized, function(req,res){

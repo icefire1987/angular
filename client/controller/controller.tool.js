@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 11.11.16.
  */
-myApp.controller('toolCtrl', function(authService,componentService,cropperService,teamService,helperService,imageService,flickrService,$http,$scope,socketService,newsService,userService,$state){
+myApp.controller('toolCtrl', function(authService,componentService,cropperService,teamService,helperService,imageService,flickrService,$http,$scope,socketService,newsService,userService,logisticService){
     console.log("tool")
 
     var vm = this;
@@ -18,8 +18,9 @@ myApp.controller('toolCtrl', function(authService,componentService,cropperServic
     vm.user = authService.getUser().obj;
     vm.profile = userService;
 
-    vm.team = teamService;
+
     vm.news = newsService;
+
 
 
     vm.socket = socketService;
@@ -28,7 +29,8 @@ myApp.controller('toolCtrl', function(authService,componentService,cropperServic
 
     vm.news.unread = vm.socket.client.unread;
 
-
+    vm.team = teamService;
+    vm.logistic = logisticService;
 
     /* Local - Vars START */
 

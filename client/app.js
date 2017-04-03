@@ -48,59 +48,59 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     },
                 }
             },
-            {
-                name: 'public.main',
-                val: {
-                    url: '/main',
-                    views: {
-                        'card': {
-                            templateUrl: '/client/view/public_main.html',
+                {
+                    name: 'public.main',
+                    val: {
+                        url: '/main',
+                        views: {
+                            'card': {
+                                templateUrl: '/client/view/public_main.html',
+                            }
                         }
                     }
-                }
-            },
-            {
-                name: 'public.contact',
-                val: {
-                    url: '/contact',
-                    views: {
-                        'card': {
-                            templateUrl: '/client/view/public_contact.html',
+                },
+                {
+                    name: 'public.contact',
+                    val: {
+                        url: '/contact',
+                        views: {
+                            'card': {
+                                templateUrl: '/client/view/public_contact.html',
+                            }
                         }
                     }
-                }
-            },
-            {
-                name: 'public.login',
-                val: {
-                    url: '/login',
+                },
+                {
+                    name: 'public.login',
+                    val: {
+                        url: '/login',
 
-                    views: {
-                        'login': {
-                            templateUrl: '/client/view/public_login.html',
+                        views: {
+                            'login': {
+                                templateUrl: '/client/view/public_login.html',
 
+                            }
                         }
                     }
-                }
 
-            },
-            {
-                name: 'public.logout',
-                val: {
-                    url: '/logout',
+                },
+                {
+                    name: 'public.logout',
+                    val: {
+                        url: '/logout',
 
-                    views: {
-                        'logout': {
-                            templateUrl: '/client/view/logout.html',
+                        views: {
+                            'logout': {
+                                templateUrl: '/client/view/logout.html',
+                            }
+                        },
+                        resolve: {
+                            auth: ["authService", "logService", "$state", function (authService, logService, $state) {
+                                authService.logout();
+                            }]
                         }
-                    },
-                    resolve: {
-                        auth: ["authService", "logService", "$state", function (authService, logService, $state) {
-                            authService.logout();
-                        }]
                     }
-                }
-            },
+                },
             {
                 name: 'protected',
                 val: {
@@ -200,23 +200,23 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     }
                 }
             },
-            {
-                name: 'protected.news.single',
-                val: {
-                    url: '/{teamid:int}',
-                    onEnter: function(newsService, $stateParams){
-                        if(newsService.teams.length==0) {
-                            newsService.getNews().then(
-                                function () {
-                                    newsService.showTeam($stateParams.teamid);
-                                }
-                            )
-                        }else{
-                            newsService.showTeam($stateParams.teamid);
+                {
+                    name: 'protected.news.single',
+                    val: {
+                        url: '/{teamid:int}',
+                        onEnter: function(newsService, $stateParams){
+                            if(newsService.teams.length==0) {
+                                newsService.getNews().then(
+                                    function () {
+                                        newsService.showTeam($stateParams.teamid);
+                                    }
+                                )
+                            }else{
+                                newsService.showTeam($stateParams.teamid);
+                            }
                         }
                     }
-                }
-            },
+                },
             {
                 name: 'protected.team',
                 val: {
@@ -241,6 +241,19 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     }
                 }
             },
+                {
+                    name: 'protected.logistik.orders',
+                    val: {
+                        url: '/orders',
+                        views: {
+                            'logistik_content': {
+                                templateUrl: '/client/view/protected/logistik/orders.html'
+
+                            }
+                        }
+                    }
+                },
+
             {
                 name: 'protected.produktion',
                 val: {

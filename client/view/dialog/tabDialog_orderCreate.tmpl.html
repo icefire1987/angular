@@ -1,0 +1,55 @@
+<md-dialog aria-label="create Team" id="dialog_teamCreate" flex>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>neuen Auftrag erstellen</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="dialogCtrl.callback.ui_cancel()">
+                    <md-icon aria-label="Close dialog">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-tabs md-border-bottom md-dynamic-height>
+                <md-tab label="Stammdaten">
+                    <md-content class="md-padding">
+                        <form name="orderCreate">
+                        <md-autocomplete
+                                flex required="required"
+                                md-input-name="customername"
+                                md-selected-item="dialogCtrl.input.customername"
+                                md-search-text="dialogCtrl.searchtext"
+                                md-items="item in dialogCtrl.customers_search(dialogCtrl.searchtext)"
+                                md-item-text="item.name"
+                                md-require-match
+                                md-floating-label="Kundenname">
+                            <md-item-template>
+                                <span md-highlight-text="dialogCtrl.searchText" md-highlight-flags="^i">{{item.name}}</span>
+                            </md-item-template>
+                            <md-not-found>
+                                No states matching "{{dialogCtrl.searchText}}" were found.
+                            </md-not-found>
+                        </md-autocomplete>
+                            <div ng-messages="orderCreate.customername.$error" ng-if="orderCreate.customername.$touched">
+                                <div ng-message="required">Kundenname muss angegeben werden.</div>
+                                <div ng-message="md-require-match">Wähle einen gültigen Eintrag aus.</div>
+                            </div>
+
+                        </form>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Einstellungen">
+                    <md-content class="md-padding">
+
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex class="log" md-colors="{color:'accent'}"></span>
+            <md-button type="submit" ng-disabled="teamCreate.$invalid" ng-click="dialogCtrl.callback.ui_answer()">
+                Team anlegen
+            </md-button>
+        </md-dialog-actions>
+{{dialogCtrl}}
+    {{dialogCtrl.customers}}
+</md-dialog>
