@@ -389,6 +389,8 @@ module.exports = function (app, express, io) {
             }
         });
     });
+
+
     router.get('/user/email/:email', function(req, res, next){
         User.get('email',cleanInput(req.params.email,true),function(err,userdata) {
             if (err){
@@ -504,6 +506,21 @@ module.exports = function (app, express, io) {
     });
 
 
+    // Users
+    router.get('/users/is/:colname', function(req, res){
+        User.get(req.params.colname,1,function(err,userdata) {
+            if (err){
+                var error = err;
+                error.debug = "Error getting data by username";
+                res.status(420).json(error);
+            }
+            if (userdata != null) {
+                res.json(userdata);
+            }else{
+                res.json([])
+            }
+        });
+    });
     // /Team
     router.delete("/team",ensureAuthorized,function(req,res,next){
         if(typeof req.query.ids != "object"){
@@ -736,26 +753,57 @@ module.exports = function (app, express, io) {
                     error: err
                 });
             }else if(data){
-                console.log(data)
                 res.json(data);
             }else{
-                console.log("empty")
-                res.json([{id:1,name:"Zalando"}])
+
+                res.json([])
             }
         });
     });
     router.post('/customer/',ensureAuthorized, function(req,res){
-        if (req.query.name != "undefined") {
-            Customer.post(req.query, function(err,data){
+        if (req.body.name != "undefined") {
+            Customer.post(req.body, function(err,data){
                 if(err) {
                     err.debug = err.message;
                     res.status(500).json({
                         error: err
                     });
-                }else if(data){
-                    res.json(data);
+                }else if(data && data.id){
+                    var insert_data = {
+                        customerID: data.id,
+                        person: req.body.person,
+                        street: req.body.street,
+                        postal: req.body.postal,
+                        city: req.body.city
+                    };
+                    Customer.post_retour(insert_data,function(err,data){
+                        if(err) {
+                            err.debug = err.message;
+                            res.status(500).json({
+                                error: err
+                            });
+                        }else{
+                            req.body.users.map(function(elem){
+                                var insert_data = {
+                                    customerID: data.id,
+                                    userID: elem.id
+                                };
+                                Customer.post_keyaccount(insert_data,function(err,data){
+                                    if(err) {
+                                        err.debug = err.message;
+                                        res.status(500).json({
+                                            error: err
+                                        });
+                                    }
+                                })
+                            });
+                            res.json({ userFeedback: "Kunde angelegt", type:"success", customer: {id: data.id, name:req.body.name } });
+                        }
+                    });
                 }else{
-                    res.json({})
+                    var response = {};
+                    response.debug = "Kunde existiert bereits";
+                    res.status(420).json(response);
                 }
             });
         }

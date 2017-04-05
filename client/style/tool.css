@@ -87,6 +87,13 @@ md-list-item.child{
     overflow:scroll;
     max-height:80vh;
 }
+#dialog_orderCreate md-chips:beforse{
+    content: "";
+    width: 10px;
+    border-radius: 50%;
+    border: 1px solid grey;
+    display: block;
+}
 .user-avatar {
     border-radius: 99%;
 }

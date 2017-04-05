@@ -14,25 +14,28 @@ function genRandomString(length) {
 
 module.exports = {
     get : function(colname,value,callback){
+        var query = "";
         switch(colname){
             case "username":
-                var query = 'select * from user WHERE username=?';
+                query = 'select * from user WHERE username=?';
                 break;
             case "email":
-                var query = 'select * from user WHERE email=?';
+                query = 'select * from user WHERE email=?';
                 break;
             case "id":
-                var query = 'select * from user WHERE id=?';
+                query = 'select * from user WHERE id=?';
                 break;
             case "team":
-                var query = 'select user.id, user.username,user.email, roles.name as role,roles.id as roleID from teams_user LEFT JOIN user ON teams_user.userID = user.id LEFT JOIN roles ON teams_user.roleID = roles.id WHERE teamID=?';
+                query = 'select user.id, user.username,user.email, roles.name as role,roles.id as roleID from teams_user LEFT JOIN user ON teams_user.userID = user.id LEFT JOIN roles ON teams_user.roleID = roles.id WHERE teamID=?';
                 break;
+            case "keyaccount":
+                query = ' select user.id, user.username, user.prename, user.lastname,CONCAT(user.prename," ",user.lastname) as name, user.avatar, user.avatar_alt from user LEFT JOIN user_is ON user.id = user_is.userID AND user_is.name="keyaccount" WHERE user_is.userID is not null';
+                break
             default:
-                var query = 'select * from user WHERE username=?';
+                query = 'select * from user WHERE username=?';
                 break;
         }
         pool.getConnection(function (err, connection) {
-            console.log(err);
             connection.query(query, [value], function (err, rows) {
                 connection.release();
                 if(err){

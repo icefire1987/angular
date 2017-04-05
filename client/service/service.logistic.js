@@ -18,21 +18,43 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
             dialogCtrl.callback = callback;
             dialogCtrl.input = input;
             dialogCtrl.customers = [];
+            dialogCtrl.users = [];
             dialogCtrl.searchtext = "";
 
             getCustomer();
+            getUsers();
 
             dialogCtrl.customers_search = function(query){
-                console.log(dialogCtrl.customers)
                 return query ? dialogCtrl.customers.filter( createFilterFor(query) ) : dialogCtrl.customers;
             };
+            dialogCtrl.users_search = function(query){
+                return query ? dialogCtrl.users.filter( createFilterFor(query) ) : dialogCtrl.users;
+            };
 
-            /*
+            dialogCtrl.newCustomer = {
+                users: [],
+                submit: function(){
+                    if(!dialogCtrl.newCustomer.name) {
+                        vm.dialog.create.controller.log({text: "Kundenname angeben!"});
+                    }else{
+                        dialogCtrl.addCustomer();
+                    }
+                }
+            };
+            dialogCtrl.addCustomer = function(){
+                $http.post("/api/customer",dialogCtrl.newCustomer).then(
+                    function(result){
+                        var temp = dialogCtrl.newCustomer.user;
+                        dialogCtrl.customers.push(result.data.customer);
+                        dialogCtrl.newCustomer = {
+                            show: false,
+                            user: temp
+                        }
+                    }
+                );
+            }
 
-            erste Zeile => neuen Kunden anlegen
 
-
-             */
             function createFilterFor(query) {
                 var lowercaseQuery = angular.lowercase(query);
                 return function filterFn(customer) {
@@ -50,7 +72,16 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
                     }
                 )
             }
-
+            function getUsers() {
+                $http.get("/api/users/is/keyaccount").then(
+                    function (result) {
+                        dialogCtrl.users = result.data;
+                    },
+                    function (err) {
+                        console.log(err);
+                    }
+                )
+            }
         },
         controllerAs: 'dialogCtrl',
         templateUrl: '/client/view/dialog/tabDialog_orderCreate.tmpl.html',
@@ -64,8 +95,10 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
         }
     };
 
+
     vm.dialog.create.callback.ok = function () {
-        vm.create().then(
+        console.log("close")
+        /*vm.create().then(
             function(res){
 
                     vm.dialog.create.callback.hide();
@@ -76,7 +109,7 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
                 console.log(err);
                 vm.dialog.create.controller.log({text: err.data.debug});
             }
-        )
+        )*/
     };
 
 

@@ -54,16 +54,73 @@ module.exports = {
             return callback(err,null);
         }
 
-        var teamdata = {
-            name: data.name
+        var data_to_insert = {
+            name: data.name,
         };
         if(data.id){
-            teamdata.id = data.id;
+            data_to_insert.id = data.id;
+        }
+        var query = "INSERT INTO customers SET ? ON DUPLICATE KEY update name=name";
+        pool.getConnection(function (err, connection) {
+            var sql = connection.query(query, data_to_insert, function (err, rows) {
+                connection.release();
+                if(err){
+                    console.log("getConnErr:" + err)
+                    return callback(err,null);
+                }else if (rows.affectedRows > 0) {
+                    return callback(null,{id: rows.insertId});
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
+    post_retour: function(data,callback){
+        if(data.customerID == undefined || data.customerID == ""){
+            var err ={userFeedback: 'Data is missing'};
+            return callback(err,null);
         }
 
-        var query = "REPLACE INTO teams SET ?";
+        var data_to_insert = {
+            customerID: data.customerID,
+            person: data.person,
+            street: data.street,
+            postal: data.postal,
+            city: data.city
+        };
+        if(data.id){
+            data_to_insert.id = data.id;
+        }
+        var query = "REPLACE INTO customers_retour SET ?";
         pool.getConnection(function (err, connection) {
-            var sql = connection.query(query, teamdata, function (err, rows) {
+            var sql = connection.query(query, data_to_insert, function (err, rows) {
+                connection.release();
+                if(err){
+                    console.log("getConnErr:" + err)
+                    return callback(err,null);
+                }
+                if (rows.affectedRows > 0) {
+                    return callback(null,{id: rows.insertId});
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
+    post_keyaccount: function(data,callback){
+        if(data.userID == undefined || data.userID == ""){
+            var err ={userFeedback: 'User is missing'};
+            return callback(err,null);
+        }
+
+        var data_to_insert = {
+            userID: data.userID,
+            customerID: data.customerID
+        };
+
+        var query = "REPLACE INTO customers_user SET ?";
+        pool.getConnection(function (err, connection) {
+            var sql = connection.query(query, data_to_insert, function (err, rows) {
                 connection.release();
                 if(err){
                     console.log("getConnErr:" + err)

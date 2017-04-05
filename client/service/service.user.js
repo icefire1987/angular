@@ -13,6 +13,15 @@ angular.module('myApp').service('userService', function ($localStorage,$http,aut
             return $http.get("/api/user/id/"+authService.getUser().obj.id);
         };
 
+        /*vm.getAll = function(filter){
+            if(filter){
+                return $http.get("/api/user/"+filter.name, filter.value);
+            }else{
+                return $http.get("/api/user/all");
+            }
+
+        };*/
+
         vm.update = function(data){
             console.log("update")
             return $http.put("/api/user/"+authService.getUser().obj.id,{prename: data.prename,lastname: data.lastname,avatar_alt: data.avatar_alt});

@@ -1,4 +1,4 @@
-<md-dialog aria-label="create Team" id="dialog_teamCreate" flex>
+<md-dialog aria-label="create Order" id="dialog_orderCreate" flex>
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>neuen Auftrag erstellen</h2>
@@ -12,28 +12,135 @@
             <md-tabs md-border-bottom md-dynamic-height>
                 <md-tab label="Stammdaten">
                     <md-content class="md-padding">
-                        <form name="orderCreate">
-                        <md-autocomplete
-                                flex required="required"
-                                md-input-name="customername"
-                                md-selected-item="dialogCtrl.input.customername"
-                                md-search-text="dialogCtrl.searchtext"
-                                md-items="item in dialogCtrl.customers_search(dialogCtrl.searchtext)"
-                                md-item-text="item.name"
-                                md-require-match
-                                md-floating-label="Kundenname">
-                            <md-item-template>
-                                <span md-highlight-text="dialogCtrl.searchText" md-highlight-flags="^i">{{item.name}}</span>
-                            </md-item-template>
-                            <md-not-found>
-                                No states matching "{{dialogCtrl.searchText}}" were found.
-                            </md-not-found>
-                        </md-autocomplete>
-                            <div ng-messages="orderCreate.customername.$error" ng-if="orderCreate.customername.$touched">
-                                <div ng-message="required">Kundenname muss angegeben werden.</div>
-                                <div ng-message="md-require-match">Wähle einen gültigen Eintrag aus.</div>
-                            </div>
+                        <form name="orderCreate" layout="column">
+                            <div ng-show="!dialogCtrl.newCustomer.show" layout="row">
+                                <md-input-container flex="80">
+                                    <md-autocomplete
+                                            required="required"
+                                            md-input-name="customername"
+                                            md-selected-item="dialogCtrl.input.customername"
+                                            md-search-text="dialogCtrl.searchtext"
+                                            md-items="item in dialogCtrl.customers_search(dialogCtrl.searchtext)"
+                                            md-item-text="item.name"
+                                            md-require-match
+                                            md-floating-label="Kundenname">
+                                        <md-item-template>
+                                            <span md-highlight-text="dialogCtrl.searchText" md-highlight-flags="^i">{{item.name}}</span>
+                                        </md-item-template>
+                                        <md-not-found>
+                                            No states matching "{{dialogCtrl.searchText}}" were found.
+                                        </md-not-found>
+                                    </md-autocomplete>
 
+                                    <div ng-messages="orderCreate.customername.$error" ng-if="orderCreate.customername.$touched">
+                                        <div ng-message="required">Kundenname muss angegeben werden.</div>
+                                        <div ng-message="md-require-match">Wähle einen gültigen Eintrag aus.</div>
+                                    </div>
+                                </md-input-container>
+
+                                <md-button flex="20" ng-click="dialogCtrl.newCustomer.show=!dialogCtrl.newCustomer.show">
+                                    <md-icon>add</md-icon> Kunden anlegen
+                                </md-button>
+                            </div>
+                            <div ng-show="dialogCtrl.newCustomer.show" layout="column" >
+
+
+
+                                <md-card >
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <md-input-container>
+                                                <label>Kundenname</label>
+                                                <input ng-model="dialogCtrl.newCustomer.name" required>
+                                            </md-input-container>
+                                            <md-input-container>
+                                                <label>Zuumeo KeyAccount</label>
+                                                <md-contact-chips
+                                                        ng-model="dialogCtrl.newCustomer.users"
+                                                        md-contacts="dialogCtrl.users_search($query)"
+                                                        md-contact-name="name"
+                                                        md-contact-image="avatar"
+                                                        md-contact-email="name"
+                                                        md-require-match="true"
+                                                        md-highlight-flags="i"
+                                                        md-min-length="2"
+                                                        placeholder="Name KeyAccount"
+                                                        secondary-placeholder="Name KeyAccount">
+                                                </md-contact-chips>
+                                            </md-input-container>
+                                            <div layout="row">
+                                                <section flex="50">
+                                                    <h3>Rechnungsadresse</h3>
+                                                    <section layout="row">
+                                                        <md-input-container>
+                                                            <label>Ansprechpartner</label>
+                                                            <input ng-model="dialogCtrl.newCustomer.bill_person">
+                                                        </md-input-container>
+                                                    </section>
+                                                    <section layout="row">
+                                                        <md-input-container>
+                                                            <label>Strasse / Hausnummer</label>
+                                                            <input ng-model="dialogCtrl.newCustomer.bill_street">
+                                                        </md-input-container>
+                                                    </section>
+                                                    <section layout="row">
+                                                        <md-input-container>
+                                                            <label>PLZ</label>
+                                                            <input ng-model="dialogCtrl.newCustomer.bill_postal">
+                                                        </md-input-container>
+                                                        <md-input-container>
+                                                            <label>Ort</label>
+                                                            <input ng-model="dialogCtrl.newCustomer.bill_city">
+                                                        </md-input-container>
+                                                    </section>
+                                                </section>
+                                                <section flex="50">
+                                                    <section layout="row">
+                                                        <h3>Retouradresse</h3>
+                                                        <md-checkbox>wie Rechnungsadresse</md-checkbox>
+                                                    </section>
+
+                                                    <section layout="row">
+                                                        <md-input-container>
+                                                            <label>Ansprechpartner</label>
+                                                            <input ng-model="dialogCtrl.newCustomer.person">
+                                                        </md-input-container>
+                                                    </section>
+                                                    <section layout="row">
+                                                        <md-input-container>
+                                                            <label>Strasse / Hausnummer</label>
+                                                            <input ng-model="dialogCtrl.newCustomer.street">
+                                                        </md-input-container>
+                                                    </section>
+                                                    <section layout="row">
+                                                        <md-input-container>
+                                                            <label>PLZ</label>
+                                                            <input ng-model="dialogCtrl.newCustomer.postal">
+                                                        </md-input-container>
+                                                        <md-input-container>
+                                                            <label>Ort</label>
+                                                            <input ng-model="dialogCtrl.newCustomer.city">
+                                                        </md-input-container>
+                                                    </section>
+                                                </section>
+                                            </div>
+
+
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button ng-click="dialogCtrl.newCustomer.submit()" class="md-raised md-primary">
+                                            <md-icon>check</md-icon> anlegen
+                                        </md-button>
+                                        <md-button class="md-raised md-warn" ng-click="dialogCtrl.newCustomer.show=false">
+                                            <md-icon>close</md-icon> abbrechen
+                                        </md-button>
+                                    </md-card-actions>
+
+                                </md-card>
+
+
+                            </div>
                         </form>
                     </md-content>
                 </md-tab>
@@ -50,6 +157,4 @@
                 Team anlegen
             </md-button>
         </md-dialog-actions>
-{{dialogCtrl}}
-    {{dialogCtrl.customers}}
 </md-dialog>
