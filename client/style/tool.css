@@ -87,12 +87,10 @@ md-list-item.child{
     overflow:scroll;
     max-height:80vh;
 }
-#dialog_orderCreate md-chips:beforse{
-    content: "";
-    width: 10px;
-    border-radius: 50%;
-    border: 1px solid grey;
-    display: block;
+.menu_customer li{
+    font-size:12px;
+    height: 30px;
+    line-height: 30px;
 }
 .user-avatar {
     border-radius: 99%;

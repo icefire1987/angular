@@ -14,38 +14,45 @@
                     <md-content class="md-padding">
                         <form name="orderCreate" layout="column">
                             <div ng-show="!dialogCtrl.newCustomer.show" layout="row">
-                                <md-input-container flex="80">
+                                <section layout="column">
+                                    <div ng-messages="orderCreate.customername.$error" ng-if="orderCreate.customername.$touched" class="md-error">
+                                        <div ng-message="required">Kundenname muss angegeben werden.</div>
+                                        <div ng-message="md-require-match">Wähle einen gültigen Eintrag aus.</div>
+                                    </div>
                                     <md-autocomplete
+                                            md-menu-class="menu_customer"
                                             required="required"
                                             md-input-name="customername"
                                             md-selected-item="dialogCtrl.input.customername"
                                             md-search-text="dialogCtrl.searchtext"
                                             md-items="item in dialogCtrl.customers_search(dialogCtrl.searchtext)"
                                             md-item-text="item.name"
+                                            md-min-length="0"
                                             md-require-match
+                                            md-select-on-match
                                             md-floating-label="Kundenname">
                                         <md-item-template>
-                                            <span md-highlight-text="dialogCtrl.searchText" md-highlight-flags="^i">{{item.name}}</span>
+                                            <span md-highlight-text="dialogCtrl.searchtext" md-highlight-flags="i">{{item.name}}</span>
                                         </md-item-template>
                                         <md-not-found>
-                                            No states matching "{{dialogCtrl.searchText}}" were found.
+                                            No states matching "{{dialogCtrl.searchtext}}" were found.
                                         </md-not-found>
                                     </md-autocomplete>
+                                </section>
 
-                                    <div ng-messages="orderCreate.customername.$error" ng-if="orderCreate.customername.$touched">
-                                        <div ng-message="required">Kundenname muss angegeben werden.</div>
-                                        <div ng-message="md-require-match">Wähle einen gültigen Eintrag aus.</div>
-                                    </div>
-                                </md-input-container>
 
                                 <md-button flex="20" ng-click="dialogCtrl.newCustomer.show=!dialogCtrl.newCustomer.show">
                                     <md-icon>add</md-icon> Kunden anlegen
                                 </md-button>
                             </div>
+                            <div>
+                                <md-input-container>
+                                    <label>Kommentar </label>
+                                    <textarea ng-model="dialogCtrl.input.description" md-maxlength="250" md-select-on-focus></textarea>
+                                    <md-icon>info <md-tooltip>Nicht auf Artikelebene sichtbar</md-tooltip></md-icon>
+                                </md-input-container>
+                            </div>
                             <div ng-show="dialogCtrl.newCustomer.show" layout="column" >
-
-
-
                                 <md-card >
                                     <md-card-title>
                                         <md-card-title-text>
@@ -70,36 +77,6 @@
                                             </md-input-container>
                                             <div layout="row">
                                                 <section flex="50">
-                                                    <h3>Rechnungsadresse</h3>
-                                                    <section layout="row">
-                                                        <md-input-container>
-                                                            <label>Ansprechpartner</label>
-                                                            <input ng-model="dialogCtrl.newCustomer.bill_person">
-                                                        </md-input-container>
-                                                    </section>
-                                                    <section layout="row">
-                                                        <md-input-container>
-                                                            <label>Strasse / Hausnummer</label>
-                                                            <input ng-model="dialogCtrl.newCustomer.bill_street">
-                                                        </md-input-container>
-                                                    </section>
-                                                    <section layout="row">
-                                                        <md-input-container>
-                                                            <label>PLZ</label>
-                                                            <input ng-model="dialogCtrl.newCustomer.bill_postal">
-                                                        </md-input-container>
-                                                        <md-input-container>
-                                                            <label>Ort</label>
-                                                            <input ng-model="dialogCtrl.newCustomer.bill_city">
-                                                        </md-input-container>
-                                                    </section>
-                                                </section>
-                                                <section flex="50">
-                                                    <section layout="row">
-                                                        <h3>Retouradresse</h3>
-                                                        <md-checkbox>wie Rechnungsadresse</md-checkbox>
-                                                    </section>
-
                                                     <section layout="row">
                                                         <md-input-container>
                                                             <label>Ansprechpartner</label>
@@ -124,8 +101,6 @@
                                                     </section>
                                                 </section>
                                             </div>
-
-
                                         </md-card-title-text>
                                     </md-card-title>
                                     <md-card-actions layout="row" layout-align="end center">
@@ -136,25 +111,37 @@
                                             <md-icon>close</md-icon> abbrechen
                                         </md-button>
                                     </md-card-actions>
-
                                 </md-card>
-
-
                             </div>
                         </form>
                     </md-content>
                 </md-tab>
-                <md-tab label="Einstellungen">
+                <md-tab label="Artikel">
                     <md-content class="md-padding">
 
+                        <section>
+
+                            <input class="ng-hide" id="input-file-id" type="file" accept=".csv" filereader data-ctrl="dialogCtrl" data-model="file" data-cb="dialogCtrl.csv_articlesToForm(dialogCtrl.formconfig,data)"/>
+                            <label for="input-file-id" class="md-button md-raised md-primary">CSV-Datei einspielen</label>
+                        </section>
+                        {{dialogCtrl.formconfig}}
+                        <section ng-show="dialogCtrl.formconfig.show">
+                            <table>
+                                <tr>
+                                    <td>A</td><td>B</td><td>C</td><td>F</td>
+                                </tr>
+                            </table>
+                        </section>
                     </md-content>
                 </md-tab>
             </md-tabs>
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex class="log" md-colors="{color:'accent'}"></span>
-            <md-button type="submit" ng-disabled="teamCreate.$invalid" ng-click="dialogCtrl.callback.ui_answer()">
-                Team anlegen
+            <md-button type="submit" ng-disabled="orderCreate.$invalid" ng-click="dialogCtrl.callback.ui_answer()">
+                Auftrag anlegen
             </md-button>
+            {{dialogCtrl.input}}
         </md-dialog-actions>
+
 </md-dialog>

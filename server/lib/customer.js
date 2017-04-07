@@ -30,7 +30,7 @@ module.exports = {
                 queryValues.push(clean_value);
                 break;
             default:
-                var query = 'select customers.* from customers';
+                var query = 'select customers.*,count(orders.id) as orders_count from customers LEFT JOIN orders ON orders.customerID = customers.id GROUP BY customers.id ORDER BY customers.name';
                 break;
         }
         pool.getConnection(function (err, connection) {

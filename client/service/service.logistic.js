@@ -21,6 +21,10 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
             dialogCtrl.users = [];
             dialogCtrl.searchtext = "";
 
+            dialogCtrl.formconfig = {
+                show: false,
+                cols : []
+            }
             getCustomer();
             getUsers();
 
@@ -52,7 +56,22 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
                         }
                     }
                 );
-            }
+            };
+            dialogCtrl.fileread = function(input){
+                console.log(input)
+            };
+
+            dialogCtrl.csv_articlesToForm = function(csvcontent){
+                console.log("callback")
+                dialogCtrl.formconfig.show = true
+
+
+                if(csvcontent && csvcontent.length){
+                    for(var x=0;x<csvcontent.length;x++){
+
+                    }
+                }
+            };
 
 
             function createFilterFor(query) {
@@ -65,7 +84,24 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
             function getCustomer(){
                 vm.getCustomer().then(
                     function(result){
-                        dialogCtrl.customers = result.data;
+                        console.log(result.data);
+                        var c=0;
+                        var mostwanted = [];
+                        var normalwanted = [];
+                        result.data.sort(function(a,b){
+                            return b.orders_count-a.orders_count
+                        });
+                        for(key in result.data){
+                            if(result.data[key].orders_count>0 || c>5){
+                                mostwanted.push(result.data[key]);
+                            }else{
+                                normalwanted.push(result.data[key]);
+                            }
+                            c++;
+                        }
+                        mostwanted.sort();
+                        normalwanted.sort();
+                        dialogCtrl.customers = mostwanted.concat([{id:0,name:""}]).concat(normalwanted);
                     },
                     function(err){
                         console.log(err);
