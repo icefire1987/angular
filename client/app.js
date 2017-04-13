@@ -9,7 +9,7 @@ if(window){
 }
 
 
-var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMaterial','chart.js','angularFileUpload','btford.socket-io']);
+var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMaterial','chart.js','angularFileUpload','btford.socket-io','md.data.table']);
 
     // Register environment in AngularJS as constant
     myApp.constant('__env', env);

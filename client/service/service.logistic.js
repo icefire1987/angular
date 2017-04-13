@@ -20,11 +20,16 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
             dialogCtrl.customers = [];
             dialogCtrl.users = [];
             dialogCtrl.searchtext = "";
-
+            dialogCtrl.row_max=3;
             dialogCtrl.formconfig = {
-                show: false,
-                cols : []
-            }
+                show: true,
+                cols : [],
+            };
+            dialogCtrl.form_cols = [
+                "san","scancode","gender","wg","process","stockkey","comment_logistic","comment_production"
+            ];
+            dialogCtrl.rows=[];
+            dialogCtrl.rows_exlude=[];
             getCustomer();
             getUsers();
 
@@ -62,16 +67,33 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
             };
 
             dialogCtrl.csv_articlesToForm = function(csvcontent){
-                console.log("callback")
+                dialogCtrl.filecontent = csvcontent;
+                console.log(dialogCtrl.filecontent)
                 dialogCtrl.formconfig.show = true
 
 
-                if(csvcontent && csvcontent.length){
-                    for(var x=0;x<csvcontent.length;x++){
+            };
 
+            dialogCtrl.filecontentToRows = function(){
+                dialogCtrl.formconfig.show = false;
+                if(dialogCtrl.filecontent && dialogCtrl.filecontent.length){
+                    for(var x=0;x<dialogCtrl.filecontent.length;x++){
+                       if(dialogCtrl.rows_exlude.indexOf(x)==-1){
+                           var row = {};
+                           for(var item in dialogCtrl.input.cols){
+                               if (dialogCtrl.input.cols.hasOwnProperty(item)) {
+                                   // item = 1
+                                   // arr[item] = san
+
+                                   // row["san"] = ABC_123
+                                   row[dialogCtrl.input.cols[item]] = dialogCtrl.filecontent[x][item];
+                               }
+                           }
+                           dialogCtrl.rows.push(row);
+                       }
                     }
                 }
-            };
+            }
 
 
             function createFilterFor(query) {
@@ -84,7 +106,6 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
             function getCustomer(){
                 vm.getCustomer().then(
                     function(result){
-                        console.log(result.data);
                         var c=0;
                         var mostwanted = [];
                         var normalwanted = [];

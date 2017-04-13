@@ -1,0 +1,48 @@
+<div layout-margin>
+    <md-progress-linear md-mode="indeterminate" class="md-accent" ng-show="(this.progress!=false && this.progress<100)"></md-progress-linear>
+    <section layout="row">
+        <section layout="row" layout-align="center center" ng-hide="this.file.size">
+            <input class="ng-hide" id="input-file-id" type="file" accept="{{this.accept}}"/>
+            <label for="input-file-id" class="md-button md-raised" ng-class="{ '{{this.labelClass}}': this.labelClass}">
+                <md-icon>file_upload</md-icon>
+                <span>{{this.labelText}}</span>
+            </label>
+        </section>
+        <section layout="row" ng-show="this.file.size" class="border-all-solid-grey">
+            <div layout="row" >
+                <md-tooltip>Datei entfernen</md-tooltip>
+                <md-button class="md-accent" ng-click="this.removeFile()">
+                    <md-icon>delete</md-icon>
+                </md-button>
+            </div>
+            <md-divider></md-divider>
+            <div layout="row" >
+                <md-tooltip>Dateiname</md-tooltip>
+                <md-icon class="md-primary" layout-padding>art_track</md-icon>
+                <md-divider></md-divider>
+                <span layout="row" layout-align="center center" layout-padding>{{this.file.name}}</span>
+            </div>
+            <md-divider></md-divider>
+            <div layout="row">
+                <md-tooltip>Dateigröße</md-tooltip>
+                <md-icon class="md-primary" layout-padding>storage</md-icon>
+                <md-divider></md-divider>
+                <span layout="row" layout-align="center center" layout-padding>{{this.file.size}} kB</span>
+            </div>
+            <md-divider></md-divider>
+            <div layout="row" >
+                <md-tooltip>Zeilen</md-tooltip>
+                <md-icon class="md-primary" layout-padding>reorder</md-icon>
+                <md-divider></md-divider>
+                <span layout="row" layout-align="center center" layout-padding>{{this.file.rows}} Zeilen</span>
+            </div>
+            <md-divider></md-divider>
+            <div layout="row" >
+                <md-tooltip>Änderungsdatum</md-tooltip>
+                <md-icon class="md-primary" layout-padding>date_range</md-icon>
+                <md-divider></md-divider>
+                <span layout="row" layout-align="center center" layout-padding>{{this.file.lastModified | date: 'dd.MM.yyyy'}}</span>
+            </div>
+        </section>
+    </section>
+</div>

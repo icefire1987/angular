@@ -83,9 +83,16 @@ md-list-item.child{
 .md-error{
     color: darkred;
 }
+
+#dialog_orderCreate {
+    height: 90vh;
+}
+#dialog_orderCreate #dialogContent_dialog_orderCreate,#dialog_orderCreate #dialogContent_dialog_orderCreate md-tabs{
+    height:100%;
+}
 #dialogContent_dialog_teamCreate md-tabs-content-wrapper{
     overflow:scroll;
-    max-height:80vh;
+    max-height:90vh;
 }
 .menu_customer li{
     font-size:12px;
@@ -95,7 +102,42 @@ md-list-item.child{
 .user-avatar {
     border-radius: 99%;
 }
+/* TABLE */
+.table-striped tbody tr:nth-child(odd) {
+      background-color: rgba(255,255,255,0.3)
+}
+.table-borderd tbody{
+    border: 1px solid #333333;
+}
+.table-borderd tr{
+    border: 1px solid lightgrey;
+}
+.table-borderd  th:first-child{
+    border-radius: 10% 0 0 0;
+}
+.table-borderd  th:last-child{
+    border-radius: 0 10% 0 0;
+}
+.table-borderd  th:not(first-child){
+    border-left: 1px solid grey;
+}
+.table-th-dark{
+    background: #333333;
+    color: white !important;
+}
 
+.border-all-solid-grey{
+    border: 1px solid lightgrey;
+}
+
+.text-right{
+    text-align: right;
+}
+
+
+[ng-click]{
+    cursor: pointer;
+}
 md-icon svg {
     fill: inherit;
 }
