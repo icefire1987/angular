@@ -139,20 +139,21 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
                     }
                 )
             }
+
+
         },
         controllerAs: 'dialogCtrl',
         templateUrl: '/client/view/dialog/tabDialog_orderCreate.tmpl.html',
         parent: angular.element(document.body),
         targetEvent: null,
         clickOutsideToClose: false,
+        fullscreen: true,
         locals: {
             input: vm.input,
             callback: vm.dialog.create.callback
 
         }
     };
-
-
     vm.dialog.create.callback.ok = function () {
         console.log("close")
         /*vm.create().then(

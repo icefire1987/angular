@@ -106,24 +106,39 @@ md-list-item.child{
 .table-striped tbody tr:nth-child(odd) {
       background-color: rgba(255,255,255,0.3)
 }
-.table-borderd tbody{
+.table-bordered{
+    border-collapse: collapse;
+}
+.table-bordered thead{
+    font-size:12px;
+    border: none;
+}
+.table-bordered tbody{
     border: 1px solid #333333;
 }
-.table-borderd tr{
+.table-bordered tbody>tr{
     border: 1px solid lightgrey;
 }
-.table-borderd  th:first-child{
-    border-radius: 10% 0 0 0;
+.table-bordered tbody td {
+   padding: 0 2px;
 }
-.table-borderd  th:last-child{
-    border-radius: 0 10% 0 0;
+.table-bordered tbody td input{
+    max-width:100%;
+    width:95%;
 }
-.table-borderd  th:not(first-child){
+.table-bordered tbody td md-select{
+    margin:0
+}
+.table-bordered  th:not(first-child){
     border-left: 1px solid grey;
 }
 .table-th-dark{
-    background: #333333;
+    background: linear-gradient(0, black, grey);
     color: white !important;
+    height: 20px;
+    padding: 4px 8px;
+    font-weight: lighter;
+    margin: 0;
 }
 
 .border-all-solid-grey{

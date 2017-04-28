@@ -10,6 +10,8 @@ var User = require('../lib/user.js');
 var Team = require('../lib/team.js');
 var mail = require('../lib/mail.js');
 var Customer = require('../lib/customer.js');
+var Data = require('../lib/dataCollector.js');
+
 var multer  = require('multer')
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -809,6 +811,38 @@ module.exports = function (app, express, io) {
         }
     });
 
+    router.get('/data/articlegender',ensureAuthorized, function(req,res){
+        Data.articlegender(function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+
+                res.json([])
+            }
+        });
+    });
+    router.get('/data/articlewg',ensureAuthorized, function(req,res){
+        Data.articlewg(function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+
+                res.json([])
+            }
+        });
+    });
     router.get('/protected', ensureAuthorized, function(req,res){
         res.send("da shit!");
     });

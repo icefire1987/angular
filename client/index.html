@@ -13,6 +13,8 @@
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
               rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+              integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
         <link rel="stylesheet" href="/client/node_modules/cropperjs/dist/cropper.min.css">
         <link rel="stylesheet" href="/client/node_modules/angular-material-data-table/dist/md-data-table.min.css">
         <link rel="stylesheet" href="/client/style/main.css">
@@ -21,7 +23,7 @@
         <div layout="row" ui-view="toolbar"></div>
 
         <div flex layout="row" layout-fill ui-view></div>
-        <script src="http://10.1.11.80:3000/socket.io/socket.io.js"></script>
+        <script src="http://10.1.11.30:3000/socket.io/socket.io.js"></script>
         <script src="/client/env.js"></script>
         <script src="/server/node_modules/angular/angular.js"></script>
         <script src="/server/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
@@ -45,7 +47,7 @@
         <script src="/client/controller/controller.tool.js"></script>
 
         <script src="/client/directive/directive.filereader.js"></script>
-
+        <script src="/client/directive/directive.selectTab.js"></script>
         <script src="/client/service/service.auth.js"></script>
         <script src="/client/service/service.component.js"></script>
         <script src="/client/service/service.api.js"></script>
@@ -55,6 +57,7 @@
         <script src="/client/service/service.helper.js"></script>
         <script src="/client/service/service.image.js"></script>
 
+        <script src="/client/service/service.dbDataCollector.js"></script>
         <script src="/client/service/service.log.js"></script>
         <script src="/client/service/service.logistic.js"></script>
         <script src="/client/service/service.news.js"></script>
@@ -62,5 +65,7 @@
         <script src="/client/service/service.team.js"></script>
         <script src="/client/service/service.user.js"></script>
         <script src="/client/service/interceptor.http.js"></script>
+
+        <script src="/client/filter/filter.html.js"></script>
     </body>
 </html>

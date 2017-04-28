@@ -18,7 +18,7 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
         return socketFactory();
     });
 
-    myApp.config(function ($stateProvider, $urlRouterProvider,$locationProvider,$provide,$httpProvider,$logProvider,$mdThemingProvider) {
+    myApp.config(function ($stateProvider, $urlRouterProvider,$locationProvider,$provide,$httpProvider,$logProvider,$mdThemingProvider,$mdIconProvider) {
 
         $locationProvider.html5Mode({enabled: true, requireBase: false});
 
@@ -273,6 +273,8 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
         }
 
         $urlRouterProvider.otherwise('/public/login');
+
+        //$mdIconProvider.fontSet('fa', 'fa');
 
         $mdThemingProvider.theme('default')
             .primaryPalette('light-blue')
