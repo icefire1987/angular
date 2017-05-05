@@ -25,7 +25,7 @@ module.exports = {
         });
     },
     articlewg : function(callback) {
-        var query = " SELECT id,GROUP_CONCAT(name ORDER BY depth) as name,icon FROM options_wg WHERE visible=1 GROUP BY groupID";
+        var query = " SELECT id,GROUP_CONCAT(name ORDER BY depth) as name,icon,max(depth) as depth FROM options_wg WHERE visible=1 GROUP BY groupID";
 
         pool.getConnection(function (err, connection) {
             connection.query(query , function (err, rows) {

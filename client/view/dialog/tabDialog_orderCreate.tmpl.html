@@ -30,7 +30,9 @@
                                             md-min-length="0"
                                             md-require-match
                                             md-select-on-match
-                                            md-floating-label="Kundenname">
+                                            md-floating-label="Kundenname"
+                                            md-selected-item-change="dialogCtrl.input.users = [{id: item.userID,name: item.userName,username: item.userUsername, avatar: userAvatar}]"
+                                    >
                                         <md-item-template>
                                             <span md-highlight-text="dialogCtrl.searchtext" md-highlight-flags="i">{{item.name}}</span>
                                         </md-item-template>
@@ -44,6 +46,24 @@
                                 <md-button flex="20" ng-click="dialogCtrl.newCustomer.show=!dialogCtrl.newCustomer.show"  >
                                     <md-icon>add</md-icon> Kunden anlegen
                                 </md-button>
+                            </div>
+
+                            <div>
+                                <md-input-container>
+                                <label>Zuumeo KeyAccount</label>
+                                <md-contact-chips
+                                        ng-model="dialogCtrl.input.users"
+                                        md-contacts="dialogCtrl.users_search($query)"
+                                        md-contact-name="name"
+                                        md-contact-image="avatar"
+                                        md-contact-email="username"
+                                        md-require-match="true"
+                                        md-highlight-flags="i"
+                                        md-min-length="2"
+                                        placeholder="Name KeyAccount"
+                                        secondary-placeholder="Name KeyAccount">
+                                </md-contact-chips>
+                            </md-input-container>
                             </div>
                             <div>
                                 <md-input-container>
@@ -67,7 +87,7 @@
                                                         md-contacts="dialogCtrl.users_search($query)"
                                                         md-contact-name="name"
                                                         md-contact-image="avatar"
-                                                        md-contact-email="name"
+                                                        md-contact-email="username"
                                                         md-require-match="true"
                                                         md-highlight-flags="i"
                                                         md-min-length="2"
@@ -116,116 +136,9 @@
                         </form>
                     </md-content>
                 </md-tab>
-                <md-tab label="Artikel">
-                    <md-content class="md-padding">
-                    <section layout="row" layout-align="end center">
-                        <filereader
-                                data-cb="dialogCtrl.csv_articlesToForm(data)"
-                                data-accept=".csv"
-                                data-label-class="md-primary"
-                                data-label-text="CSV-Datei einspielen"
-                                flex
-                        ></filereader>
 
-                        <md-button class="md-raised md-warn" ng-show="dialogCtrl.rows.length>0" ng-click="dialogCtrl.rows=[];dialogCtrl.formconfig.show = true;">
-                            <md-icon>check</md-icon>
-                            <span>Spalten neu einlesen</span>
-                        </md-button>
-                        <md-button class="md-raised md-accent" ng-hide="dialogCtrl.rows.length>0" ng-disabled="!dialogCtrl.input.cols" ng-click="dialogCtrl.filecontentToRows()">
-                            <md-icon>check</md-icon>
-                            <span>Spalten übernehmen</span>
-                        </md-button>
-
-
-                    </section>
-                    <section ng-show="dialogCtrl.formconfig.show && dialogCtrl.filecontent.length>0">
-                        <md-table-container>
-                            <table md-table>
-                                <thead md-head>
-
-                                    <tr md-row>
-                                        <th><md-tooltip>ausschließen</md-tooltip><md-icon>block</md-icon></th>
-                                        <th md-column ng-repeat="col in dialogCtrl.filecontent[0] track by $index ">
-                                            <md-input-container>
-                                                <label>Feldname {{($index+1)}} </label>
-                                                <md-select ng-model="dialogCtrl.input.cols[$index]">
-
-
-                                                    <md-optgroup label="Stammdaten">
-                                                        <md-option value="san">SAN/Artikelnummer</md-option>
-                                                        <md-option value="scancode">scannbarer Code</md-option>
-                                                        <md-option value="gender">Geschlecht</md-option>
-                                                        <md-option value="wg">Warengruppe</md-option>
-                                                        <md-option value="process">Prozess</md-option>
-                                                    </md-optgroup>
-                                                    <md-optgroup label="Optional">
-                                                        <md-option value="stockkey">Kundenreferenz</md-option>
-                                                        <md-option value="comment_log">Kommentar Logistik</md-option>
-                                                        <md-option value="comment_prod">Kommentar Produktion</md-option>
-                                                    </md-optgroup>
-                                                    <md-option value="0">nicht relevant</md-option>
-                                                </md-select>
-                                            </md-input-container>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody md-body>
-                                <tr md-row ng-repeat="row in dialogCtrl.filecontent | limitTo:dialogCtrl.row_max" class="text-right">
-                                    <td><md-checkbox ng-model="dialogCtrl.rows_exlude[$index]" ng-true-value="{{$index}}" ng-false-value="undefined"></md-checkbox></td>
-                                    <td md-cell ng-repeat="col in row track by $index ">
-                                        <span>{{col}}</span>
-                                    </td>
-                                </tr>
-                                <tr ng-show="dialogCtrl.row_max">
-                                    <td colspan="{{dialogCtrl.filecontent[3].length}}">
-                                        <a ng-click="dialogCtrl.row_max=undefined">{{(dialogCtrl.filecontent.length-dialogCtrl.row_max)}} weitere Zeilen</a>
-                                    </td>
-                                </tr>
-                                <tr ng-hide="dialogCtrl.row_max">
-                                    <td colspan="{{dialogCtrl.filecontent[3].length}}">
-                                        <span ng-click="dialogCtrl.row_max=3">Zeilen ausblenden</span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </md-table-container>
-                    </section>
-                    <section ng-show="dialogCtrl.rows.length>0">
-
-                        <md-table-container style="width:100%;">
-                            <table class="table-bordered"  style="width:100%;">
-                                <thead>
-                                    <tr layout="row">
-                                        <th class="table-th-dark" flex-sm="20" flex-md="20" flex-lg="15" flex-xl="15">Artikelnummer</th>
-                                        <th class="table-th-dark" flex-sm="20" flex-md="20" flex-lg="15" flex-xl="15">Scancode</th>
-                                        <th class="table-th-dark" flex-sm="15" flex-md="10" flex-lg="10" flex-xl="10">Geschlecht</th>
-                                        <th class="table-th-dark" flex-sm="15" flex-md="10" flex-lg="10" flex-xl="10">Warengruppe</th>
-                                        <th class="table-th-dark" flex-sm="15" flex-md="10" flex-lg="10" flex-xl="10">Prozess</th>
-                                        <th class="table-th-dark" flex-sm="5" flex-md="10" flex-lg="15" flex-xl="15">Kommentar Logistik</th>
-                                        <th class="table-th-dark" flex-sm="5" flex-md="10" flex-lg="15" flex-xl="15">Kommentar Produktion</th>
-                                        <th class="table-th-dark" flex-sm="5" flex-md="10" flex-lg="10" flex-xl="10">Kundenreferenz</th>
-                                    </tr>
-                                </thead>
-                                <tbody >
-                                    <tr ng-repeat="row in dialogCtrl.rows" class="text-right" md-colors="::{background: ($index%2==0)?'primary-50-0.5':''}" layout="row">
-                                        <td flex-sm="20" flex-md="20" flex-lg="15" flex-xl="15"><input ng-model="row['san']" size="12"></td>
-                                        <td flex-sm="20" flex-md="20" flex-lg="15" flex-xl="15"><input ng-model="row['scancode']" size="12"></td>
-                                        <td flex-sm="15" flex-md="10" flex-lg="10" flex-xl="10"><select-table source="gender" selected="row['gender']"></select-table></td>
-                                        <td flex-sm="15" flex-md="10" flex-lg="10" flex-xl="10"><select-table source="wg" selected="row['wg']"></select-table></td>
-                                        <td flex-sm="15" flex-md="10" flex-lg="10" flex-xl="10"><select-table source="gender" selected="row['gender']"></select-table></td>
-
-                                        <td flex-sm="5" flex-md="10" flex-lg="15" flex-xl="15"><input ng-model="row['comment_log']" size="10"></td>
-                                        <td flex-sm="5" flex-md="10" flex-lg="15" flex-xl="15"><input ng-model="row['comment_prod']" size="10"></td>
-                                        <td flex-sm="5" flex-md="10" flex-lg="10" flex-xl="10"><input ng-model="row['stockkey']" size="10"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </md-table-container>
-                    </section>
-                        {{dialogCtrl.rows}}
-                    </md-content>
-                </md-tab>
             </md-tabs>
+            REMOVE DISABLE WHEN DATA IS SET
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex class="log" md-colors="{color:'accent'}"></span>

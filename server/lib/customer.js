@@ -30,7 +30,12 @@ module.exports = {
                 queryValues.push(clean_value);
                 break;
             default:
-                var query = 'select customers.*,count(orders.id) as orders_count from customers LEFT JOIN orders ON orders.customerID = customers.id GROUP BY customers.id ORDER BY customers.name';
+                var query = 'select customers.*,user.id as userID, user.username as userUsername,CONCAT(user.prename," ",user.lastname) as userName,user.avatar as userAvatar,count(orders.id) as orders_count from customers ' +
+                    'LEFT JOIN orders ON orders.customerID = customers.id ' +
+                    'LEFT JOIN customers_user ON customers_user.customerID = customers.id ' +
+                    'LEFT JOIN user ON customers_user.userID = user.id ' +
+                    'GROUP BY customers.id ' +
+                    'ORDER BY customers.name';
                 break;
         }
         pool.getConnection(function (err, connection) {

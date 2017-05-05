@@ -102,6 +102,19 @@ md-list-item.child{
 .user-avatar {
     border-radius: 99%;
 }
+/* Select*/
+md-option md-icon{
+    text-align: center;
+}
+.depth_1{
+    border-top: 1px dashed grey;
+}
+.depth_2{
+    padding-left:30px;
+}
+.depth_3{
+    padding-left:60px;
+}
 /* TABLE */
 .table-striped tbody tr:nth-child(odd) {
       background-color: rgba(255,255,255,0.3)

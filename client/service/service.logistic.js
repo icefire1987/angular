@@ -16,14 +16,18 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
         controller: function (input,callback) {
             var dialogCtrl = this;
             dialogCtrl.callback = callback;
-            dialogCtrl.input = input;
+            dialogCtrl.input = {users:[]};
+
             dialogCtrl.customers = [];
             dialogCtrl.users = [];
             dialogCtrl.searchtext = "";
             dialogCtrl.row_max=3;
+            dialogCtrl.formRowGenerate = {
+                show: false
+            };
             dialogCtrl.formconfig = {
                 show: true,
-                cols : [],
+                cols : []
             };
             dialogCtrl.form_cols = [
                 "san","scancode","gender","wg","process","stockkey","comment_logistic","comment_production"

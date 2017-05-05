@@ -1,13 +1,22 @@
 <md-select  ng-model="selected" aria-label="Geschlecht">
-    <md-option ng-repeat="option in options" value="{{option.value}}">
-        <md-icon ng-if="option.icon_md" style="margin-left: -6px;margin-right:6px;">
+    <md-option ng-repeat="option in options" value="{{option.value}}" ng-class="{'depth_1': option.depth==1,'depth_2': option.depth==2,'depth_3': option.depth==3}">
+
+        <md-icon ng-if="option.icon_md">
             {{option.icon_md}}
         </md-icon>
         <md-icon
-                ng-if="option.icon_fa"
+                ng-if="option.icon_value"
+                md-font-set="{{option.fontset}}"
+                md-font-icon="{{option.icon_value}}"
+        ></md-icon>
+        <!--<md-icon
+                ng-if="option.icon_fa1"
                 md-font-set="{{option.fontset}}"
                 ng-bind-html="option.icon_fa |html"
-        ></md-icon>
+                style="text-align: center;"
+        ></md-icon>-->
+
         <span>{{option.text}}</span>
     </md-option>
+    <!--style="margin-left: -6px;margin-right:6px;"-->
 </md-select>
