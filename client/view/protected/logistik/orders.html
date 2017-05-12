@@ -1,21 +1,47 @@
 
-<div layout="row" flex="50">
-        <md-card>
-            <md-card-content layout="row">
-                <md-list>
+    <div layout="row">
+
+                <md-list class="logistic-orders">
                     <md-list-item>
-                        <md-button ng-click="toolCtrl.logistic.dialog.create.show($event)()">
-                            <md-icon>add</md-icon>
-                            <span>neuen Auftrag</span>
-                        </md-button>
-                        <md-list-item ng-repeat="order in toolCtrl.logistic.latestOrders">
-                            <span>{{order.number}}</span>
-                            <span>{{order.date}}</span>
-                            <span>{{order.customer}}</span>
-                            <span>{{order.articles.length}}</span>
+                        <md-list-item ng-repeat="order in toolCtrl.logistic.latestOrders" >
+                            <md-card>
+                                <md-card-header>
+                                    <md-card-avatar>
+                                        <md-icon ng-if="order.keyaccount_avatar != null" class="md-avatar-icon" md-svg-icon="/client/media/customer_logo/{{order.keyaccount_avatar}}"></md-icon>
+                                        <div style="background:hsl({{ order.keyaccount_avatar_alt }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-if="order.keyaccount_avatar==null" >
+                                            <span>{{order.keyaccount_prename.substr(0,1) + order.keyaccount_lastname.substr(0,1)}}</span>
+                                        </div>
+                                    </md-card-avatar>
+                                    <md-card-header-text>
+                                        <span class="md-title">{{order.keyaccount_prename}} {{order.keyaccount_lastname}}</span>
+                                        <span class="md-subhead">{{order.customer_name}}</span>
+                                    </md-card-header-text>
+                                </md-card-header>
+                                <img ng-src="/client/media/customer_logo/{{(order.logo.length>0)?order.logo:'missing.jpg'}}" class="md-card-image" alt="Washed Out">
+                                <md-card-title>
+                                    <md-card-title-text>
+                                        <span class="md-headline">{{order.id | numberFixedLen:6}} [{{order.article_count}}]</span>
+                                        <span class="md-subhead">{{order.customer_name}} | {{order.created | date}}</span>
+                                    </md-card-title-text>
+                                </md-card-title>
+                                <md-card-content layout="row">
+                                    <p>{{order.comment }}</p>
+                                </md-card-content>
+                                <md-card-actions layout="row" layout-align="start center">
+                                    <md-button class="md-button-small"><md-tooltip>Artikel hinzufügen</md-tooltip><md-icon>add</md-icon></md-button>
+                                    <md-button class="md-button-small"><md-tooltip>Wareneingang einbuchen</md-tooltip><md-icon  md-font-set="fa" md-font-icon="fa-cubes"></md-icon></md-button>
+                                    <md-button class="md-button-small"><md-tooltip>Warenausgang ausbuchen</md-tooltip><md-icon  md-font-set="fa" md-font-icon="fa-ship"></md-icon></md-button>
+                                    <md-button class="md-button-small"><md-tooltip>Auftrag bearbeiten</md-tooltip><md-icon>edit</md-icon></md-button>
+                                </md-card-actions>
+                            </md-card>
                         </md-list-item>
                     </md-list-item>
                 </md-list>
-            </md-card-content>
-        </md-card>
-</div>
+
+    </div>
+
+
+    <md-button class="md-fab md-fab-bottom-right" aria-label="Auftrag erstellen" ng-click="toolCtrl.logistic.dialog.create.show($event)()">
+        <md-tooltip md-direction="left">Auftrag erstellen</md-tooltip>
+        <md-icon>add</md-icon>
+    </md-button>

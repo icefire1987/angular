@@ -11,6 +11,7 @@ var Team = require('../lib/team.js');
 var mail = require('../lib/mail.js');
 var Customer = require('../lib/customer.js');
 var Data = require('../lib/dataCollector.js');
+var Order = require('../lib/order.js');
 
 var multer  = require('multer')
 var storage = multer.diskStorage({
@@ -746,7 +747,6 @@ module.exports = function (app, express, io) {
     // CUSTOMERS
 
     router.get('/customer/',ensureAuthorized, function(req,res){
-        console.log("Customer")
         Customer.get(null,null,null, function(err,data){
             if(err) {
                 console.log(err)
@@ -843,6 +843,61 @@ module.exports = function (app, express, io) {
             }
         });
     });
+    router.get('/order/latest/:count',ensureAuthorized, function(req,res){
+        Order.get({latest:req.params.count}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+
+                res.json([])
+            }
+        });
+    });
+    router.post('/order',ensureAuthorized, function(req, res){
+        console.log(req.body);
+        req.body.userID = global_user.id;
+        Order.post_new(req.body, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json({ userFeedback: "Auftrag erstellt", type:"success", id:data.id});
+            }else{
+
+                res.json([])
+            }
+
+        });
+    });
+    router.post('/order/keyaccount',ensureAuthorized, function(req, res){
+        console.log(req.body);
+
+        Order.post_keyaccount(req.body, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json({ userFeedback: "Nutzer zugewiesen", type:"success", id:data.id});
+            }else{
+
+                res.json([])
+            }
+
+        });
+    });
+
     router.get('/protected', ensureAuthorized, function(req,res){
         res.send("da shit!");
     });

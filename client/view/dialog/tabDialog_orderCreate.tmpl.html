@@ -41,8 +41,6 @@
                                         </md-not-found>
                                     </md-autocomplete>
                                 </section>
-
-
                                 <md-button flex="20" ng-click="dialogCtrl.newCustomer.show=!dialogCtrl.newCustomer.show"  >
                                     <md-icon>add</md-icon> Kunden anlegen
                                 </md-button>
@@ -72,6 +70,7 @@
                                     <md-icon>info <md-tooltip>Nicht auf Artikelebene sichtbar</md-tooltip></md-icon>
                                 </md-input-container>
                             </div>
+                        </form>
                             <div ng-show="dialogCtrl.newCustomer.show" layout="column" >
                                 <md-card >
                                     <md-card-title>
@@ -91,8 +90,7 @@
                                                         md-require-match="true"
                                                         md-highlight-flags="i"
                                                         md-min-length="2"
-                                                        placeholder="Name KeyAccount"
-                                                        secondary-placeholder="Name KeyAccount">
+                                                        secondary-placeholder="Name eingeben">
                                                 </md-contact-chips>
                                             </md-input-container>
                                             <div layout="row">
@@ -133,19 +131,18 @@
                                     </md-card-actions>
                                 </md-card>
                             </div>
-                        </form>
+                        {{dialogCtrl.input}}
                     </md-content>
                 </md-tab>
 
             </md-tabs>
-            REMOVE DISABLE WHEN DATA IS SET
         </md-dialog-content>
         <md-dialog-actions layout="row">
             <span flex class="log" md-colors="{color:'accent'}"></span>
-            <md-button type="submit" ng-disabled="orderCreate.$invalid" ng-click="dialogCtrl.callback.ui_answer()">
+            <md-button type="submit" class="md-primary md-raised" ng-disabled="orderCreate.$invalid===true" ng-click="dialogCtrl.callback.ui_answer(dialogCtrl.input)">
                 Auftrag anlegen
             </md-button>
-            {{dialogCtrl.input}}
+
         </md-dialog-actions>
 
 </md-dialog>

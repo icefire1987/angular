@@ -3,3 +3,4 @@ angular.module('myApp').filter('html', function($sce) {
         return $sce.trustAsHtml(input);
     }
 });
+

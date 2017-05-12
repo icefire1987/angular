@@ -158,6 +158,16 @@ md-option md-icon{
     border: 1px solid lightgrey;
 }
 
+/* buttons */
+.md-button.md-button-small{
+    min-width:40px;
+}
+
+/* */
+.logistic-orders .md-card-image{
+    max-width: 200px;
+}
+
 .text-right{
     text-align: right;
 }

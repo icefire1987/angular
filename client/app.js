@@ -250,6 +250,9 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                                 templateUrl: '/client/view/protected/logistik/orders.html'
 
                             }
+                        },
+                        onEnter: function(logisticService, $stateParams){
+                            logisticService.getOrders({latest: 5});
                         }
                     }
                 },

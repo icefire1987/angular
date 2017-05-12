@@ -4,11 +4,19 @@
 angular.module('myApp').service('logisticService', function ($q, $http,$filter,componentService) {
 
     var vm = this;
-    console.log("LOGISTIK");
 
     vm.getCustomer = function(){
         return $http.get("/api/customer");
     };
+    vm.getOrders = function(filter){
+        console.log(filter);
+       $http.get("/api/order/latest/5").then(
+           function(response){
+                vm.latestOrders = response.data;
+           }
+       )
+    };
+
 
     vm.dialog = {};
     vm.dialog.create =  componentService.getInstance("dialogTab");
@@ -158,8 +166,42 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
 
         }
     };
-    vm.dialog.create.callback.ok = function () {
-        console.log("close")
+    vm.dialog.create.callback.ok = function (input) {
+        var data = {};
+            data.customerID = input.customer.id;
+            data.userKeyAccID = input.users.map(function(d) { return d["id"]; });
+            data.description = input.description;
+
+
+        $http.post("/api/order",data).then(
+            function(result){
+                console.log(result);
+                if(result.data && result.data.id>0){
+                    for(var key in data.userKeyAccID){
+                        var data_keyAcc = {
+                            orderID: result.data.id,
+                            userID: data.userKeyAccID[key]
+                        };
+                        $http.post("/api/order/keyaccount",data_keyAcc).then(
+                            function(result){
+                                console.log(result);
+
+                            },
+                            function(err){
+                                console.log("err newOrder")
+                                console.log(err);
+                                vm.dialog.create.controller.log({text: err.data.debug});
+                            }
+                        );
+                    }
+                }
+            },
+            function(err){
+                console.log("err newOrder")
+                console.log(err);
+                vm.dialog.create.controller.log({text: err.data.debug});
+            }
+        );
         /*vm.create().then(
             function(res){
 
