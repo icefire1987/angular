@@ -35,6 +35,7 @@ module.exports = {
                 query = 'select * from user WHERE username=?';
                 break;
         }
+
         pool.getConnection(function (err, connection) {
             connection.query(query, [value], function (err, rows) {
                 connection.release();

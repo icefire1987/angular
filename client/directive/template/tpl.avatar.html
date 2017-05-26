@@ -1,0 +1,8 @@
+<div style="display: inline-block">
+
+    <img ng-if="options.filepath.length>0" ng-src="{{options.filepath}}" class="md-avatar"/>
+    <div style="background:hsl({{ options.color }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-if="options.filepath.length==0" >
+        <span>{{options.text}}</span>
+    </div>
+</div>
+

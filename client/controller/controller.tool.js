@@ -1,8 +1,11 @@
 /**
  * Created by Chris on 11.11.16.
  */
-myApp.controller('toolCtrl', function(authService,componentService,cropperService,teamService,helperService,imageService,flickrService,$http,$scope,socketService,newsService,userService,logisticService){
-    console.log("tool")
+myApp.controller('toolCtrl', function(
+    authService,componentService,cropperService,
+    teamService,helperService,imageService,flickrService,
+    $http,$scope,
+    socketService,newsService,userService,logisticService,managementService,customerService){
 
     var vm = this;
     vm.locals = {
@@ -31,7 +34,8 @@ myApp.controller('toolCtrl', function(authService,componentService,cropperServic
 
     vm.team = teamService;
     vm.logistic = logisticService;
-
+    vm.customer = customerService;
+    vm.management = managementService;
     /* Local - Vars START */
 
     vm.locals.submit.teamsearch = function(){
@@ -48,6 +52,13 @@ myApp.controller('toolCtrl', function(authService,componentService,cropperServic
                 console.log(err)
             }
         );
+    };
+    vm.locals.submit.customersearch = function(){
+        vm.customer.search({key:"name",value:vm.management.input.customername}).then(
+            function(data){
+                vm.management.searchResult = data;
+            }
+        )
     };
 
 

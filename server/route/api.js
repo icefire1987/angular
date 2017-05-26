@@ -548,9 +548,6 @@ module.exports = function (app, express, io) {
                 }
             });
         }
-
-
-
     });
     router.post("/team",ensureAuthorized,function(req,res,next){
         if (req.query.teamname != "undefined") {
@@ -762,6 +759,38 @@ module.exports = function (app, express, io) {
             }
         });
     });
+    router.get('/customer/name/:name',ensureAuthorized, function(req,res){
+        Customer.get("name",req.params.name,null, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+
+                res.json([])
+            }
+        });
+    });
+    router.get('/customer/id/:id',ensureAuthorized, function(req,res){
+        Customer.get("id",req.params.id,null, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+
+                res.json([])
+            }
+        });
+    });
     router.post('/customer/',ensureAuthorized, function(req,res){
         if (req.body.name != "undefined") {
             Customer.post(req.body, function(err,data){
@@ -809,6 +838,45 @@ module.exports = function (app, express, io) {
                 }
             });
         }
+    });
+    router.post('/customer/keyaccount', ensureAuthorized, function(req,res){
+        var usercount = 0;
+        if(!req.body.userIDs){
+            return false;
+        }
+        usercount = req.body.userIDs.length;
+        if(usercount<1){
+            return false;
+        }
+        var counter=0;
+        req.body.userIDs.map( function(user){
+
+            var insert_data = {
+                customerID: req.body.customerID,
+                userID: user
+            };
+            Customer.post_keyaccount(insert_data,function(err,data){
+                counter++;
+                if(err) {
+                    err.debug = err.message;
+                    res.status(500).json({error: err});
+                }
+                if(data) {
+                    if (counter == usercount) {
+                        res.json({userFeedback: "KeyAccount angelegt", type: "success", customer: {}});
+                    }
+                }
+            });
+        });
+    });
+    router.delete('/customer/keyaccount/',ensureAuthorized, function(req,res){
+        Customer.remove_keyaccount({customerID: req.query.customerid,userID:req.query.userid},function(err,result){
+            if(err){
+                res.status(420).json(errors[0]);
+            }else{
+                res.json({ userFeedback: "KeyAccount entfernt", type:"success"});
+            }
+        });
     });
 
     router.get('/data/articlegender',ensureAuthorized, function(req,res){

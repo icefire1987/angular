@@ -1,0 +1,74 @@
+
+<md-card class="md-padding">
+    <form ng-submit="toolCtrl.locals.submit.customersearch()" layout="row">
+        <md-input-container class="md-block" flex>
+            <label>Kundenname suchen</label>
+            <md-icon>search</md-icon>
+            <input name="customername" ng-model="toolCtrl.management.input.customername">
+        </md-input-container>
+
+        <div>
+            <md-button class="md-raised md-primary" aria-label="search team" type="submit">
+                <md-icon>send</md-icon>
+            </md-button>
+        </div>
+    </form>
+    <div ng-if="toolCtrl.management.searchResult" layout="column">
+
+        <div class="md-padding" ng-if="!toolCtrl.management.searchResult.length">
+            <md-subhead >
+                Es wurde kein Kunde gefunden.
+            </md-subhead>
+        </div>
+        <!--<md-table-container ng-if="toolCtrl.management.searchResult.length">
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                   <th>Kundenname</th>
+                    <th>KeyAccount</th>
+
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="row in toolCtrl.management.searchResult" class="text-right">
+                    <td md-cell>
+                        <span>{{row}}</span>
+                    </td>
+                    <td md-cell>
+                        <alt-avatar data-color="{{row.userAvatarAlt}}" data-text="{{row.userAvatarText}}" data-filepath="{{row.userAvatar}}"></alt-avatar>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>-->
+        <md-list ng-if="toolCtrl.management.searchResult.length">
+            <md-subheader class="md-no-sticky">Suchergebnis</md-subheader>
+            <md-list-item ng-repeat="row in toolCtrl.management.searchResult" ui-sref="protected.verwaltung.customers.edit({customerID: row.id})">
+                <span >
+                    <alt-avatar data-color="200" data-text="{{row.name}}" data-filepath="{{(row.logo)?('/client/media/customer_logo/'+row.logo):''}}"></alt-avatar>
+                </span>
+                <span flex>
+                    {{row.name}}
+                </span>
+                <span flex>
+                    <span  ng-repeat="user in row.users" >
+                        <md-tooltip>{{user.prename}} {{user.lastname}}</md-tooltip>
+                        <alt-avatar data-color="{{user.avatar_alt}}" data-text="{{user.prename}} {{user.lastname}}" data-filepath="{{user.avatar}}"></alt-avatar>
+                    </span>
+                </span>
+                <md-icon aria-label="Send Email" class="md-secondary md-hue-3" >build</md-icon>
+                <md-icon class="md-secondary"aria-label="Chat">backup</md-icon>
+
+            </md-list-item>
+        </md-list>
+    </div>
+
+
+    <md-card-actions>
+        <md-button class="md-raised  md-primary" aria-label="create team" ng-click="toolCtrl.management.dialog.createCustomer.show($event)">
+            <md-icon>edit</md-icon>
+            Kunden anlegen
+        </md-button>
+
+    </md-card-actions>
+</md-card>

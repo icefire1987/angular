@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('logisticService', function ($q, $http,$filter,componentService) {
+angular.module('myApp').service('logisticService', function ($q, $http,$filter,componentService,userService) {
 
     var vm = this;
 
@@ -10,7 +10,7 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
     };
     vm.getOrders = function(filter){
         console.log(filter);
-       $http.get("/api/order/latest/5").then(
+       $http.get("/api/order/latest/10").then(
            function(response){
                 vm.latestOrders = response.data;
            }
@@ -46,10 +46,10 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
             getUsers();
 
             dialogCtrl.customers_search = function(query){
-                return query ? dialogCtrl.customers.filter( createFilterFor(query) ) : dialogCtrl.customers;
+                return query ? dialogCtrl.customers.filter( componentService.createFilterLowercase(query) ) : dialogCtrl.customers;
             };
             dialogCtrl.users_search = function(query){
-                return query ? dialogCtrl.users.filter( createFilterFor(query) ) : dialogCtrl.users;
+                return query ? dialogCtrl.users.filter( componentService.createFilterLowercase(query) ) : dialogCtrl.users;
             };
 
             dialogCtrl.newCustomer = {
@@ -142,14 +142,11 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
                 )
             }
             function getUsers() {
-                $http.get("/api/users/is/keyaccount").then(
-                    function (result) {
-                        dialogCtrl.users = result.data;
-                    },
-                    function (err) {
-                        console.log(err);
+                userService.getKeyaccount().then(
+                    function(data){
+                        dialogCtrl.users = data;
                     }
-                )
+                );
             }
 
 

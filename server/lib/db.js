@@ -9,7 +9,7 @@ module.exports = {
         pool = mysql.createPool({
             host: 'localhost',
             user: 'root',
-            password: '',
+            password: 'pass',
             database: 'zuumeo_studio',
             queueLimit: 40
         });

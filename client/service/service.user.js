@@ -13,6 +13,16 @@ angular.module('myApp').service('userService', function ($localStorage,$http,aut
             return $http.get("/api/user/id/"+authService.getUser().obj.id);
         };
 
+        vm.getKeyaccount = function(){
+            return $http.get("/api/users/is/keyaccount").then(
+                function (result) {
+                    return  result.data;
+                },
+                function (err) {
+                    console.log(err);
+                }
+            )
+        };
         /*vm.getAll = function(filter){
             if(filter){
                 return $http.get("/api/user/"+filter.name, filter.value);

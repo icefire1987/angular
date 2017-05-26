@@ -268,7 +268,66 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         }
                     }
                 }
-            }
+            },
+            {
+                name: 'protected.verwaltung',
+                val: {
+                    url: '/verwaltung',
+                    views: {
+                        'protected_content': {
+                            templateUrl: '/client/view/protected_verwaltung.html'
+
+                        }
+                    }
+                }
+            },
+            {
+                name: 'protected.verwaltung.customers',
+                val: {
+                    abstract: true,
+                    url: '/kunden',
+                    views: {
+                        'verwaltung_content': {
+                            templateUrl: '/client/view/protected/verwaltung/customers.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+
+                    }
+                }
+            },
+            {
+                name: 'protected.verwaltung.customers.start',
+                val: {
+                    url: '/',
+                    views: {
+                        'kunden_content': {
+                            templateUrl: '/client/view/protected/verwaltung/customers_start.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+                        managementService.getCustomer($stateParams.customerID)
+                    }
+                }
+            },
+            {
+                name: 'protected.verwaltung.customers.edit',
+                val: {
+                    url: '/edit/{customerID:int}',
+                    views: {
+                        'kunden_content': {
+                            templateUrl: '/client/view/protected/verwaltung/customers_edit.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+                        managementService.getCustomer($stateParams.customerID);
+                        managementService.getKeyaccountusers();
+                    }
+                }
+            },
         ];
 
         for (var x = 0; x < states.length; x++) {

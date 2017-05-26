@@ -4,8 +4,6 @@
 angular.module('myApp').service('newsService', function ($q,teamService,authService,$http,$filter,$localStorage) {
 
     var vm = this;
-    console.log("NEWS")
-
     vm.teams = [];
     vm.teamSelected = {};
 

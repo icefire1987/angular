@@ -21,13 +21,45 @@ module.exports = {
                         clean_value = value;
                     }
                 }
-                var query = 'select customers.* from customers WHERE customers.name LIKE ?';
+                var query = 'select ' +
+                    'customers.*, ' +
+                    'IF(user.username is null,null,CONCAT("[",GROUP_CONCAT(JSON_OBJECT(' +
+                    '"username", user.username,"prename", user.prename,"lastname", user.lastname,' +
+                    '"avatar", user.avatar,"avatar_alt", user.avatar_alt' +
+                    ')),"]" )) as users ' +
+                    'from customers ' +
+                    'LEFT JOIN customers_user ON customers_user.customerID = customers.id ' +
+                    'LEFT JOIN user ON customers_user.userID = user.id ' +
+                    'WHERE customers.name LIKE ? ' +
+                    'GROUP BY customers.id ';
+                /*var query1 = 'select ' +
+                    'customers.*, ' +
+                    'IF(user.username is null,null,JSON_ARRAY(GROUP_CONCAT(JSON_OBJECT(' +
+                    '"username", user.username,"prename", user.prename,"lastname", user.lastname,' +
+                    '"avatar", user.avatar,"avatar_alt", user.avatar_alt' +
+                    ')))) as users ' +
+                    'from customers ' +
+                    'LEFT JOIN customers_user ON customers_user.customerID = customers.id ' +
+                    'LEFT JOIN user ON customers_user.userID = user.id ' +
+                    'WHERE customers.name LIKE ? ' +
+                    'GROUP BY customers.id ';*/
                 queryValues.push(clean_value);
+
                 break;
             case "id":
-                var query = 'select customers.* from customers WHERE customers.id=?';
-                queryValues.push(userID);
-                queryValues.push(clean_value);
+                var query = 'select ' +
+                    'customers.*, ' +
+                    'IF(user.username is null,null,CONCAT("[",GROUP_CONCAT(JSON_OBJECT(' +
+                    '"username", user.username,"prename", user.prename,"lastname", user.lastname,' +
+                    '"avatar", user.avatar,"avatar_alt", user.avatar_alt,"id", user.id' +
+                    ')),"]" )) as users ' +
+                    'from customers ' +
+                    'LEFT JOIN customers_user ON customers_user.customerID = customers.id ' +
+                    'LEFT JOIN user ON customers_user.userID = user.id ' +
+                    'WHERE customers.id = ? ' +
+                    'GROUP BY customers.id ';
+
+                queryValues.push(value);
                 break;
             default:
                 var query = 'select customers.*,user.id as userID, user.username as userUsername,CONCAT(user.prename," ",user.lastname) as userName,user.avatar as userAvatar,count(orders.id) as orders_count from customers ' +
@@ -39,6 +71,8 @@ module.exports = {
                 break;
         }
         pool.getConnection(function (err, connection) {
+            if(err){return callback(err,null);}
+
             connection.query(query, queryValues, function (err, rows) {
                 connection.release();
                 if(err){
@@ -46,6 +80,12 @@ module.exports = {
                     console.log(err)
                     return callback(err,null);
                 }else if (rows.length > 0) {
+                    for(var x=0; x<rows.length;x++){
+                        if(rows[x].users){
+                            rows[x].users = JSON.parse(rows[x].users);
+                        }
+
+                    }
                     return callback(null,rows);
                 }else{
                     return callback(err,null);
@@ -113,6 +153,7 @@ module.exports = {
         });
     },
     post_keyaccount: function(data,callback){
+        console.log(data)
         if(data.userID == undefined || data.userID == ""){
             var err ={userFeedback: 'User is missing'};
             return callback(err,null);
@@ -126,6 +167,37 @@ module.exports = {
         var query = "REPLACE INTO customers_user SET ?";
         pool.getConnection(function (err, connection) {
             var sql = connection.query(query, data_to_insert, function (err, rows) {
+                connection.release();
+                if(err){
+                    console.log("getConnErr:" + err)
+                    return callback(err,null);
+                }
+                if (rows.affectedRows > 0) {
+                    return callback(null,{id: rows.insertId});
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
+    remove_keyaccount: function(data,callback){
+        if(data.userID == undefined || data.userID == ""){
+            var err ={userFeedback: 'User is missing'};
+            return callback(err,null);
+        }
+        if(data.customerID == undefined || data.customerID == ""){
+            var err ={userFeedback: 'Customer is missing'};
+            return callback(err,null);
+        }
+
+        var where = [
+            data.userID,data.customerID
+        ];
+
+        var query = "DELETE FROM customers_user WHERE userID=? AND customerID=? ";
+        pool.getConnection(function (err, connection) {
+            console.log(query)
+            var sql = connection.query(query, where, function (err, rows) {
                 connection.release();
                 if(err){
                     console.log("getConnErr:" + err)

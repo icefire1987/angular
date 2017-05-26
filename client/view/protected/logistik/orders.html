@@ -1,9 +1,9 @@
 
-    <div layout="row">
+    <div layout="row" style="overflow:auto">
 
-                <md-list class="logistic-orders">
-                    <md-list-item>
-                        <md-list-item ng-repeat="order in toolCtrl.logistic.latestOrders" >
+                <md-list class="logistic-orders" layout="row" >
+
+                        <md-list-item ng-repeat="order in toolCtrl.logistic.latestOrders"  layout-align="start start">
                             <md-card>
                                 <md-card-header>
                                     <md-card-avatar>
@@ -13,19 +13,20 @@
                                         </div>
                                     </md-card-avatar>
                                     <md-card-header-text>
-                                        <span class="md-title">{{order.keyaccount_prename}} {{order.keyaccount_lastname}}</span>
-                                        <span class="md-subhead">{{order.customer_name}}</span>
+                                        <span class="md-title">{{order.keyaccount_prename}} {{order.keyaccount_lastname}}<md-tooltip>Zugewiesener Key-Accounter</md-tooltip></span>
+                                        <span class="md-subhead">{{order.created | date : 'dd.MM.yyyy'}}</span>
                                     </md-card-header-text>
                                 </md-card-header>
                                 <img ng-src="/client/media/customer_logo/{{(order.logo.length>0)?order.logo:'missing.jpg'}}" class="md-card-image" alt="Washed Out">
                                 <md-card-title>
                                     <md-card-title-text>
                                         <span class="md-headline">{{order.id | numberFixedLen:6}} [{{order.article_count}}]</span>
-                                        <span class="md-subhead">{{order.customer_name}} | {{order.created | date}}</span>
+
                                     </md-card-title-text>
                                 </md-card-title>
-                                <md-card-content layout="row">
-                                    <p>{{order.comment }}</p>
+                                <md-card-content>
+                                    <p>{{order.customer_name }}</p>
+                                    <p ng-if="order.comment"><small>Info:</small> {{order.comment }}</p>
                                 </md-card-content>
                                 <md-card-actions layout="row" layout-align="start center">
                                     <md-button class="md-button-small"><md-tooltip>Artikel hinzufügen</md-tooltip><md-icon>add</md-icon></md-button>
@@ -35,7 +36,7 @@
                                 </md-card-actions>
                             </md-card>
                         </md-list-item>
-                    </md-list-item>
+
                 </md-list>
 
     </div>

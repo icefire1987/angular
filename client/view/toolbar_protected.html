@@ -14,14 +14,16 @@
         <span flex></span>
 
 
-        <span ng-show="mainCtrl.getSessionDuration()" layout="row">
+        <div ng-show="mainCtrl.getSessionDuration()" md-padding>
+
             <md-icon>exit_to_app</md-icon>
-            <h3 class="md-subhead">{{ mainCtrl.getSessionDuration() | date:'HH:mm:ss'}}</h3>
+            <span style="vertical-align: bottom">{{ mainCtrl.getSessionDuration() | date:'HH:mm:ss'}}</span>
+
             <md-tooltip>automatischer Logout: {{ mainCtrl.getSessionDuration() | date:'HH:mm:ss'}}</md-tooltip>
-        </span>
+        </div>
 
         <md-menu>
-            <md-button ng-click="$mdOpenMenu($event)" aria-label="Open User Menu">
+            <md-button ng-click="$mdOpenMenu($event)" aria-label="Open User Menu"  class="md-fab md-mini">
                 <md-icon> account_circle </md-icon>
             </md-button>
             <md-menu-content width="4" >

@@ -20,7 +20,7 @@ module.exports = {
                 case "latest":
                     if(orderby.length>0){ orderby += ","}else{ orderby += " ORDER BY " };
                     orderby += " orders.created DESC ";
-                    limit +=  " LIMIT 5 ";
+                    limit +=  " LIMIT "+filter[filterKey];
                     break;
             }
         }
