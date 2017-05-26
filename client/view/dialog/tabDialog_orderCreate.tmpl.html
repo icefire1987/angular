@@ -12,6 +12,7 @@
             <md-tabs md-border-bottom >
                 <md-tab label="Stammdaten">
                     <md-content class="md-padding">
+                        {{dialogCtrl.input}}
                         <form name="orderCreate" layout="column">
                             <div ng-show="!dialogCtrl.newCustomer.show" layout="row">
                                 <section layout="column">
@@ -31,7 +32,7 @@
                                             md-require-match
                                             md-select-on-match
                                             md-floating-label="Kundenname"
-                                            md-selected-item-change="dialogCtrl.input.users = [{id: item.userID,name: item.userName,username: item.userUsername, avatar: userAvatar}]"
+                                            md-selected-item-change="dialogCtrl.input.users = (item.userID != null ? [{id: item.userID,name: item.userName,username: item.userUsername, avatar: userAvatar}] : [])"
                                     >
                                         <md-item-template>
                                             <span md-highlight-text="dialogCtrl.searchtext" md-highlight-flags="i">{{item.name}}</span>

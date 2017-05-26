@@ -39,7 +39,7 @@ angular.module('myApp').service('componentService', function ($mdMenu,$mdMedia,$
             ok : function(){console.log("default ok")},
             cancel: function(){console.log("default cancel")},
             hide: function(){
-                console.log("hide")
+
                 //$mdDialog.hide();
             },
             ui_cancel: function(){
@@ -52,9 +52,8 @@ angular.module('myApp').service('componentService', function ($mdMenu,$mdMedia,$
             }
         };
         this.show = function($event, viewData){
-            console.log("show dialogTab")
             inner_vm.locals.view = viewData;
-            console.log(inner_vm.config)
+            //console.log(inner_vm.config)
             $mdDialog.show(inner_vm.config).then(inner_vm.callback.ok,inner_vm.callback.cancel);
         }
     };

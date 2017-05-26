@@ -1,6 +1,6 @@
 <md-toolbar class="md-hue-3">
     <div class="md-toolbar-tools">
-        <h3 flex> {{toolCtrl.management.customer.name}} </h3>
+        <h3 flex> {{toolCtrl.management.customer.name}} bearbeiten</h3>
         <md-button class="md-icon-button" aria-label="More">
             <md-icon>more_vert</md-icon>
         </md-button>
@@ -13,38 +13,42 @@
             <md-card >
                 <md-card-title>
                     <md-card-title-text>
-                        <div layout="row">
-                            <md-input-container>
-                                <label>Kundenname</label>
-                                <input ng-model="toolCtrl.management.customer.name" required>
-                            </md-input-container>
 
-
-
-                        </div>
-                        <h3 class="md-headline">Rechnungsadresse</h3>
-                        <div layout="row">
-                            <md-input-container>
-                                <label>Ansprechpartner</label>
-                                <input ng-model="dialogCtrl.newCustomer.person">
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Strasse / Hausnummer</label>
-                                <input ng-model="toolCtrl.management.customer.street">
-                            </md-input-container>
-                        </div>
-                        <div layout="row">
-                            <md-input-container>
-                                <label>PLZ</label>
-                                <input ng-model="toolCtrl.management.customer.postal">
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Ort</label>
-                                <input ng-model="toolCtrl.management.customer.city">
-                            </md-input-container>
-                        </div>
                     </md-card-title-text>
                 </md-card-title>
+                <md-card-content>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>Kundenname</label>
+                            <input ng-model="toolCtrl.management.customer.name" required>
+                        </md-input-container>
+
+
+
+                    </div>
+                    <!--
+                    <h3 class="md-headline">Rechnungsadresse</h3>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>Ansprechpartner</label>
+                            <input ng-model="dialogCtrl.newCustomer.person">
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Strasse / Hausnummer</label>
+                            <input ng-model="toolCtrl.management.customer.street">
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>PLZ</label>
+                            <input ng-model="toolCtrl.management.customer.postal">
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Ort</label>
+                            <input ng-model="toolCtrl.management.customer.city">
+                        </md-input-container>
+                    </div>-->
+                <md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-raised md-warn" ng-click="dialogCtrl.newCustomer.show=false">
                         <md-icon>close</md-icon> abbrechen
@@ -62,7 +66,11 @@
             <md-card >
                 <md-card-title>
                     <md-card-title-text>
-                        {{toolCtrl.management.locals}}
+                        KeyAccount suchen
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+
                         <div layout="row">
                             <md-input-container class="md-block md-icon-left flex" >
                                 <md-icon class="material-icons">search</md-icon>
@@ -92,9 +100,8 @@
 
                         </div>
 
-
                         <md-list>
-                            <md-list-item ng-repeat="user in toolCtrl.management.customer.users">
+                            <md-list-item ng-repeat="user in toolCtrl.management.customer.users  track by user.id">
                                 <span >
                                     <md-tooltip>{{user.prename}} {{user.lastname}}</md-tooltip>
                                     <alt-avatar data-color="{{user.avatar_alt}}" data-text="{{user.prename}} {{user.lastname}}" data-filepath="{{user.avatar}}"></alt-avatar>
@@ -106,24 +113,80 @@
                                 <md-button class="md-secondary md-accent" ng-click="toolCtrl.management.locals.submit.keyaccount_delete(user)">
                                     <md-icon aria-label="remove"  >delete</md-icon>
                                 </md-button>
-
-
                             </md-list-item>
                         </md-list>
-                    </md-card-title-text>
-                </md-card-title>
+                </md-card-content>
             </md-card>
         </md-content>
     </md-tab>
     <md-tab label="retouradressen">
         <md-content class="md-padding">
-            <md-input-container class="md-icon-float md-block">
-                <!-- Use floating label instead of placeholder -->
-                <label>zu Händen</label>
-                <md-icon >person</md-icon>
-                <input ng-model="retour.contact" type="text">
-            </md-input-container>
+            <md-card >
+                <md-card-title>
+                    <md-card-title-text>
+                        Retouradresse verwalten
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout="row">
+                        <md-list>
+                            <md-list-item ng-repeat="user in toolCtrl.management.customer.users  track by user.id">
+                                <span >
+                                    <md-tooltip>{{user.prename}} {{user.lastname}}</md-tooltip>
+                                    <alt-avatar data-color="{{user.avatar_alt}}" data-text="{{user.prename}} {{user.lastname}}" data-filepath="{{user.avatar}}"></alt-avatar>
+                                </span>
+                                <span flex>
+                                    {{user.prename}} {{user.lastname}}
+                                </span>
+
+                                <md-button class="md-secondary md-accent" ng-click="toolCtrl.management.locals.submit.keyaccount_delete(user)">
+                                    <md-icon aria-label="remove"  >delete</md-icon>
+                                </md-button>
+                            </md-list-item>
+                        </md-list>
+                    </div>
+
+
+                </md-card-content>
+            </md-card>
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        Retouradresse anlegen
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>Ansprechpartner</label>
+                            <input ng-model="dialogCtrl.newCustomer.person">
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Strasse / Hausnummer</label>
+                            <input ng-model="toolCtrl.management.customer.street">
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>PLZ</label>
+                            <input ng-model="toolCtrl.management.customer.postal">
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Ort</label>
+                            <input ng-model="toolCtrl.management.customer.city">
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised md-warn" ng-click="dialogCtrl.newCustomer.show=false">
+                        <md-icon>close</md-icon> abbrechen
+                    </md-button>
+                    <md-button ng-click="dialogCtrl.newCustomer.submit()" class="md-raised md-primary">
+                        <md-icon>check</md-icon> speichern
+                    </md-button>
+
+                </md-card-actions>
+            </md-card>
         </md-content>
     </md-tab>
 </md-tabs>
-{{toolCtrl.management.customer}}

@@ -46,7 +46,18 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         }).then(
             function(response){
                 //WAS WENN SCHON VORHANDEN?
-                vm.customer.users.push(vm.input.keyaccount[0]);
+                var found = false;
+
+                if(!vm.customer.users || vm.customer.users.length<1) {
+                    vm.customer.users = [];
+                }
+                found = vm.customer.users.some(function (el) {
+                    return el.id === vm.input.keyaccount[0].id;
+                });
+                if (!found) {
+                    vm.customer.users.push(vm.input.keyaccount[0]);
+                }
+                vm.input = {keyaccount: []};
             }
         );
     }
