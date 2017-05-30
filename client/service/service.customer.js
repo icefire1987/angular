@@ -46,6 +46,53 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
             }
         );
     };
+
+    vm.retouraddress_add = function(obj){
+        var data = {};
+        console.log(obj);
+        if(obj && obj.customerID && obj.address_street && obj.address_city){
+            data = {
+                customerID: obj.customerID,
+                street: obj.address_street,
+                postal: obj.address_postal,
+                city: obj.address_city,
+                person: obj.address_person
+            };
+        }
+
+        return $http.post("/api/customer/retouraddress",data).then(
+            function(result){
+                 return result.data;
+            },
+            function(err){
+                console.log("err keyaccount_add");
+                return false;
+            }
+        );
+    };
+
+    vm.retouraddress_delete = function(obj){
+        if(!obj){
+            return false;
+        }
+        if(!obj.customerID || !obj.addressID ){
+            return false;
+        }
+        return $http.delete("/api/customer/retouraddress/",{
+            params: {
+                customerid:  obj.customerID,
+                addressid: obj.addressID
+            }
+        }).then(
+            function(result){
+                return result;
+            },
+            function(err){
+                console.log("err keyaccount_remove");
+                return false;
+            }
+        );
+    };
     vm.keyaccount_delete = function(obj){
         if(!obj){
             return false;
@@ -69,6 +116,22 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
         );
     };
 
+    vm.getRetouraddress = function(filter){
+        var data = {};
+        if(filter.customerID){
+            data.key = "customerID";
+            data.value = filter.customerID;
+        }
+        return $http.get("/api/customer/retouraddress/"+data.key+"/"+data.value).then(
+            function(result){
+                return result.data;
+            },
+            function(err){
+                console.log("err keyaccount_remove");
+                return false;
+            }
+        );
+    };
 
 
 

@@ -791,6 +791,23 @@ module.exports = function (app, express, io) {
             }
         });
     });
+    router.get('/customer/retouraddress/customerID/:customerID',ensureAuthorized, function(req,res){
+        console.log(req.params)
+        Customer.getRetouraddress("customerID",req.params.customerID,null, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+
+                res.json([])
+            }
+        });
+    });
     router.post('/customer/',ensureAuthorized, function(req,res){
         if (req.body.name != "undefined") {
             Customer.post(req.body, function(err,data){
@@ -867,6 +884,42 @@ module.exports = function (app, express, io) {
                     }
                 }
             });
+        });
+    });
+    router.post('/customer/retouraddress', ensureAuthorized, function(req,res){
+        if(!req.body.customerID || !req.body.city){
+            var response = {};
+            response.debug = "Bitte alle Felder ausfüllen";
+            res.status(420).json(response);
+            return;
+        }
+
+        var insert_data = {
+            customerID: req.body.customerID,
+            street: req.body.street,
+            postal: req.body.postal,
+            city: req.body.city,
+            person: req.body.person
+        };
+        Customer.post_retouraddress(insert_data,function(err,data){
+            if(err) {
+                err.debug = err.message;
+                res.status(500).json({error: err});
+            }
+            if(data) {
+                    res.json({userFeedback: "Retouradresse angelegt", type: "success", addressID: data.id});
+
+            }
+        });
+    });
+
+    router.delete('/customer/retouraddress/',ensureAuthorized, function(req,res){
+        Customer.remove_retouraddress({customerID: req.query.customerid,addressID:req.query.addressid},function(err,result){
+            if(err){
+                res.status(420).json(errors[0]);
+            }else{
+                res.json({ userFeedback: "Retouradresse entfernt", type:"success"});
+            }
         });
     });
     router.delete('/customer/keyaccount/',ensureAuthorized, function(req,res){
