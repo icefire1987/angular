@@ -12,7 +12,6 @@
             <md-tabs md-border-bottom >
                 <md-tab label="Stammdaten">
                     <md-content class="md-padding">
-                        {{dialogCtrl.input}}
                         <form name="orderCreate" layout="column">
                             <div ng-show="!dialogCtrl.newCustomer.show" layout="row">
                                 <section layout="column">
@@ -42,27 +41,35 @@
                                         </md-not-found>
                                     </md-autocomplete>
                                 </section>
-                                <md-button flex="20" ng-click="dialogCtrl.newCustomer.show=!dialogCtrl.newCustomer.show"  >
+                                <md-button flex="20" ng-click="dialogCtrl.newCustomer.show=!dialogCtrl.newCustomer.show">
                                     <md-icon>add</md-icon> Kunden anlegen
                                 </md-button>
                             </div>
 
-                            <div>
+                            <div ng-if="dialogCtrl.input.customer.id">
                                 <md-input-container>
-                                <label>Zuumeo KeyAccount</label>
-                                <md-contact-chips
-                                        ng-model="dialogCtrl.input.users"
-                                        md-contacts="dialogCtrl.users_search($query)"
-                                        md-contact-name="name"
-                                        md-contact-image="avatar"
-                                        md-contact-email="username"
-                                        md-require-match="true"
-                                        md-highlight-flags="i"
-                                        md-min-length="2"
-                                        placeholder="Name KeyAccount"
-                                        secondary-placeholder="Name KeyAccount">
-                                </md-contact-chips>
-                            </md-input-container>
+                                    <label>Zuumeo KeyAccount</label>
+                                    <md-contact-chips
+                                            ng-model="dialogCtrl.input.users"
+                                            md-contacts="dialogCtrl.users_search($query)"
+                                            md-contact-name="name"
+                                            md-contact-image="avatar"
+                                            md-contact-email="username"
+                                            md-require-match="true"
+                                            md-highlight-flags="i"
+                                            md-min-length="2"
+                                            placeholder="Name KeyAccount"
+                                            secondary-placeholder="Name KeyAccount">
+                                    </md-contact-chips>
+                                </md-input-container>
+
+                            </div>
+
+                            <div ng-if="dialogCtrl.input.customer.id">
+                                <md-input-container>
+                                    <label>Retouradresse</label>
+                                    <select-table source="retouraddress" has-icon="false" filter="{customerID:dialogCtrl.input.customer.id}" selected="dialogCtrl.input.retouraddress"></select-table>
+                                </md-input-container>
                             </div>
                             <div>
                                 <md-input-container>
@@ -132,7 +139,7 @@
                                     </md-card-actions>
                                 </md-card>
                             </div>
-                        {{dialogCtrl.input}}
+
                     </md-content>
                 </md-tab>
 

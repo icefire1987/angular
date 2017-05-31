@@ -899,7 +899,8 @@ module.exports = function (app, express, io) {
             street: req.body.street,
             postal: req.body.postal,
             city: req.body.city,
-            person: req.body.person
+            person: req.body.person,
+            comment: req.body.comment
         };
         Customer.post_retouraddress(insert_data,function(err,data){
             if(err) {
@@ -964,6 +965,7 @@ module.exports = function (app, express, io) {
             }
         });
     });
+
     router.get('/order/latest/:count',ensureAuthorized, function(req,res){
         Order.get({latest:req.params.count}, function(err,data){
             if(err) {

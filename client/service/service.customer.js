@@ -56,7 +56,8 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
                 street: obj.address_street,
                 postal: obj.address_postal,
                 city: obj.address_city,
-                person: obj.address_person
+                person: obj.address_person,
+                comment: obj.address_comment
             };
         }
 

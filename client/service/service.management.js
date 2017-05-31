@@ -73,7 +73,8 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
                 address_street: vm.input.retouraddress.street,
                 address_postal: vm.input.retouraddress.postal,
                 address_city: vm.input.retouraddress.city,
-                address_person: vm.input.retouraddress.person
+                address_person: vm.input.retouraddress.person,
+                address_comment: vm.input.retouraddress.comment
             };
         }
         customerService.retouraddress_add(data).then(
@@ -106,7 +107,7 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         vm.input.retouraddress = address;
 
         location.href = "#management_customer_form";
-    }
+    };
 
 
     vm.getKeyaccountusers = function(){

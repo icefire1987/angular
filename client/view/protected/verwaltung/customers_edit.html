@@ -216,6 +216,12 @@
                             <input ng-model="toolCtrl.management.input.retouraddress.city">
                         </md-input-container>
                     </div>
+                    <div layout="row">
+                        <md-input-container class="md-block">
+                            <label>Kommentar</label>
+                            <textarea ng-model="toolCtrl.management.input.retouraddress.comment" md-maxlength="150" rows="3" md-select-on-focus></textarea>
+                        </md-input-container>
+                    </div>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button ng-click="toolCtrl.management.input.retouraddress = {}" class="md-raised md-warn">

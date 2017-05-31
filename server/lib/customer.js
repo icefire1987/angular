@@ -131,7 +131,8 @@ module.exports = {
             person: data.person,
             street: data.street,
             postal: data.postal,
-            city: data.city
+            city: data.city,
+            comment: data.comment
         };
         if(data.id){
             data_to_insert.id = data.id;
