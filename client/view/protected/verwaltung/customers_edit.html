@@ -128,7 +128,13 @@
             <md-card >
                 <md-card-title>
                     <md-card-title-text>
-                        Retouradresse verwalten
+                        <span>Retouradresse verwalten</span>
+                        <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.retouraddress_switch_view()">
+                            <md-icon aria-label="show" ng-if="toolCtrl.management.active">visibility</md-icon>
+                            <md-tooltip  ng-if="toolCtrl.management.active">Inaktive Adressen anzeigen</md-tooltip>
+                            <md-icon aria-label="show" ng-if="!toolCtrl.management.active">visibility_off</md-icon>
+                            <md-tooltip  ng-if="!toolCtrl.management.active">Inaktive Adressen ausblenden</md-tooltip>
+                        </md-button>
                     </md-card-title-text>
                 </md-card-title>
                 <md-card-content>
@@ -159,6 +165,7 @@
                             </md-list-item>
 
                             <md-list-item ng-repeat="address in toolCtrl.management.customer.retouraddress  track by address.id">
+
                                 <span flex="30">
                                     {{address.street}}
                                 </span>
@@ -169,13 +176,15 @@
                                    {{address.person}}
                                 </span>
                                 <span flex="20">
-                                    {{address.comment}}
+                                    {{address.comment}}-{{address.id}}
                                 </span>
-
-                                <md-button class="md-secondary md-accent" ng-click="toolCtrl.management.locals.edit(address)">
+                                <md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="address.active" ng-true-value="1" ng-false-value="0" ng-change="toolCtrl.management.locals.submit.retouraddress_state(address)">
+                                    {{address.active==1?'aktiv':'inaktiv'}}
+                                </md-switch>
+                                <md-button class="md-secondary md-accent md-button-small" ng-click="toolCtrl.management.locals.edit(address)">
                                     <md-icon aria-label="edit"  >edit</md-icon>
                                 </md-button>
-                                <md-button class="md-secondary md-accent" ng-click="toolCtrl.management.locals.submit.retouraddress_delete(address)">
+                                <md-button class="md-secondary md-accent md-button-small" ng-click="toolCtrl.management.locals.submit.retouraddress_delete(address)">
                                     <md-icon aria-label="remove"  >delete</md-icon>
                                 </md-button>
                             </md-list-item>
@@ -220,6 +229,7 @@
                         <md-input-container class="md-block">
                             <label>Kommentar</label>
                             <textarea ng-model="toolCtrl.management.input.retouraddress.comment" md-maxlength="150" rows="3" md-select-on-focus></textarea>
+                            <input type="hidden" ng-model="toolCtrl.management.input.retouraddress.active">
                         </md-input-container>
                     </div>
                 </md-card-content>

@@ -49,7 +49,6 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
 
     vm.retouraddress_add = function(obj){
         var data = {};
-        console.log(obj);
         if(obj && obj.customerID && obj.address_street && obj.address_city){
             data = {
                 customerID: obj.customerID,
@@ -57,16 +56,38 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
                 postal: obj.address_postal,
                 city: obj.address_city,
                 person: obj.address_person,
-                comment: obj.address_comment
+                comment: obj.address_comment,
+                active: obj.address_active
             };
         }
-
+        if(obj.id){
+            data.id = obj.id;
+        }
         return $http.post("/api/customer/retouraddress",data).then(
             function(result){
                  return result.data;
             },
             function(err){
                 console.log("err keyaccount_add");
+                return false;
+            }
+        );
+    };
+    vm.retouraddress_state = function(obj){
+        var data = {};
+        if(obj && obj.addressID && typeof obj.active != "undefined"){
+            data = {
+                addressID: obj.addressID,
+                active: obj.active
+            };
+        }
+
+        return $http.post("/api/customer/retouraddress/state",data).then(
+            function(result){
+                return result.data;
+            },
+            function(err){
+                console.log("err keyaccount_state");
                 return false;
             }
         );
@@ -117,13 +138,17 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
         );
     };
 
-    vm.getRetouraddress = function(filter){
+    vm.getRetouraddress = function(options){
         var data = {};
-        if(filter.customerID){
+        var config = {params:{}};
+        if(options.customerID){
             data.key = "customerID";
-            data.value = filter.customerID;
+            data.value = options.customerID;
         }
-        return $http.get("/api/customer/retouraddress/"+data.key+"/"+data.value).then(
+        if(options.filter){
+            config.params.filter = options.filter;
+        }
+        return $http.get("/api/customer/retouraddress/"+data.key+"/"+data.value,config).then(
             function(result){
                 return result.data;
             },

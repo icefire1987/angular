@@ -7,6 +7,7 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
 
     vm.input = {keyaccount:[]};
     vm.locals = {submit:{}};
+    vm.active=1;
     vm.customer = {};
 
     vm.getCustomer = function(customerID){
@@ -15,13 +16,31 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             function(data){
                 if(data.length==1){
                     vm.customer = data[0];
-                    customerService.getRetouraddress({"customerID":customerID}).then(
+                    customerService.getRetouraddress({"customerID":customerID, filter: {active:1}}).then(
                         function(data){
                             console.log(data);
                             vm.customer.retouraddress = data;
                         }
                     );
                 }
+            }
+        );
+    };
+
+    vm.retouraddress_switch_view = function(active){
+        var filter = {};
+        if(typeof active!="undefined"){
+            vm.active = active;
+        }else{
+            vm.active = !vm.active;
+        }
+        if(vm.active){
+            filter = {active:vm.active};
+        }
+        customerService.getRetouraddress({"customerID":vm.customer.id, filter: filter}).then(
+            function(data){
+                console.log(data);
+                vm.customer.retouraddress = data;
             }
         );
     };
@@ -65,6 +84,20 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             }
         );
     };
+
+    vm.locals.submit.retouraddress_state = function(addressObj){
+        if(addressObj.id) {
+            customerService.retouraddress_state({
+                active: addressObj.active,
+                addressID: addressObj.id
+            }).then(
+                function (response) {
+                    vm.retouraddress_switch_view()
+                    console.log(response);
+                }
+            );
+        }
+    };
     vm.locals.submit.retouraddress_add = function(){
         var data = {};
         if(vm.customer.id && vm.input.retouraddress && vm.input.retouraddress.street && vm.input.retouraddress.postal && vm.input.retouraddress.city ) {
@@ -74,15 +107,23 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
                 address_postal: vm.input.retouraddress.postal,
                 address_city: vm.input.retouraddress.city,
                 address_person: vm.input.retouraddress.person,
-                address_comment: vm.input.retouraddress.comment
+                address_comment: vm.input.retouraddress.comment,
+                address_active: vm.input.retouraddress.active
             };
+        }
+        if(vm.input.retouraddress.id){
+            data.id = vm.input.retouraddress.id;
+        }else{
+            // default: activated
+            vm.input.retouraddress.active = 1;
+            data.address_active = 1;
         }
         customerService.retouraddress_add(data).then(
             function(response){
-
                 if(!vm.customer.retouraddress || vm.customer.retouraddress.length<1) {
                     vm.customer.retouraddress = [];
                 }
+                vm.retouraddress_switch_view(vm.input.retouraddress.active);
                 vm.input.retouraddress.id = response.addressID;
                 vm.customer.retouraddress.push(vm.input.retouraddress);
 
@@ -104,8 +145,7 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         }
     };
     vm.locals.edit = function(address){
-        vm.input.retouraddress = address;
-
+        vm.input.retouraddress = angular.copy(address);
         location.href = "#management_customer_form";
     };
 
@@ -118,7 +158,7 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         );
     };
     vm.getRetouraddress = function(customerID){
-        customerService.getRetouraddress({"customerID":customerID}).then(
+        customerService.getRetouraddress({customerID:customerID}).then(
             function(data){
                 console.log(data);
                 vm.customer.retouraddress = data;
