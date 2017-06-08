@@ -792,8 +792,14 @@ module.exports = function (app, express, io) {
         });
     });
     router.get('/customer/retouraddress/customerID/:customerID',ensureAuthorized, function(req,res){
-        console.log(req.params)
-        Customer.getRetouraddress("customerID",req.params.customerID,null, function(err,data){
+        var options = {};
+        if(req.query){
+            if(req.query.filter){
+                    options.filter = JSON.parse(req.query.filter);
+            }
+        }
+
+        Customer.getRetouraddress("customerID",req.params.customerID,options, function(err,data){
             if(err) {
                 console.log(err)
                 err.debug = err.message;
@@ -900,18 +906,81 @@ module.exports = function (app, express, io) {
             postal: req.body.postal,
             city: req.body.city,
             person: req.body.person,
-            comment: req.body.comment
+            comment: req.body.comment,
+            active: req.body.active,
         };
-        Customer.post_retouraddress(insert_data,function(err,data){
-            if(err) {
-                err.debug = err.message;
-                res.status(500).json({error: err});
-            }
-            if(data) {
-                    res.json({userFeedback: "Retouradresse angelegt", type: "success", addressID: data.id});
 
-            }
-        });
+        if(req.body.id){
+            var id = req.body.id;
+            Customer.update_retouraddress({action: 'deactivate', data: {id:id} },function(err,data){
+                if(err) {
+                    err.debug = err.message;
+                    res.status(500).json({error: err});
+                }
+                if(data) {
+                    Customer.post_retouraddress(insert_data,function(err,data){
+                        if(err) {
+                            err.debug = err.message;
+                            res.status(500).json({error: err});
+                        }
+                        if(data) {
+                            res.json({userFeedback: "Retouradresse aktualisiert", type: "success", addressID: data.id});
+                        }
+                    });
+                }
+            });
+        }else{
+            Customer.post_retouraddress(insert_data,function(err,data){
+                console.log(data)
+                if(err) {
+                    err.debug = err.message;
+                    res.status(500).json({error: err});
+                }
+                if(data) {
+                    res.json({userFeedback: "Retouradresse angelegt", type: "success", addressID: data.id});
+                }
+            });
+        }
+    });
+    router.post('/customer/retouraddress/state', ensureAuthorized, function(req,res){
+        console.log(req.body)
+        if(!req.body.addressID || typeof req.body.active == 'undefined'){
+            var response = {};
+            response.debug = "Bitte alle Felder ausfüllen";
+            res.status(420).json(response);
+            return;
+        }
+
+        switch(req.body.active){
+            case 1:
+                console.log("eins")
+                Customer.update_retouraddress({action: 'activate',id:req.body.addressID} ,function(err,data){
+                    if(err) {
+                        err.debug = err.message;
+                        res.status(500).json({error: err});
+                    }
+                    if(data) {
+                       res.json({userFeedback: "Retouradresse aktiviert", type: "success"});
+                    }
+                });
+                break;
+            case 0:
+                console.log("null")
+                Customer.update_retouraddress({action: 'deactivate', id:req.body.addressID },function(err,data){
+                    if(err) {
+                        err.debug = err.message;
+                        res.status(500).json({error: err});
+                    }
+                    if(data) {
+
+                            res.json({userFeedback: "Retouradresse deaktiviert", type: "success"});
+
+                    }
+                });
+                break;
+
+        }
+
     });
 
     router.delete('/customer/retouraddress/',ensureAuthorized, function(req,res){

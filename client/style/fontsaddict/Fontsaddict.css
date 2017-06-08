@@ -1,0 +1,59 @@
+@font-face {
+	font-family: "Fontsaddict";
+	src: url("Fontsaddict.eot");
+	src: url("Fontsaddict.eot#iefix") format("embedded-opentype"),
+	url("Fontsaddict.woff") format("woff"),
+	url("Fontsaddict.ttf") format("truetype"),
+	url("Fontsaddict.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="icon-"]:before, [class*=" icon-"]:before,
+[class^="icon-"]:after, [class*=" icon-"]:after {   
+	font-family: Fontsaddict;
+	font-size: 20px;
+	font-style: normal;
+
+}
+.icon-simple:before {
+	content: "\e800"
+}
+.icon-stylish:before {
+	content: "\e801"
+}
+.icon-female:before {
+	content: "\e804"
+}
+.icon-fedora:before {
+	content: "\e805"
+}
+.icon-girly:before {
+	content: "\e806"
+}
+.icon-shopping:before {
+	content: "\e807"
+}
+.icon-swimsuit:before {
+	content: "\e809"
+}
+.icon-slip:before {
+	content: "\e80a"
+}
+.icon-kids:before {
+	content: "\e803"
+}
+.icon-girl:before {
+	content: "\e808"
+}
+.icon-student:before {
+	content: "\e80b"
+}
+.icon-diamond:before {
+	content: "\e80c"
+}
+.icon-jumper:before {
+	content: "\e802"
+}
+.icon-riding:before {
+	content: "\e80d"
+}

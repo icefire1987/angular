@@ -153,6 +153,44 @@ module.exports = {
             });
         });
     },
+    update_retouraddress: function(data,callback){
+        console.log(data)
+        if(!data.action){
+            var err ={userFeedback: 'Data is missing'};
+            return callback(err,null);
+        }
+        switch(data.action){
+            case 'deactivate':
+                var data_obj = {
+                    active: 0
+                };
+                break;
+            case 'activate':
+                var data_obj = {
+                    active: 1
+                };
+                break;
+        }
+        if(data_obj){
+            console.log("test");
+            var query = "UPDATE customers_retour SET ? WHERE id=?";
+            pool.getConnection(function (err, connection) {
+                var sql = connection.query(query, [data_obj,data.data.id], function (err, rows) {
+                    connection.release();
+                    console.log(data_obj)
+                    console.log(data.data.id)
+                    console.log(rows)
+
+                    if(err){
+                        console.log("getConnErr:" + err)
+                        return callback(err,null);
+                    }
+                    return callback(null,true);
+
+                });
+            });
+        }
+    },
     post_keyaccount: function(data,callback){
         console.log(data)
         if(data.userID == undefined || data.userID == ""){
@@ -244,6 +282,14 @@ module.exports = {
     getRetouraddress: function(colname,value,options,callback){
         var clean_value = value;
         var queryValues = [];
+        var where_additional = "";
+        var where_additional_val = [];
+        if(options && options.filter){
+            for(var key in options.filter){
+                where_additional = " and " + key + "=? ";
+                where_additional_val.push(options.filter[key]);
+            }
+        }
         switch(colname){
             case "city":
                 clean_value = "%"+value+"%";
@@ -259,8 +305,11 @@ module.exports = {
                 var query = 'select customers_retour.*,customers.name as customer_name ' +
                     'from customers_retour ' +
                     'LEFT JOIN customers ON customers.id = customers_retour.customerID ' +
-                    'WHERE customers.id = ? ';
+                    'WHERE customers.id = ? '+ where_additional;
                 queryValues.push(value);
+                for(var i=0;i<where_additional_val.length;i++){
+                    queryValues.push(where_additional_val[i]);
+                }
                 break;
             default:
                 var query = 'select customers_retour.* ' +
