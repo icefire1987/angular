@@ -65,10 +65,52 @@
 
 
     <md-card-actions>
-        <md-button class="md-raised  md-primary" aria-label="create team" ng-click="toolCtrl.management.dialog.createCustomer.show($event)">
+        <md-button class="md-raised  md-primary" aria-label="create team" ng-click="toolCtrl.management.locals.show_newCustomer = true">
             <md-icon>edit</md-icon>
             Kunden anlegen
         </md-button>
 
     </md-card-actions>
 </md-card>
+<md-card ng-if="toolCtrl.management.locals.show_newCustomer">
+    <form name="newCustomer" ng-submit="toolCtrl.management.locals.submit.customer_add()">
+    <md-card-title>
+        <md-card-title-text>
+
+            <md-input-container>
+                <label>Kundenname</label>
+                <input name="name" ng-model="toolCtrl.management.input.newCustomer.name" required>
+                <div ng-messages="newCustomer.name.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label>Zuumeo KeyAccount</label>
+                <md-contact-chips
+                        ng-model="toolCtrl.management.input.keyaccount"
+                        md-contacts="toolCtrl.management.search_keyaccountusers($query)"
+                        md-contact-name="name"
+                        md-contact-image="avatar"
+                        md-contact-email="username"
+                        md-require-match="true"
+                        md-highlight-flags="i"
+                        md-min-length="2"
+                        secondary-placeholder="Name eingeben">
+                </md-contact-chips>
+            </md-input-container>
+
+            <imagecropper cropper="toolCtrl.management.cropper" input="toolCtrl.management.input.newCustomer"></imagecropper>
+
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button type="submit" class="md-raised md-primary" ng-disabled="newCustomer.$invalid">
+            <md-icon>check</md-icon> anlegen
+        </md-button>
+        <md-button class="md-raised md-warn" ng-click="toolCtrl.management.locals.show_newCustomer = false; toolCtrl.management.input_reset()">
+            <md-icon>close</md-icon> abbrechen
+        </md-button>
+    </md-card-actions>
+    </form>
+</md-card>
+{{toolCtrl.management.input}}

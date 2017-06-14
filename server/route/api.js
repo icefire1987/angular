@@ -823,37 +823,21 @@ module.exports = function (app, express, io) {
                         error: err
                     });
                 }else if(data && data.id){
-                    var insert_data = {
-                        customerID: data.id,
-                        person: req.body.person,
-                        street: req.body.street,
-                        postal: req.body.postal,
-                        city: req.body.city
-                    };
-                    Customer.post_retour(insert_data,function(err,data){
-                        if(err) {
-                            err.debug = err.message;
-                            res.status(500).json({
-                                error: err
-                            });
-                        }else{
-                            req.body.users.map(function(elem){
-                                var insert_data = {
-                                    customerID: data.id,
-                                    userID: elem.id
-                                };
-                                Customer.post_keyaccount(insert_data,function(err,data){
-                                    if(err) {
-                                        err.debug = err.message;
-                                        res.status(500).json({
-                                            error: err
-                                        });
-                                    }
-                                })
-                            });
-                            res.json({ userFeedback: "Kunde angelegt", type:"success", customer: {id: data.id, name:req.body.name } });
-                        }
+                    req.body.users.map(function(elem){
+                        var insert_data = {
+                            customerID: data.id,
+                            userID: elem.id
+                        };
+                        Customer.post_keyaccount(insert_data,function(err,data){
+                            if(err) {
+                                err.debug = err.message;
+                                res.status(500).json({
+                                    error: err
+                                });
+                            }
+                        })
                     });
+                    res.json({ userFeedback: "Kunde angelegt", type:"success", customer: {id: data.id, name:req.body.name } });
                 }else{
                     var response = {};
                     response.debug = "Kunde existiert bereits";

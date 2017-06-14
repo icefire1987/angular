@@ -159,6 +159,11 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
         );
     };
 
+    vm.add = function(data){
+        return $http.post("/api/customer",data);
+
+    };
+
 
 
     return vm;

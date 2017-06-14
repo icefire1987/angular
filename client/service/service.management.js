@@ -1,17 +1,77 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService) {
+angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService) {
 
     var vm = this;
 
-    vm.input = {keyaccount:[]};
+    vm.input = {
+        keyaccount: [],
+        newCustomer: {}
+    }
+    vm.input_reset = function(){
+        vm.input = {
+            keyaccount:[],
+            newCustomer: {}
+        };
+    };
+    vm.dialog = {};
     vm.locals = {submit:{}};
     vm.active=1;
     vm.customer = {};
 
-    vm.getCustomer = function(customerID){
+    vm.uploader = {};
+    vm.uploader.customerLogo = new FileUploader();
+    vm.uploader.customerLogo.filters.push({
+        name: 'imageFilter',
+        fn: function(item /*{File|FileLikeObject}*/, options) {
+            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+        }
+    });
 
+    vm.cropper = cropperService;
+
+    function upload_error(fileItem, response, status, headers){
+        logService.log({
+            userFeedback: "Dateiupload fehlgeschlagen",
+            serverFeedback: { data: { error: {debug: "Details: " + response}}}
+
+        });
+    };
+    function upload_success(fileItem, response, status, headers,model){
+        if(fileItem.length>0){
+            var fr = new FileReader;
+            fr.onload = function() { // file is loaded
+                var img = new Image;
+                img.onload = function() {
+                    var obj = {};
+                    obj.type = "internal";
+                    obj.cropArea = 'cropper_customerlogo';
+                    obj.image = img;
+                    obj.previewArea = '#cropperPreview_customerlogo';
+                    vm.cropper.setSource(fileItem[0]);
+                    vm.cropper.cropper(obj);
+                    obj.image.addEventListener('cropstart', function () {
+                        vm.input.newCustomer.logo = null;
+                    });
+                };
+                img.src = fr.result; // is the data URL because called with readAsDataURL
+            };
+            fr.readAsDataURL(fileItem[0]._file);
+        }
+    };
+
+    vm.uploader.customerLogo.onWhenAddingFileFailed =
+        vm.uploader.customerLogo.onErrorItem =
+            vm.uploader.customerLogo.onErrorItem =
+                function(fileItem, response, status, headers){upload_error(fileItem, response, status, headers)};
+
+    vm.uploader.customerLogo.onAfterAddingFile =
+        vm.uploader.customerLogo.onAfterAddingAll =
+            function(fileItem, response, status, headers){ upload_success(fileItem, response, status, headers,vm.input.newCustomer)};
+
+    vm.getCustomer = function(customerID){
         customerService.search({key:"id", value: customerID}).then(
             function(data){
                 if(data.length==1){
@@ -80,7 +140,7 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
                 if (!found) {
                     vm.customer.users.push(vm.input.keyaccount[0]);
                 }
-                vm.input = {keyaccount: []};
+                vm.input_reset();
             }
         );
     };
@@ -127,7 +187,7 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
                 vm.input.retouraddress.id = response.addressID;
                 vm.customer.retouraddress.push(vm.input.retouraddress);
 
-                vm.input = {keyaccount: []};
+                vm.input_reset();
             }
         );
     };
@@ -143,6 +203,40 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
                 }
             );
         }
+    };
+    vm.locals.submit.customer_add = function(){
+        customerService.search({key:"name",value:vm.input.newCustomer.name}).then(
+            function(data){
+                vm.input.newCustomer.users = vm.input.keyaccount;
+                if(data.length==0){
+                    customerService.add(vm.input.newCustomer).then(
+                        function(){
+                            vm.input_reset();
+                        }
+                    );
+                }else{
+                    vm.dialog.dublicate =  componentService.getInstance("dialogConfirm");
+                    vm.dialog.dublicate.config = {
+                        title:  'Kunde mit ähnlichem Namen vorhanden',
+                        textContent:  data.map(function(customer){
+                            return customer.name;
+                        }).join(", "),
+                        ok: 'Kunden trotzdem anlegen',
+                        cancel: 'abbrechen',
+                        ariaLabel: 'Kunden erstellen'
+                    };
+                    vm.dialog.dublicate.callback.ok = function () {
+                        customerService.add(vm.input.newCustomer).then(
+                            function(){
+                                vm.input_reset();
+                            }
+                        );
+                    };
+                    vm.dialog.dublicate.show();
+                }
+            }
+        );
+
     };
     vm.locals.edit = function(address){
         vm.input.retouraddress = angular.copy(address);
