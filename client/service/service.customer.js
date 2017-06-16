@@ -160,7 +160,24 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
     };
 
     vm.add = function(data){
-        return $http.post("/api/customer",data);
+        var formdata = new FormData();
+        var data_to_insert = {};
+        var filename = "";
+        console.log(data)
+        if(data.logoFile){
+            filename = data.name.toLowerCase().replace(/\s/g,'') + '.png';
+            formdata.append('file', data.logoFile, filename);
+        }
+        data_to_insert = {
+            name: data.name,
+            users: data.users,
+            logo: filename
+        }
+        return $http.post("/api/customer",formdata,{
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},
+            params: data_to_insert
+        });
 
     };
 

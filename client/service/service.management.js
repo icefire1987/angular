@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService) {
+angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService) {
 
     var vm = this;
 
@@ -204,7 +204,11 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             );
         }
     };
-    vm.locals.submit.customer_add = function(){
+    vm.locals.submit.customer_add = function() {
+        if (vm.input.newCustomer.logo) {
+            var file = imageService.dataURLToFile(vm.input.newCustomer.logo);
+            vm.input.newCustomer.logoFile = file;
+        }
         customerService.search({key:"name",value:vm.input.newCustomer.name}).then(
             function(data){
                 vm.input.newCustomer.users = vm.input.keyaccount;

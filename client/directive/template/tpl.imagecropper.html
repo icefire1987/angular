@@ -1,6 +1,26 @@
-<div>
+<div ng-if="fileuploader">
+    <section>
+        <input class="ng-hide" id="input-file" type="file" nv-file-select uploader="fileuploader" />
+        <label for="input-file" class="md-button md-raised md-accent" ng-click="fileuploader.clearQueue();">{{options.textInputFile}}</label>
+    </section>
+    <section ng-if="fileuploader.queue.length>0" layout="row">
+        <div flex="30" layout-margin>
+            <img id="cropperImage" style="max-width: 100%" ng-src="{{cropper.source}}">
+        </div>
 
-    <img ng-if="options.filepath.length>0" ng-src="{{options.filepath}}" class="md-avatar"/>
-    <h5>test</h5>
+        <div flex="30" layout-margin>
+            <div>
+                <md-button ng-if="!model.logo" class="md-primary md-raised" ng-click="imageToModel()">übernehmen</md-button>
+                <span ng-if="model.logo" class="md-success" layout-padding>
+                    <md-icon>check</md-icon> Bild übernommen
+                </span>
+            </div>
+            <div id="cropperPreview" class="cropperPreview_rectangle"></div>
+
+        </div>
+        <div flex></div>
+
+
+
+    </section>
 </div>
-

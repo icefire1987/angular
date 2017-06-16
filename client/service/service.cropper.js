@@ -14,16 +14,16 @@ angular.module('myApp').service('cropperService', function ($rootScope) {
         vm.source = source;
     };
 
+    vm.onCrop = function(){};
     vm.start = function(){
-
         vm.loading = true;
         vm.cropping = true;
         vm.cropped = false;
     };
     vm.finish = function(){
-
         vm.loading = false;
         vm.cropped=true;
+        vm.onCrop();
         $rootScope.$apply();
     };
 
@@ -33,26 +33,29 @@ angular.module('myApp').service('cropperService', function ($rootScope) {
     };
 
     vm.cropper = function(obj) {
-
+        var aspectRatio=1;
         if(vm.aCropper){
             vm.aCropper.destroy();
         }
+        if(obj.aspectRatio){
+            aspectRatio = obj.aspectRatio;
+        }
 
-            vm.aCropper = new Cropper(obj.image, {
-                aspectRatio: 1,
-                preview: obj.previewArea,
-                zoomable: false,
-                scalable: false,
-                ready: function(){
-                    vm.finish();
-                },
-                cropstart: function(){
-                    vm.start();
-                },
-                cropend: function(){
-                    vm.finish();
-                }
-            });
+        vm.aCropper = new Cropper(obj.image, {
+            aspectRatio: aspectRatio,
+            preview: obj.previewArea,
+            zoomable: false,
+            scalable: false,
+            ready: function(){
+                vm.finish();
+            },
+            cropstart: function(){
+                vm.start();
+            },
+            cropend: function(){
+                vm.finish();
+            }
+        });
 
     };
 

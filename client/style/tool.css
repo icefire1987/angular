@@ -61,10 +61,19 @@ md-list-item.child{
     overflow: hidden;
 
 }
-.cropperPreview img{
+.cropperPreview_rectangle{
+    min-width:100px;
+    min-height: 100px;
+    height: 200px;
+    border:1px solid grey;
+    overflow: hidden;
+}
+.cropperPreview img,.cropperPreview_rectangle img{
     min-width:100px;
     min-height: 100px;
 }
+
+
 /* Force same height as width , margin belongs to setted width */
 .cropperPreview:after{
     content: '';

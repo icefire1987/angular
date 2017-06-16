@@ -98,12 +98,16 @@ module.exports = {
             var err ={userFeedback: 'Customername is missing'};
             return callback(err,null);
         }
-
         var data_to_insert = {
             name: data.name,
+            logo: ""
         };
         if(data.id){
             data_to_insert.id = data.id;
+        }
+        console.log(data);
+        if(data.logo){
+            data_to_insert.logo = data.logo
         }
         var query = "INSERT INTO customers SET ? ON DUPLICATE KEY update name=name";
         pool.getConnection(function (err, connection) {

@@ -815,33 +815,60 @@ module.exports = function (app, express, io) {
         });
     });
     router.post('/customer/',ensureAuthorized, function(req,res){
-        if (req.body.name != "undefined") {
-            Customer.post(req.body, function(err,data){
+        if (req.query.name != "undefined") {
+            if(req.query.logo.length>0){
+                upload.single('file')(req,res,function(err) {
+                    // UPLOAD TO /tmp ... move it to /client/media/customer_logo
+                    console.log("done")
+                    if(err){
+                        var response = {};
+                        response.debug = "Upload fehlgeschlagen";
+                        res.status(420).json(response);
+                        return;
+                    }
+                });
+            }
+
+            Customer.post(req.query, function(err,data){
+                var error = [];
                 if(err) {
                     err.debug = err.message;
                     res.status(500).json({
                         error: err
                     });
                 }else if(data && data.id){
-                    req.body.users.map(function(elem){
-                        var insert_data = {
-                            customerID: data.id,
-                            userID: elem.id
-                        };
-                        Customer.post_keyaccount(insert_data,function(err,data){
-                            if(err) {
-                                err.debug = err.message;
-                                res.status(500).json({
-                                    error: err
-                                });
-                            }
-                        })
-                    });
-                    res.json({ userFeedback: "Kunde angelegt", type:"success", customer: {id: data.id, name:req.body.name } });
+
+                    if(req.query.users && req.query.users.length>0){
+                        if(!req.query.users.map){
+                            req.query.users = [req.query.users];
+                        }
+                        req.query.users.map(function(elem){
+                            var insert_data = {
+                                customerID: data.id,
+                                userID: JSON.parse(elem).id
+                            };
+                            Customer.post_keyaccount(insert_data,function(err,data){
+
+                                if(err) {
+                                    err.debug = err.message;
+                                    error.push(err);
+                                }
+                            })
+                        });
+                        if(error) {
+                            res.status(500).json({
+                                error: error[0]
+                            });
+                            return;
+                        }
+                    }
+                    res.json({ userFeedback: "Kunde angelegt", type:"success", customer: {id: data.id, name:req.query.name } });
+                    return;
                 }else{
                     var response = {};
                     response.debug = "Kunde existiert bereits";
                     res.status(420).json(response);
+                    return;
                 }
             });
         }
