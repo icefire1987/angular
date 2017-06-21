@@ -12,6 +12,7 @@ var mail = require('../lib/mail.js');
 var Customer = require('../lib/customer.js');
 var Data = require('../lib/dataCollector.js');
 var Order = require('../lib/order.js');
+const fs = require('fs');
 
 var multer  = require('multer')
 var storage = multer.diskStorage({
@@ -795,6 +796,7 @@ module.exports = function (app, express, io) {
         var options = {};
         if(req.query){
             if(req.query.filter){
+                console.log(req.query.filter)
                     options.filter = JSON.parse(req.query.filter);
             }
         }
@@ -818,14 +820,15 @@ module.exports = function (app, express, io) {
         if (req.query.name != "undefined") {
             if(req.query.logo.length>0){
                 upload.single('file')(req,res,function(err) {
-                    // UPLOAD TO /tmp ... move it to /client/media/customer_logo
-                    console.log("done")
                     if(err){
                         var response = {};
                         response.debug = "Upload fehlgeschlagen";
                         res.status(420).json(response);
                         return;
                     }
+                   fs.rename('tmp/' + req.query.logo, '../client/media/customer_logo/'+req.query.logo, function(err) {
+                        if ( err ) console.log('ERROR: ' + err);
+                    });
                 });
             }
 
@@ -869,6 +872,36 @@ module.exports = function (app, express, io) {
                     response.debug = "Kunde existiert bereits";
                     res.status(420).json(response);
                     return;
+                }
+            });
+        }
+    });
+    router.post('/customer/edit',ensureAuthorized, function(req,res){
+        console.log(req.query)
+        if (req.query.id != "undefined") {
+            if(req.query.logo.length>0){
+                upload.single('file')(req,res,function(err) {
+                    if(err){
+                        var response = {};
+                        response.debug = "Upload fehlgeschlagen";
+                        res.status(420).json(response);
+                        return;
+                    }
+                    fs.rename('tmp/' + req.query.logo, '../client/media/customer_logo/'+req.query.logo, function(err) {
+                        if ( err ) console.log('ERROR: ' + err);
+                        return;
+                    });
+                });
+            }else{
+                req.query.logo = req.query.logo_filename
+            }
+
+            Customer.update({customerID: req.query.id, data: {logo: req.query.logo} },function(err,result){
+                if(err){
+                    res.status(420).json(err);
+                }else{
+                    var userFeedback = "Kunden aktualisiert";
+                    res.json({ userFeedback: userFeedback, type:"success"});
                 }
             });
         }
@@ -993,7 +1026,26 @@ module.exports = function (app, express, io) {
         }
 
     });
-
+    router.post('/customer/active',ensureAuthorized, function(req,res){
+        console.log(req.body)
+        Customer.update({customerID: req.body.customerid, data: {active: req.body.active} },function(err,result){
+            if(err){
+                res.status(420).json(errors[0]);
+            }else{
+                var userFeedback =  (req.body.active==1 ? "Kunden aktiviert" : "Kunden deaktiviert");
+                res.json({ userFeedback: userFeedback, type:"success"});
+            }
+        });
+    });
+    router.delete('/customer/',ensureAuthorized, function(req,res){
+        Customer.update({customerID: req.query.customerid, data: {active: 0} },function(err,result){
+            if(err){
+                res.status(420).json(errors[0]);
+            }else{
+                res.json({ userFeedback: "Kunden deaktiviert", type:"success"});
+            }
+        });
+    });
     router.delete('/customer/retouraddress/',ensureAuthorized, function(req,res){
         Customer.remove_retouraddress({customerID: req.query.customerid,addressID:req.query.addressid},function(err,result){
             if(err){

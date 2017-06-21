@@ -180,6 +180,50 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
         });
 
     };
+    vm.edit = function(data){
+        var formdata = new FormData();
+        var data_to_insert = {};
+        var filename = "";
+        console.log(data)
+        if(data.logoFile){
+            filename = data.name.toLowerCase().replace(/\s/g,'') + '.png';
+            formdata.append('file', data.logoFile, filename);
+        }
+        data_to_insert = {
+            id: data.id,
+            logo: filename,
+            logo_filename: data.logo
+        }
+        return $http.post("/api/customer/edit",formdata,{
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined},
+            params: data_to_insert
+        });
+
+    };
+
+    vm.update_state = function(obj){
+        if(!obj){
+            return false;
+        }
+        if(!obj.customerID || !obj.active){
+            return false;
+        }
+
+        return $http.post("/api/customer/active",{
+                customerid:  obj.customerID,
+                active:  obj.active
+            }
+        ).then(
+            function(result){
+                return result;
+            },
+            function(err){
+                console.log("err keyaccount_remove");
+                return false;
+            }
+        );
+    };
 
 
 

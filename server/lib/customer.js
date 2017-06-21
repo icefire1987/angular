@@ -223,6 +223,33 @@ module.exports = {
             });
         });
     },
+    update: function(data,callback){
+        if(data.customerID == undefined || data.customerID == ""){
+            var err ={userFeedback: 'Customer is missing'};
+            return callback(err,null);
+        }
+        var insert_data = data.data;
+
+        var where = [
+            data.customerID
+        ];
+
+        var query = "UPDATE customers SET ? WHERE id=? ";
+        pool.getConnection(function (err, connection) {
+            var sql = connection.query(query, [insert_data,where], function (err, rows) {
+                connection.release();
+                if(err){
+                    console.log("getConnErr:" + err)
+                    return callback(err,null);
+                }
+                if (rows.affectedRows > 0) {
+                    return callback(null,{id: rows.insertId});
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
     remove_keyaccount: function(data,callback){
         if(data.userID == undefined || data.userID == ""){
             var err ={userFeedback: 'User is missing'};
@@ -291,6 +318,10 @@ module.exports = {
         if(options && options.filter){
             for(var key in options.filter){
                 where_additional = " and " + key + "=? ";
+                if(key == 'active'){
+                    where_additional = " and  customers_retour.active = ? ";
+                }
+
                 where_additional_val.push(options.filter[key]);
             }
         }

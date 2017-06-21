@@ -5,59 +5,53 @@
                 <md-icon>keyboard_backspace</md-icon>
             </md-button>
             {{toolCtrl.management.customer.name}} bearbeiten</h3>
-        <md-button class="md-icon-button" aria-label="More">
-            <md-icon>more_vert</md-icon>
-        </md-button>
+
+        <md-menu md-position-mode="target-right target">
+            <md-button ng-click="$mdMenu.open($event)" aria-label="Open Customer Menu"  class="md-icon-button">
+                <md-icon> more_vert </md-icon>
+            </md-button>
+            <md-menu-content width="4" >
+                <md-menu-item>
+                    <md-button ng-if="toolCtrl.management.customer.active" ng-click="toolCtrl.management.locals.submit.customer_state(0)">
+                        <md-icon> visibility_off </md-icon>
+                        Datensatz deaktivieren
+                    </md-button>
+                    <md-button ng-if="!toolCtrl.management.customer.active" ng-click="toolCtrl.management.locals.submit.customer_state(1)">
+                        <md-icon> visibility </md-icon>
+                        Datensatz aktivieren
+                    </md-button>
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
     </div>
 
 </md-toolbar>
 <md-tabs md-dynamic-height="" md-border-bottom>
     <md-tab label="stammdaten">
         <md-content class="md-padding">
-            <md-card >
-                <md-card-title>
-                    <md-card-title-text>
-
-                    </md-card-title-text>
-                </md-card-title>
+            <md-card>
                 <md-card-content>
                     <div layout="row">
                         <md-input-container>
                             <label>Kundenname</label>
                             <input ng-model="toolCtrl.management.customer.name" required>
                         </md-input-container>
+                        <section flex layout="column" layout-align="center end">
+                            <img class="height_limit" style="max-height: 200px" ng-src="/client/media/customer_logo/{{toolCtrl.management.customer.logo}}" >
+                        </section>
 
 
 
                     </div>
-                    <!--
-                    <h3 class="md-headline">Rechnungsadresse</h3>
-                    <div layout="row">
-                        <md-input-container>
-                            <label>Ansprechpartner</label>
-                            <input ng-model="dialogCtrl.newCustomer.person">
-                        </md-input-container>
-                        <md-input-container>
-                            <label>Strasse / Hausnummer</label>
-                            <input ng-model="toolCtrl.management.customer.street">
-                        </md-input-container>
-                    </div>
-                    <div layout="row">
-                        <md-input-container>
-                            <label>PLZ</label>
-                            <input ng-model="toolCtrl.management.customer.postal">
-                        </md-input-container>
-                        <md-input-container>
-                            <label>Ort</label>
-                            <input ng-model="toolCtrl.management.customer.city">
-                        </md-input-container>
-                    </div>-->
+                    <imagecropper cropper="toolCtrl.management.cropper" input="toolCtrl.management.customer" text-input-file="neues Kundenlogo"></imagecropper>
+                    {{toolCtrl.management.customer}}
                 <md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button class="md-raised md-warn" ng-click="dialogCtrl.newCustomer.show=false">
+                    <md-button class="md-raised md-warn" ui-sref="protected.verwaltung.customers.start">
                         <md-icon>close</md-icon> abbrechen
                     </md-button>
-                    <md-button ng-click="dialogCtrl.newCustomer.submit()" class="md-raised md-primary">
+                    <md-button ng-click="toolCtrl.management.locals.submit.customer_edit()" class="md-raised md-primary">
                         <md-icon>check</md-icon> speichern
                     </md-button>
 
@@ -130,10 +124,10 @@
                     <md-card-title-text>
                         <span>Retouradresse verwalten</span>
                         <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.retouraddress_switch_view()">
-                            <md-icon aria-label="show" ng-if="toolCtrl.management.active">visibility</md-icon>
-                            <md-tooltip  ng-if="toolCtrl.management.active">Inaktive Adressen anzeigen</md-tooltip>
-                            <md-icon aria-label="show" ng-if="!toolCtrl.management.active">visibility_off</md-icon>
-                            <md-tooltip  ng-if="!toolCtrl.management.active">Inaktive Adressen ausblenden</md-tooltip>
+                            <md-icon aria-label="show" ng-if="toolCtrl.management.filter.retouraddress.active">visibility</md-icon>
+                            <md-tooltip  ng-if="toolCtrl.management.filter.retouraddress.active">Inaktive Adressen anzeigen</md-tooltip>
+                            <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.retouraddress.active">visibility_off</md-icon>
+                            <md-tooltip  ng-if="!toolCtrl.management.filter.retouraddress.active">Inaktive Adressen ausblenden</md-tooltip>
                         </md-button>
                     </md-card-title-text>
                 </md-card-title>

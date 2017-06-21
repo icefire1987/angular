@@ -43,21 +43,52 @@
         </md-table-container>-->
         <md-list ng-if="toolCtrl.management.searchResult.length">
             <md-subheader class="md-no-sticky">Suchergebnis</md-subheader>
-            <md-list-item ng-repeat="row in toolCtrl.management.searchResult" ui-sref="protected.verwaltung.customers.edit({customerID: row.id})">
-                <span >
+
+            <md-list-item layout="row">
+                <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.filter.customer.active= +!toolCtrl.management.filter.customer.active">
+                    <md-icon aria-label="show" ng-if="toolCtrl.management.filter.customer.active">visibility</md-icon>
+                    <md-tooltip  ng-if="toolCtrl.management.filter.customer.active">Inaktive Kunden anzeigen</md-tooltip>
+                    <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.customer.active">visibility_off</md-icon>
+                    <md-tooltip  ng-if="!toolCtrl.management.filter.customer.active">Inaktive Kunden ausblenden</md-tooltip>
+                </md-button>
+
+            </md-list-item>
+
+
+            <md-list-item layout="row">
+
+                <span style="width:50px">
+
+                </span>
+                <span flex="40">
+                    <md-icon aria-label="edit">business</md-icon>
+                    <span>Kundenname</span>
+                </span>
+                <span flex="30">
+                    <md-icon md-font-set="fa" md-font-icon="fa-user"></md-icon>
+                    <span>Ansprechpartner</span>
+                </span>
+                <span flex>
+
+                </span>
+            </md-list-item>
+            <md-list-item
+                    ng-repeat="row in toolCtrl.management.searchResult | filter: (toolCtrl.management.filter.customer.active ? {active: toolCtrl.management.filter.customer.active} : '' ) "
+                    ui-sref="protected.verwaltung.customers.edit({customerID: row.id})" layout="row">
+                <span style="width:50px">
                     <alt-avatar data-color="200" data-text="{{row.name}}" data-filepath="{{(row.logo)?('/client/media/customer_logo/'+row.logo):''}}"></alt-avatar>
                 </span>
-                <span flex>
+                <span flex= "40" >
                     {{row.name}}
                 </span>
-                <span flex>
+                <span flex="30">
                     <span  ng-repeat="user in row.users" >
                         <md-tooltip>{{user.prename}} {{user.lastname}}</md-tooltip>
                         <alt-avatar data-color="{{user.avatar_alt}}" data-text="{{user.prename}} {{user.lastname}}" data-filepath="{{user.avatar}}"></alt-avatar>
                     </span>
                 </span>
                 <md-icon aria-label="Send Email" class="md-secondary md-hue-3" >build</md-icon>
-                <md-icon class="md-secondary"aria-label="Chat">backup</md-icon>
+
 
             </md-list-item>
         </md-list>

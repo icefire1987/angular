@@ -56,7 +56,9 @@ angular.module('myApp').directive('imagecropper', function(cropperService,FileUp
             };
             scope.cropper = cropperService;
             scope.model = scope.$eval(attr.input);
-            scope.model.logo = "";
+            if(typeof scope.model.logo_data == "undefined"){
+                scope.model.logo_data = "";
+            }
             scope.init_cropper = function(img){
                 var obj = {};
                 obj.type = "";
@@ -71,10 +73,10 @@ angular.module('myApp').directive('imagecropper', function(cropperService,FileUp
             };
             scope.cropper.onCrop = function(){
                 console.log("doooiiiey");
-                scope.model.logo = false;
+                scope.model.logo_data = false;
             };
             scope.imageToModel = function(){
-                scope.model.logo = scope.cropper.getCroppedCanvas();
+                scope.model.logo_data = scope.cropper.getCroppedCanvas();
             };
 
             scope.$on('$destroy', function () {

@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService) {
+angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService,$state) {
 
     var vm = this;
 
@@ -17,14 +17,18 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
     };
     vm.dialog = {};
     vm.locals = {submit:{}};
-    vm.active=1;
-    vm.customer = {};
 
-    vm.uploader = {};
+    vm.customer = {};
+    vm.filter = {
+        customer: {active: 1},
+        retouraddress: {active: 1}
+    };
+    /*
+    vm.uploader = {}
     vm.uploader.customerLogo = new FileUploader();
     vm.uploader.customerLogo.filters.push({
         name: 'imageFilter',
-        fn: function(item /*{File|FileLikeObject}*/, options) {
+        fn: function(item /*{File|FileLikeObject}*//*, options) {
             var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
         }
@@ -70,15 +74,16 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
     vm.uploader.customerLogo.onAfterAddingFile =
         vm.uploader.customerLogo.onAfterAddingAll =
             function(fileItem, response, status, headers){ upload_success(fileItem, response, status, headers,vm.input.newCustomer)};
-
+*/
     vm.getCustomer = function(customerID){
         customerService.search({key:"id", value: customerID}).then(
             function(data){
+                console.log(data);
                 if(data.length==1){
                     vm.customer = data[0];
                     customerService.getRetouraddress({"customerID":customerID, filter: {active:1}}).then(
                         function(data){
-                            console.log(data);
+
                             vm.customer.retouraddress = data;
                         }
                     );
@@ -90,12 +95,12 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
     vm.retouraddress_switch_view = function(active){
         var filter = {};
         if(typeof active!="undefined"){
-            vm.active = active;
+            vm.filter.retouraddress.active= active
         }else{
-            vm.active = !vm.active;
+            vm.filter.retouraddress.active= +!vm.filter.retouraddress.active
         }
-        if(vm.active){
-            filter = {active:vm.active};
+        if(vm.filter.retouraddress.active){
+            filter = {active:vm.filter.retouraddress.active};
         }
         customerService.getRetouraddress({"customerID":vm.customer.id, filter: filter}).then(
             function(data){
@@ -105,9 +110,6 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         );
     };
 
-    vm.customer_edit = function(){
-// FULLPAGE?
-    };
 
 
     vm.locals.submit.keyaccount_delete = function(userObj){
@@ -205,8 +207,8 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         }
     };
     vm.locals.submit.customer_add = function() {
-        if (vm.input.newCustomer.logo) {
-            var file = imageService.dataURLToFile(vm.input.newCustomer.logo);
+        if (vm.input.newCustomer.logo_data) {
+            var file = imageService.dataURLToFile(vm.input.newCustomer.logo_data);
             vm.input.newCustomer.logoFile = file;
         }
         customerService.search({key:"name",value:vm.input.newCustomer.name}).then(
@@ -242,6 +244,35 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         );
 
     };
+    vm.locals.submit.customer_edit = function() {
+        if (vm.customer.logo_data) {
+            var file = imageService.dataURLToFile(vm.customer.logo_data);
+            vm.customer.logoFile = file;
+        }else{
+
+        }
+        customerService.edit(vm.customer).then(
+            function(){
+                //vm.input_reset();
+                $state.go("protected.verwaltung");
+            }
+        );
+
+    };
+    vm.locals.submit.customer_state= function(active){
+        if(vm.customer.id) {
+            customerService.update_state({
+                customerID:  vm.customer.id,
+                active: active
+            }).then(
+                function (response) {
+                    console.log(response)
+                    $state.reload();
+                }
+            );
+        }
+    };
+
     vm.locals.edit = function(address){
         vm.input.retouraddress = angular.copy(address);
         location.href = "#management_customer_form";
