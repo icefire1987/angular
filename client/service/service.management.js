@@ -254,10 +254,17 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         customerService.edit(vm.customer).then(
             function(){
                 //vm.input_reset();
-                $state.go("protected.verwaltung");
+                $state.go("protected.verwaltung.customers.start");
             }
         );
 
+    };
+    vm.locals.submit.customersearch = function(){
+        customerService.search({key:"name",value:vm.input.customername}).then(
+            function(data){
+                vm.searchResult = data;
+            }
+        )
     };
     vm.locals.submit.customer_state= function(active){
         if(vm.customer.id) {

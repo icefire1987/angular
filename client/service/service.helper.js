@@ -99,7 +99,7 @@ angular.module('myApp').service('helperService', function () {
             vm.color.rgb.push(parseInt(vm.color.hex.substring(1,3), 16));
             vm.color.rgb.push(parseInt(vm.color.hex.substring(3,5), 16));
             vm.color.rgb.push(parseInt(vm.color.hex.substring(5,7), 16));
-console.log(vm.color.rgb)
+            console.log(vm.color.rgb)
             return this;
         },
         rgb_to_hsl : function(){
@@ -149,6 +149,19 @@ console.log(vm.color.rgb)
             if(obj[x] === false){
                 delete (obj[x]);
             }
+        }
+    };
+
+
+    vm.time = {
+        timestamp: 0,
+        setTimestamp: function(value){
+            if(value){
+                vm.time.timestamp=value;
+            }else{
+                vm.time.timestamp= Date.now();
+            }
+            return vm.time.timestamp;
         }
     };
 

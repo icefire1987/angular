@@ -38,14 +38,13 @@
                             <input ng-model="toolCtrl.management.customer.name" required>
                         </md-input-container>
                         <section flex layout="column" layout-align="center end">
-                            <img class="height_limit" style="max-height: 200px" ng-src="/client/media/customer_logo/{{toolCtrl.management.customer.logo}}" >
+                            <img class="height_limit_200 image_border_double" style="max-height: 200px"
+                                 ng-src="/client/media/customer_logo/{{toolCtrl.management.customer.logo}}"
+                                 ng-if="toolCtrl.management.customer.logo"
+                                ng-image-reload>
                         </section>
-
-
-
                     </div>
                     <imagecropper cropper="toolCtrl.management.cropper" input="toolCtrl.management.customer" text-input-file="neues Kundenlogo"></imagecropper>
-                    {{toolCtrl.management.customer}}
                 <md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-raised md-warn" ui-sref="protected.verwaltung.customers.start">
@@ -123,7 +122,7 @@
                 <md-card-title>
                     <md-card-title-text>
                         <span>Retouradresse verwalten</span>
-                        <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.retouraddress_switch_view()">
+                        <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.retouraddress_switch_view()" aria-label="show hidden">
                             <md-icon aria-label="show" ng-if="toolCtrl.management.filter.retouraddress.active">visibility</md-icon>
                             <md-tooltip  ng-if="toolCtrl.management.filter.retouraddress.active">Inaktive Adressen anzeigen</md-tooltip>
                             <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.retouraddress.active">visibility_off</md-icon>

@@ -877,7 +877,6 @@ module.exports = function (app, express, io) {
         }
     });
     router.post('/customer/edit',ensureAuthorized, function(req,res){
-        console.log(req.query)
         if (req.query.id != "undefined") {
             if(req.query.logo.length>0){
                 upload.single('file')(req,res,function(err) {
@@ -896,7 +895,7 @@ module.exports = function (app, express, io) {
                 req.query.logo = req.query.logo_filename
             }
 
-            Customer.update({customerID: req.query.id, data: {logo: req.query.logo} },function(err,result){
+            Customer.update({customerID: req.query.id, data: {logo: req.query.logo, name: req.query.name} },function(err,result){
                 if(err){
                     res.status(420).json(err);
                 }else{

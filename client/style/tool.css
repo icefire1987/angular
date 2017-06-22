@@ -111,6 +111,16 @@ md-list-item.child{
 .user-avatar {
     border-radius: 99%;
 }
+
+.image_border_double{
+    padding:2px;
+    border:1px dashed #111;
+    background-color:#ddd;
+
+}
+.inactive {
+    color: #aaa
+}
 /* Select*/
 md-option md-icon{
     text-align: center;

@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('logisticService', function ($q, $http,$filter,componentService,userService) {
+angular.module('myApp').service('logisticService', function ($q, $http,$filter,$state,componentService,userService) {
 
     var vm = this;
 
@@ -174,6 +174,8 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
             function(result){
                 console.log(result);
                 if(result.data && result.data.id>0){
+
+                    $state.reload();
                     for(var key in data.userKeyAccID){
                         var data_keyAcc = {
                             orderID: result.data.id,
@@ -182,7 +184,7 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
                         $http.post("/api/order/keyaccount",data_keyAcc).then(
                             function(result){
                                 console.log(result);
-
+                                console.log("two")
                             },
                             function(err){
                                 console.log("err newOrder")
@@ -191,6 +193,10 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,c
                             }
                         );
                     }
+
+                }else{
+
+                    console.log("one")
                 }
             },
             function(err){

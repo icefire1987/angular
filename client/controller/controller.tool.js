@@ -53,13 +53,7 @@ myApp.controller('toolCtrl', function(
             }
         );
     };
-    vm.locals.submit.customersearch = function(){
-        vm.customer.search({key:"name",value:vm.management.input.customername}).then(
-            function(data){
-                vm.management.searchResult = data;
-            }
-        )
-    };
+
 
 
 

@@ -184,13 +184,13 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
         var formdata = new FormData();
         var data_to_insert = {};
         var filename = "";
-        console.log(data)
         if(data.logoFile){
             filename = data.name.toLowerCase().replace(/\s/g,'') + '.png';
             formdata.append('file', data.logoFile, filename);
         }
         data_to_insert = {
             id: data.id,
+            name: data.name,
             logo: filename,
             logo_filename: data.logo
         }
@@ -203,10 +203,11 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
     };
 
     vm.update_state = function(obj){
+        console.log(obj)
         if(!obj){
             return false;
         }
-        if(!obj.customerID || !obj.active){
+        if(!obj.customerID || typeof obj.active === undefined){
             return false;
         }
 

@@ -308,7 +308,10 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         }
                     },
                     onEnter: function(managementService, $stateParams){
-                        managementService.getCustomer($stateParams.customerID)
+                        if(managementService.input.customername){
+                            managementService.locals.submit.customersearch();
+                        }
+
                     }
                 }
             },

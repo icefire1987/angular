@@ -29,18 +29,16 @@ angular.module('myApp').directive('imagecropper', function(cropperService,FileUp
                 });
             };
             scope.upload_success = function(fileItem, response, status, headers){
-                console.log(scope.fileuploader.queue);
                 if ( (/\.(png|jpeg|jpg|gif)$/i).test(scope.fileuploader.queue[0].file.name) ) {
                     var reader = new FileReader();
                     reader.addEventListener("load", function () {
                         var img = document.getElementById("cropperImage");
                         img.src = reader.result;
                         img.onload = function() {
+                            scope.bind_model();
                             scope.init_cropper(img);
                         };
-
                     });
-
                     reader.readAsDataURL(scope.fileuploader.queue[0]._file);
                 }else{
                     logService.log({
@@ -55,11 +53,16 @@ angular.module('myApp').directive('imagecropper', function(cropperService,FileUp
                 textInputFile: attr.textInputFile
             };
             scope.cropper = cropperService;
-            scope.model = scope.$eval(attr.input);
-            if(typeof scope.model.logo_data == "undefined"){
-                scope.model.logo_data = "";
-            }
+
+            scope.bind_model = function(){
+                scope.model = scope.$eval(attr.input);
+                if(typeof scope.model.logo_data == "undefined"){
+                    scope.model.logo_data = "";
+                }
+            };
             scope.init_cropper = function(img){
+                scope.model.xy = "Z"
+                scope.model.logo_data = "";
                 var obj = {};
                 obj.type = "";
                 obj.cropArea = 'cropperArea';
@@ -72,8 +75,7 @@ angular.module('myApp').directive('imagecropper', function(cropperService,FileUp
                 });
             };
             scope.cropper.onCrop = function(){
-                console.log("doooiiiey");
-                scope.model.logo_data = false;
+                scope.model.logo_data = "";
             };
             scope.imageToModel = function(){
                 scope.model.logo_data = scope.cropper.getCroppedCanvas();

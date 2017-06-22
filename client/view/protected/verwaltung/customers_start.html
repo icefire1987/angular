@@ -1,6 +1,6 @@
 
 <md-card class="md-padding">
-    <form ng-submit="toolCtrl.locals.submit.customersearch()" layout="row">
+    <form ng-submit="toolCtrl.management.locals.submit.customersearch()" layout="row">
         <md-input-container class="md-block" flex>
             <label>Kundenname suchen</label>
             <md-icon>search</md-icon>
@@ -45,7 +45,7 @@
             <md-subheader class="md-no-sticky">Suchergebnis</md-subheader>
 
             <md-list-item layout="row">
-                <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.filter.customer.active= +!toolCtrl.management.filter.customer.active">
+                <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.filter.customer.active= +!toolCtrl.management.filter.customer.active" aria-label="show hidden">
                     <md-icon aria-label="show" ng-if="toolCtrl.management.filter.customer.active">visibility</md-icon>
                     <md-tooltip  ng-if="toolCtrl.management.filter.customer.active">Inaktive Kunden anzeigen</md-tooltip>
                     <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.customer.active">visibility_off</md-icon>
@@ -76,9 +76,9 @@
                     ng-repeat="row in toolCtrl.management.searchResult | filter: (toolCtrl.management.filter.customer.active ? {active: toolCtrl.management.filter.customer.active} : '' ) "
                     ui-sref="protected.verwaltung.customers.edit({customerID: row.id})" layout="row">
                 <span style="width:50px">
-                    <alt-avatar data-color="200" data-text="{{row.name}}" data-filepath="{{(row.logo)?('/client/media/customer_logo/'+row.logo):''}}"></alt-avatar>
+                    <alt-avatar data-color="200" data-text="{{row.name}}" data-filepath="{{(row.logo)?('/client/media/customer_logo/'+row.logo):''}}" ng-image-reload></alt-avatar>
                 </span>
-                <span flex= "40" >
+                <span flex= "40" ng-class="row.active===0 ? 'inactive' : ''">
                     {{row.name}}
                 </span>
                 <span flex="30">
@@ -96,7 +96,7 @@
 
 
     <md-card-actions>
-        <md-button class="md-raised  md-primary" aria-label="create team" ng-click="toolCtrl.management.locals.show_newCustomer = true">
+        <md-button class="md-raised  md-accent" aria-label="create team" ng-click="toolCtrl.management.locals.show_newCustomer = true">
             <md-icon>edit</md-icon>
             Kunden anlegen
         </md-button>
@@ -143,4 +143,3 @@
     </md-card-actions>
     </form>
 </md-card>
-{{toolCtrl.management.input}}
