@@ -16,8 +16,13 @@ module.exports = {
     get : function(colname,value,callback){
         var query = "";
         switch(colname){
+
             case "username":
-                query = 'select * from user WHERE username=?';
+                query = 'select user.id, user.username,user.email, user.roles,user.salt,user.login, GROUP_CONCAT(teams.name) as teams, user.password from user ' +
+                    'LEFT JOIN teams_user On teams_user.userID = user.id ' +
+                    'LEFT JOIN teams ON teams.id = teams_user.teamID ' +
+                    'WHERE username=? ' +
+                    'GROUP BY user.id';
                 break;
             case "email":
                 query = 'select * from user WHERE email=?';
@@ -26,7 +31,9 @@ module.exports = {
                 query = 'select * from user WHERE id=?';
                 break;
             case "team":
-                query = 'select user.id, user.username,user.email, roles.name as role,roles.id as roleID from teams_user LEFT JOIN user ON teams_user.userID = user.id LEFT JOIN roles ON teams_user.roleID = roles.id WHERE teamID=?';
+                query = 'select user.id, user.username,user.email, roles.name as role,roles.id as roleID from teams_user ' +
+                    'LEFT JOIN user ON teams_user.userID = user.id ' +
+                    'LEFT JOIN roles ON teams_user.roleID = roles.id WHERE teamID=?';
                 break;
             case "keyaccount":
                 query = ' select user.id, user.username, user.prename, user.lastname,CONCAT(user.prename," ",user.lastname) as name, user.avatar, user.avatar_alt from user LEFT JOIN user_is ON user.id = user_is.userID AND user_is.name="keyaccount" WHERE user_is.userID is not null';
@@ -39,6 +46,7 @@ module.exports = {
         pool.getConnection(function (err, connection) {
             connection.query(query, [value], function (err, rows) {
                 connection.release();
+                console.log(rows)
                 if(err){
                     return callback(err,null);
                 }

@@ -12,8 +12,13 @@ angular.module('myApp').service('dbDataCollectorService', function ($localStorag
         vm.getWG = function(){
             return $http.get("/api/data/articlewg/");
         };
-        vm.getRetourAddress = function(customerID){
-            return $http.get("/api/customer/retouraddress/customerID/"+customerID);
+        vm.getRetourAddress = function(data){
+            if(data.customerID){
+                return $http.get("/api/customer/retouraddress/filter/"+JSON.stringify(data));
+            }else{
+                return false;
+            }
+
         };
 
        return vm;

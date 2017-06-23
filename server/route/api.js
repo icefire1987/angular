@@ -211,9 +211,9 @@ module.exports = function (app, express, io) {
                     username: userdata.username,
                     email: userdata.email,
                     roles: userdata.roles.split(","),
+                    teams: userdata.teams.split(","),
                     login: userdata.login
                 }
-
                 if (Auth.comparePassword(data.password, userdata.salt, userdata.password)) {
                     var token = Auth.createUserToken(user);
                     User.updateToken(user.id,token,function(result,err){
@@ -760,6 +760,29 @@ module.exports = function (app, express, io) {
             }
         });
     });
+    router.get('/customer/filter/:filter',ensureAuthorized, function(req,res){
+        var options = {};
+        if(req.params) {
+            if (req.params.filter) {
+                options.filter = JSON.parse(req.params.filter);
+
+                Customer.get(null,null,options, function(err,data){
+                    if(err) {
+                        console.log(err)
+                        err.debug = err.message;
+                        res.status(500).json({
+                            error: err
+                        });
+                    }else if(data){
+                        res.json(data);
+                    }else{
+
+                        res.json([])
+                    }
+                });
+            }
+        }
+    });
     router.get('/customer/name/:name',ensureAuthorized, function(req,res){
         Customer.get("name",req.params.name,null, function(err,data){
             if(err) {
@@ -815,6 +838,32 @@ module.exports = function (app, express, io) {
                 res.json([])
             }
         });
+    });
+    router.get('/customer/retouraddress/filter/:filter',ensureAuthorized, function(req,res){
+        var options = {};
+        if(req.params) {
+            if (req.params.filter) {
+                options.filter = JSON.parse(req.params.filter);
+                if(!options.filter.customerID){
+                    res.json([])
+                    return;
+                }
+                Customer.getRetouraddress("customerID",options.filter.customerID, options, function (err, data) {
+                    if (err) {
+                        console.log(err)
+                        err.debug = err.message;
+                        res.status(500).json({
+                            error: err
+                        });
+                    } else if (data) {
+                        res.json(data);
+                    } else {
+
+                        res.json([])
+                    }
+                });
+            }
+        }
     });
     router.post('/customer/',ensureAuthorized, function(req,res){
         if (req.query.name != "undefined") {

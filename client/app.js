@@ -108,7 +108,7 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     data:{
                         roles: ["User"]
                     },
-                    resolve:{
+                    /*resolve:{
                         auth: ["authService","logService","$state",function(authService,logService,$state){
                             authService.authorize().then(
                                 function(status){
@@ -131,7 +131,7 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                             );
 
                         }]
-                    },
+                    },*/
                     views: {
                         'toolbar': {
                             templateUrl: '/client/view/toolbar_protected.html',
@@ -233,6 +233,9 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                 name: 'protected.logistik',
                 val: {
                     url: '/logistik',
+                    data: {
+                        teams: ['System_Logistik']
+                    },
                     views: {
                         'protected_content': {
                             templateUrl: '/client/view/protected_logistik.html'
@@ -354,8 +357,9 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
             .backgroundPalette('grey')*/
     });
 
-    myApp.run(['$rootScope', '$state', 'authService', function ($rootScope, $state, authService) {
+    myApp.run(['$rootScope', '$state', 'authService','logService', function ($rootScope, $state, authService,logService) {
         $rootScope.$on('$stateChangeStart', function (event,toState) {
+            console.log(toState)
             authService.authorize().then(
                 function(status){
                     console.log("run auth:"+status)

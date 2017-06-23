@@ -67,7 +67,7 @@
                             <div ng-if="dialogCtrl.input.customer.id">
                                 <md-input-container>
                                     <label>Retouradresse</label>
-                                    <select-table source="retouraddress" has-icon="false" filter="{customerID:dialogCtrl.input.customer.id}" selected="dialogCtrl.input.retouraddress"></select-table>
+                                    <select-table source="retouraddress" has-icon="false" filter="{customerID:dialogCtrl.input.customer.id, active: 1}" selected="dialogCtrl.input.retouraddress"></select-table>
                                 </md-input-container>
                             </div>
                             <div>

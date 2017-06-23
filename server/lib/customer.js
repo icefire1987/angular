@@ -11,8 +11,27 @@ vm.deleteUsers =  function(teamID,callback){
 };
 module.exports = {
     get : function(colname,value,options,callback){
+
         var clean_value = value;
         var queryValues = [];
+        var where_additional = "";
+        var where_additional_val = [];
+        if(options && options.filter){
+            for(var key in options.filter){
+                if(key == 'active'){
+                    where_additional = " and  customers.active = ? ";
+                    where_additional_val.push(options.filter[key]);
+                }
+                if(key == 'name'){
+                    where_additional = " and  customers.name LIKE ? ";
+                    where_additional_val.push("%"+options.filter[key]+"%");
+                }
+                if(key == 'id'){
+                    where_additional = " and  customers.id = ? ";
+                    where_additional_val.push(options.filter[key]);
+                }
+            }
+        }
         switch(colname){
             case "name":
                 clean_value = "%"+value+"%";
@@ -32,17 +51,6 @@ module.exports = {
                     'LEFT JOIN user ON customers_user.userID = user.id ' +
                     'WHERE customers.name LIKE ? ' +
                     'GROUP BY customers.id ';
-                /*var query1 = 'select ' +
-                    'customers.*, ' +
-                    'IF(user.username is null,null,JSON_ARRAY(GROUP_CONCAT(JSON_OBJECT(' +
-                    '"username", user.username,"prename", user.prename,"lastname", user.lastname,' +
-                    '"avatar", user.avatar,"avatar_alt", user.avatar_alt' +
-                    ')))) as users ' +
-                    'from customers ' +
-                    'LEFT JOIN customers_user ON customers_user.customerID = customers.id ' +
-                    'LEFT JOIN user ON customers_user.userID = user.id ' +
-                    'WHERE customers.name LIKE ? ' +
-                    'GROUP BY customers.id ';*/
                 queryValues.push(clean_value);
 
                 break;
@@ -62,12 +70,19 @@ module.exports = {
                 queryValues.push(value);
                 break;
             default:
-                var query = 'select customers.*,user.id as userID, user.username as userUsername,CONCAT(user.prename," ",user.lastname) as userName,user.avatar as userAvatar,count(orders.id) as orders_count from customers ' +
+
+                var query = 'select ' +
+                    'customers.*,user.id as userID, user.username as userUsername,CONCAT(user.prename," ",user.lastname) as userName,user.avatar as userAvatar,count(orders.id) as orders_count ' +
+                    'from customers ' +
                     'LEFT JOIN orders ON orders.customerID = customers.id ' +
                     'LEFT JOIN customers_user ON customers_user.customerID = customers.id ' +
                     'LEFT JOIN user ON customers_user.userID = user.id ' +
+                    'WHERE 1=1 ' + where_additional +
                     'GROUP BY customers.id ' +
                     'ORDER BY customers.name';
+                for(var i=0;i<where_additional_val.length;i++){
+                    queryValues.push(where_additional_val[i]);
+                }
                 break;
         }
         pool.getConnection(function (err, connection) {
@@ -315,14 +330,16 @@ module.exports = {
         var queryValues = [];
         var where_additional = "";
         var where_additional_val = [];
+
         if(options && options.filter){
             for(var key in options.filter){
-                where_additional = " and " + key + "=? ";
+
                 if(key == 'active'){
                     where_additional = " and  customers_retour.active = ? ";
+                    where_additional_val.push(options.filter[key]);
                 }
 
-                where_additional_val.push(options.filter[key]);
+
             }
         }
         switch(colname){

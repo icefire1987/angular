@@ -24,14 +24,12 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                             depth=res.data[row].depth;
                         }
                         if(scope.hasIcon=="false"){
-                            console.log("false")
                             scope.options.push({
                                 value: res.data[row].id,
                                 text: res.data[row].person.concat(" ", res.data[row].street," ", res.data[row].postal," ", res.data[row].city),
                                 depth: depth
                             });
                         }else{
-                            console.log("true")
                             if(res.data[row].icon.indexOf('fa')==0) {
                                 scope.options.push({
                                     value: res.data[row].id,
@@ -68,7 +66,7 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                 scope.$watch('filter', function() {
                     switch(scope.source){
                         case "retouraddress":
-                            dbDataCollectorService.getRetourAddress(scope.filter.customerID).then(myCallback);
+                            dbDataCollectorService.getRetourAddress(scope.filter).then(myCallback);
                             break;
                     }
                 });

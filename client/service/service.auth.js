@@ -67,6 +67,20 @@ angular.module('myApp').service('authService',
 
                 return false;
             };
+            vm.isInTeam = function(team) {
+                if (!vm.authenticated || !vm.user.obj.teams) return false;
+
+                return vm.user.obj.teams.indexOf(team) != -1;
+            };
+            vm.isInAnyTeam = function(teams) {
+                if (!vm.authenticated || !vm.user.obj.teams) return false;
+
+                for (var i = 0; i < teams.length; i++) {
+                    if (this.isInTeam(teams[i])) return true;
+                }
+
+                return false;
+            };
 
             vm.getIdentity = function(force) {
                 //console.log("getIdent")
@@ -116,14 +130,21 @@ angular.module('myApp').service('authService',
             vm.authorize = function() {
                 return vm.getIdentity()
                     .then(function(data) {
-                        console.log("getIdent then success")
                         var defer = $q.defer();
                         var isAuthenticated = vm.isAuthenticated();
+/*if (
+ $state.current &&
+ $state.current.data &&
+ $state.current.data.roles &&
+ $state.current.data.roles.length > 0 &&
+ !vm.isInAnyRole($state.current.data.roles)
+ ) */
                         if (
-                            $state.next &&
-                            $state.next.data.roles &&
-                            $state.next.data.roles.length > 0 &&
-                            !vm.isInAnyRole($state.next.data.roles)
+                            $state.current &&
+                            $state.current.data &&
+                            $state.current.data.teams &&
+                            $state.current.data.teams.length > 0 &&
+                            !vm.isInAnyTeam($state.current.data.teams)
                         ) {
                             if (isAuthenticated) {
                                 defer.reject(403);

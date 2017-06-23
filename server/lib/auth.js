@@ -29,6 +29,7 @@ module.exports = {
             username: obj.username,
             email: obj.email,
             roles: obj.roles,
+            teams: obj.teams,
             login: obj.login
         };
         return jwt.sign(user, secretKey, { expiresIn: lifetime_minutes });

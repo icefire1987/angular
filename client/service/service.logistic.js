@@ -6,7 +6,8 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,$
     var vm = this;
 
     vm.getCustomer = function(){
-        return $http.get("/api/customer");
+        var filter = {active:1};
+        return $http.get("/api/customer/filter/"+JSON.stringify(filter));
     };
     vm.getOrders = function(filter){
         console.log(filter);
