@@ -380,17 +380,22 @@ module.exports = function (app, express, io) {
                 error.debug = "Error getting data by username";
                 res.status(420).json(error);
             }
-            if (userdata != null) {
-                var user = {
-                    id: userdata.id,
-                    username: userdata.username,
-                    email: userdata.email,
-                    roles: userdata.roles.split(",")
-                };
-                res.json({
-                    user: user
-                });
+
+            var user = [];
+            if (userdata != null && typeof(userdata[0] != undefined)) {
+                for(var x=0;x<userdata.length; x++){
+                    user.push({
+                        id: userdata[x].id,
+                        username: userdata[x].username,
+                        email: userdata[x].email,
+                        roles: userdata[x].roles.split(",")
+                    });
+                }
             }
+            res.json({
+                user: user
+            });
+
         });
     });
 
@@ -402,18 +407,20 @@ module.exports = function (app, express, io) {
                 error.debug = "Error getting data by email";
                 res.status(420).json(error);
             }
-            if (userdata[0] != null) {
-
-                var user = {
-                    id: userdata[0].id,
-                    username: userdata[0].username,
-                    email: userdata[0].email,
-                    roles: userdata[0].roles.split(",")
-                };
-                res.json({
-                    user: user
-                });
+            var user = [];
+            if (userdata != null && typeof(userdata[0] != undefined)) {
+                for(var x=0;x<userdata.length; x++){
+                    user.push({
+                        id: userdata[x].id,
+                        username: userdata[x].username,
+                        email: userdata[x].email,
+                        roles: userdata[x].roles.split(",")
+                    });
+                }
             }
+            res.json({
+                user: user
+            });
         });
     });
     router.get('/user/token/:token', function(req, res, next){

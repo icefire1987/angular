@@ -55,15 +55,33 @@ myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateServi
     };
     
     vm.auth.signup = function(){
-        if (vm.form_signup.$valid) {
-            authService.signup(vm.input);
-        }else{
-            logService.log({userFeedback: "Eingabe ungültig"})
-        }
+        authService.checkUnique({key:"username", value:vm.input.register_username}).then(
+            function(data){
+                if(data.unique == 0){
+                    vm.form_register.register_username.$setValidity("unique", false);
+                }
+                authService.checkUnique({key:"mail", value:vm.input.register_mail}).then(
+                    function(data){
+                        if(data.unique == 0){
+                            vm.form_register.register_mail.$setValidity("unique", false);
+                        }
+                        if (vm.form_register.$valid) {
+                            authService.signup(vm.input);
+                        }else{
+                            logService.log({userFeedback: "Eingabe ungültig"})
+                        }
+                    }
+                );
+            }
+        );
     };
 
-    vm.auth.forgotpassword = function(varname){
-        vm.auth['var_'+varname] = true;
+    vm.auth.setVar = function(varname,value){
+        if(typeof value != "undefined"){
+            vm.auth['var_'+varname] = value;
+        }else{
+            vm.auth['var_'+varname] = true;
+        }
     };
     vm.auth.sendNewPassword = function(){
         var input_pass = vm.helpers.input_clean(vm.input.login_email,true);
@@ -88,7 +106,7 @@ myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateServi
     };
     vm.imagepath = 'media/';
     vm.setBackground = function(elementID,imagepath){
-        angular.element( document.querySelector(elementID) ).css('background',"url(/server/"+imagepath+")");
+        angular.element( document.querySelector(elementID) ).css('background-image',"url(/server/"+imagepath+")");
     };
     $http.get(
         '/server/files/dir/',{
@@ -99,7 +117,8 @@ myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateServi
 
         var counter=0;
         $interval(function(){
-            vm.setBackground('#public',vm.imagepath+'backgrounds/'+data.files[counter])
+            vm.setBackground('#public',vm.imagepath+'backgrounds/low/'+data.files[counter]);
+            //vm.setBackground('#public',vm.imagepath+'backgrounds/'+data.files[counter]);
             counter++;
             if(counter>=data.files.length){
                 counter=0;

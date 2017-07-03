@@ -15,4 +15,17 @@ html, body{
     -moz-transition: all 500ms ease-in 200ms;
     -o-transition: all 500ms ease-in 200ms;
     transition: all 500ms ease-in 200ms;
+
+}
+
+
+.card_signup{
+    background: hsla(0,0%,100%, 0.85);
+}
+.card_signup .md-button{
+    background: hsla(0,0%,100%, 0.5);
+}
+
+.md-error{
+    color: darkred;
 }

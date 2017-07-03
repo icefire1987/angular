@@ -207,7 +207,9 @@ angular.module('myApp').service('authService',
                         }
                     );
             };
+
             vm.signup = function(formData){
+
                 if(
                     angular.isUndefined(formData.signup_email) || formData.signup_email === "" ||
                     angular.isUndefined(formData.signup_username) || formData.signup_username === "" ||
@@ -341,6 +343,40 @@ angular.module('myApp').service('authService',
             };
             vm.getUser = function(){
                 return vm.user;
+            };
+            vm.checkUnique = function(data){
+                var deferred = $q.defer();
+                console.log(data)
+                switch(data.key){
+                    case "mail":
+                        $http.get("/api/user/email/"+data.value).then(
+                            function(result){
+
+                                if(result.data.user.length>0){
+                                    deferred.resolve({unique: 0});
+                                }else{
+                                    deferred.resolve({unique: 1});
+                                }
+                            }
+                        );
+                        break;
+                    case "username":
+                        $http.get("/api/user/username/"+data.value).then(
+                            function(result){
+
+                                if(result.data.user.length>0){
+                                    deferred.resolve({unique: 0});
+                                }else{
+                                    deferred.resolve({unique: 1});
+                                }
+                            },
+                            function(err){
+                                console.log(err);
+                            }
+                        );
+                        break;
+                }
+                return deferred.promise;
             };
 
            return vm;

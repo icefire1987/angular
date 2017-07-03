@@ -1,10 +1,12 @@
 <md-card-title>
     <md-card-title-text>
-        <span class="md-headline">Login</span>
+        <span class="md-headline" ng-show="mainCtrl.auth.var_fp">Passwort vergessen</span>
+        <span class="md-headline" ng-show="mainCtrl.auth.var_signup">Registrieren</span>
+        <span class="md-headline" ng-hide="mainCtrl.auth.var_fp || mainCtrl.auth.var_signup">Login</span>
     </md-card-title-text>
 </md-card-title>
 
-<md-card-content ng-hide="mainCtrl.auth.var_fp">
+<md-card-content ng-hide="mainCtrl.auth.var_fp || mainCtrl.auth.var_signup">
     <form name="form_login" ng-submit="mainCtrl.auth.login()">
         <p class="help-block" ng-show="errors.login.username"><md-icon>alert</md-icon> Benutzername nicht gefunden</p>
         <p class="help-block" ng-show="errors.login.password"><md-icon>alert</md-icon>falsches Passwort</p>
@@ -22,9 +24,15 @@
                 <div ng-message="required">Pflichtfeld</div>
             </div>
         </md-input-container>
-        <md-card-actions layout="row" layout-align="end center">
-            <md-button ng-click="mainCtrl.auth.forgotpassword('fp')">Passwort vergessen</md-button>
-            <md-button type="submit" ng-disabled="form_login.$invalid">Login</md-button>
+        <md-card-actions class="md-block">
+            <md-input-container layout="row" layout-align="end center">
+                <md-button class="md-primary" ng-click="mainCtrl.auth.setVar('fp')">Passwort vergessen</md-button>
+                <md-button class="md-primary md-raised" type="submit" ng-disabled="form_login.$invalid">Login</md-button>
+            </md-input-container>
+            <md-divider></md-divider>
+            <md-input-container layout="row" layout-align="start center">
+                <md-button class="md-accent" ng-click="mainCtrl.auth.setVar('signup')">Neuen Account erstellen</md-button>
+            </md-input-container>
         </md-card-actions>
     </form>
 
@@ -41,12 +49,38 @@
             </div>
         </md-input-container>
         <md-card-actions layout="row" layout-align="end center">
-            <md-button ng-click="mainCtrl.auth.var_fp = false">abbrechen</md-button>
-            <md-button type="submit">neues Passwort zusenden</md-button>
+            <md-button class="md-warn" ng-click="mainCtrl.auth.setVar('fp',false)">abbrechen</md-button>
+            <md-button class="md-warn md-raised" type="submit">neues Passwort zusenden</md-button>
         </md-card-actions>
     </form>
 </md-card-content>
 
+<md-card-content ng-show="mainCtrl.auth.var_signup">
+    <form ng-submit="mainCtrl.auth.signup()" name="mainCtrl.form_register" >
+        <div ng-messages="mainCtrl.form_register.register_username.$error" class="md-error">
+            <div ng-message="required">Pflichtfeld</div>
+            <div ng-message="unique">Benutzername vergeben</div>
+        </div>
+        <md-input-container class="md-block">
+            <label>Benutzername</label>
+            <input type="text" required name="register_username" ng-model="mainCtrl.input.register_username">
+
+        </md-input-container>
+
+        <div ng-messages="mainCtrl.form_register.register_mail.$error" class="md-error">
+            <div ng-message="required">Pflichtfeld</div>
+            <div ng-message="unique">eMail-Adresse vergeben</div>
+        </div>
+        <md-input-container class="md-block">
+            <label>eMail-Adresse</label>
+            <input type="text"required name="register_mail" ng-model="mainCtrl.input.register_mail">
+        </md-input-container>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class="md-warn" ng-click="mainCtrl.auth.setVar('signup',false)">abbrechen</md-button>
+            <md-button class="md-accent md-raised" type="submit">registrieren</md-button>
+        </md-card-actions>
+    </form>
+</md-card-content>
 <!--
 
 
