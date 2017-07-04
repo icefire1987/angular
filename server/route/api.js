@@ -133,7 +133,8 @@ module.exports = function (app, express, io) {
             email : cleanInput(data.email,true),
             password: passObj.passwordHash,
             salt: passObj.salt,
-            roles: new Array("User").join(",")
+            roles: new Array("User").join(","),
+            avatar_alt: data.avatar_alt
         };
         pool.getConnection(function (err, connection) {
             if (err){
@@ -210,8 +211,8 @@ module.exports = function (app, express, io) {
                     id: userdata.id,
                     username: userdata.username,
                     email: userdata.email,
-                    roles: userdata.roles.split(","),
-                    teams: userdata.teams.split(","),
+                    roles: (userdata.roles != null)?(userdata.roles.split(",")):"",
+                    teams: (userdata.teams != null)?(userdata.teams.split(",")):"",
                     login: userdata.login
                 }
                 if (Auth.comparePassword(data.password, userdata.salt, userdata.password)) {
@@ -694,6 +695,7 @@ module.exports = function (app, express, io) {
             }else if(result){
                 res.json({ userFeedback: "Nachricht gesendet", type:"success"});
                 console.log("can u see it?");
+                console.log(req.user)
                 io.userSocket[req.user.id].broadcast.emit('message_receive', {teamID: req.params.teamid, title: req.body.params.title});
             }
         });

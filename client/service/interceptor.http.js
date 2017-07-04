@@ -21,7 +21,7 @@ angular.module('myApp').service('myHttpInterceptor',
                 if(response.data.userFeedback) {
                     $injector.get('logService').log({
                             userFeedback: response.data.userFeedback, 
-                            msecondsToDisplay: 5000,
+                            msecondsToDisplay: 15000,
                             classname: response.data.type
                         }
                     );

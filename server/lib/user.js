@@ -46,7 +46,7 @@ module.exports = {
         pool.getConnection(function (err, connection) {
             connection.query(query, [value], function (err, rows) {
                 connection.release();
-                console.log(rows)
+
                 if(err){
                     return callback(err,null);
                 }

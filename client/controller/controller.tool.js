@@ -6,6 +6,7 @@ myApp.controller('toolCtrl', function(
     teamService,helperService,imageService,flickrService,
     $http,$scope,
     socketService,newsService,userService,logisticService,managementService,customerService){
+console.log("tool")
 
     var vm = this;
     vm.locals = {

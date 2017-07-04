@@ -4,7 +4,7 @@
 myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateService,$localStorage,$http,logService,$rootScope,$interval, helperService){
     $rootScope.errors = {};
     var vm = this;
-        vm.input = {};
+        vm.input = {register:{}};
         vm.feedback = [];
         vm.feedback = logService.getFeedback();
         vm.user = authService.getUser();
@@ -55,6 +55,7 @@ myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateServi
     };
     
     vm.auth.signup = function(){
+        vm.form_register.register_username.$setValidity("unique", true);
         authService.checkUnique({key:"username", value:vm.input.register_username}).then(
             function(data){
                 if(data.unique == 0){
@@ -66,7 +67,7 @@ myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateServi
                             vm.form_register.register_mail.$setValidity("unique", false);
                         }
                         if (vm.form_register.$valid) {
-                            authService.signup(vm.input);
+                            authService.signup(vm.input.register);
                         }else{
                             logService.log({userFeedback: "Eingabe ungültig"})
                         }

@@ -70,6 +70,18 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         }
                     }
                 },
+
+                {
+                    name: 'public.signup_feedback',
+                    val: {
+                        url: '/signup',
+                        views: {
+                            'card': {
+                                templateUrl: '/client/view/public_signup.html',
+                            }
+                        }
+                    }
+                },
                 {
                     name: 'public.login',
                     val: {

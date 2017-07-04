@@ -2,8 +2,8 @@
  * Created by Chris on 11.11.16.
  */
 angular.module('myApp').service('authService',
-    ['$http','$q','$rootScope','$state','$timeout','$localStorage','logService',
-        function ($http,$q,$rootScope,$state,$timeout,$localStorage,logService) {
+    ['$http','$q','$rootScope','$state','$timeout','$localStorage','logService','helperService',
+        function ($http,$q,$rootScope,$state,$timeout,$localStorage,logService,helperService) {
 
             var vm = this;
 
@@ -209,24 +209,24 @@ angular.module('myApp').service('authService',
             };
 
             vm.signup = function(formData){
-
                 if(
-                    angular.isUndefined(formData.signup_email) || formData.signup_email === "" ||
-                    angular.isUndefined(formData.signup_username) || formData.signup_username === "" ||
-                    angular.isUndefined(formData.signup_password) || formData.signup_password === ""
+                    angular.isUndefined(formData.mail) || formData.mail === "" ||
+                    angular.isUndefined(formData.username) || formData.username === "" ||
+                    angular.isUndefined(formData.pass) || formData.pass === ""
                 ){
                     $rootScope.errors.signup = {error: "fehlende Eingaben"};
                     return false;
                 }
                 var data= {
-                    email: formData.signup_email,
-                    username: formData.signup_username,
-                    password: formData.signup_password
+                    email: formData.mail,
+                    username: formData.username,
+                    password: formData.pass,
+                    avatar_alt: helperService.randomInt(0,255)
                 };
                 $http.post('/api/user/signup', data)
                     .then(
                         function(res){
-                            $state.go('public.login');
+                            $state.go('public.signup_feedback');
                         },
                         function(err){
                             console.log(err)
@@ -363,7 +363,6 @@ angular.module('myApp').service('authService',
                     case "username":
                         $http.get("/api/user/username/"+data.value).then(
                             function(result){
-
                                 if(result.data.user.length>0){
                                     deferred.resolve({unique: 0});
                                 }else{

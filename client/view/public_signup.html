@@ -1,0 +1,7 @@
+<section ng-if="mainCtrl.input.register.mail">
+    <h2>Dir wurde eine eMail zugesandt an {{mainCtrl.input.register.mail}}</h2>
+    <h3>Bitte rufe diese auf und bestätige deine Registrierung</h3>
+</section>
+<section ng-if="!mainCtrl.input.register.mail">
+    <h3>Die Registrierung konnte nicht abgeschlossen werden</h3>
+</section>

@@ -56,31 +56,44 @@
 </md-card-content>
 
 <md-card-content ng-show="mainCtrl.auth.var_signup">
-    <form ng-submit="mainCtrl.auth.signup()" name="mainCtrl.form_register" >
-        <div ng-messages="mainCtrl.form_register.register_username.$error" class="md-error">
+    <form ng-submit="mainCtrl.auth.signup()" name="mainCtrl.form_register"  autocomplete="off">
+        <div ng-messages="mainCtrl.form_register.register_username.$error" ng-show="mainCtrl.form_register.register_username.$touched" class="md-error">
             <div ng-message="required">Pflichtfeld</div>
             <div ng-message="unique">Benutzername vergeben</div>
         </div>
         <md-input-container class="md-block">
             <label>Benutzername</label>
-            <input type="text" required name="register_username" ng-model="mainCtrl.input.register_username">
-
+            <input type="text" required name="register_username" ng-model="mainCtrl.input.register.username" autocomplete="off">
         </md-input-container>
 
-        <div ng-messages="mainCtrl.form_register.register_mail.$error" class="md-error">
+        <div ng-messages="mainCtrl.form_register.register_password.$error" ng-show="mainCtrl.form_register.register_password.$touched" class="md-error">
+            <div ng-message="required">Pflichtfeld</div>
+            <div ng-message="pattern">min. 1 Groß- und Kleinbuchstabe</div>
+            <div ng-message="minlength">Min. 6 Zeichen</div>
+        </div>
+        <md-input-container class="md-block">
+            <label>Passwort</label>
+            <input type="password" required name="register_password" ng-model="mainCtrl.input.register.pass" minlength="6" pattern="^(?=.*[a-z])(?=.*[A-Z]).{6,99}$">
+        </md-input-container>
+
+        <div ng-messages="mainCtrl.form_register.register_mail.$error"  ng-show="mainCtrl.form_register.register_username.$touched" class="md-error">
             <div ng-message="required">Pflichtfeld</div>
             <div ng-message="unique">eMail-Adresse vergeben</div>
+            <div ng-message="email">Format der EMail falsch</div>
         </div>
         <md-input-container class="md-block">
             <label>eMail-Adresse</label>
-            <input type="text"required name="register_mail" ng-model="mainCtrl.input.register_mail">
+            <input type="email" required name="register_mail" ng-model="mainCtrl.input.register.mail">
         </md-input-container>
+
         <md-card-actions layout="row" layout-align="end center">
             <md-button class="md-warn" ng-click="mainCtrl.auth.setVar('signup',false)">abbrechen</md-button>
             <md-button class="md-accent md-raised" type="submit">registrieren</md-button>
         </md-card-actions>
     </form>
+
 </md-card-content>
+
 <!--
 
 
