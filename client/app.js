@@ -271,7 +271,36 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         }
                     }
                 },
+                {
+                    name: 'protected.logistik.inbound',
+                    val: {
+                        url: '/inbound',
+                        views: {
+                            'logistik_content': {
+                                templateUrl: '/client/view/protected/logistik/inbound.html'
 
+                            }
+                        },
+                        onEnter: function(logisticService, $stateParams){
+                            //logisticService.getOrders({latest: 5});
+                        }
+                    }
+                },
+                {
+                    name: 'protected.logistik.stockdata',
+                    val: {
+                        url: '/stockdata',
+                        views: {
+                            'logistik_content': {
+                                templateUrl: '/client/view/protected/logistik/stockdata.html'
+
+                            }
+                        },
+                        onEnter: function(logisticService, $stateParams){
+                            //logisticService.getOrders({latest: 5});
+                        }
+                    }
+                },
             {
                 name: 'protected.produktion',
                 val: {

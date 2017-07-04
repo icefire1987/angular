@@ -1,7 +1,13 @@
-<section ng-if="mainCtrl.input.register.mail">
-    <h2>Dir wurde eine eMail zugesandt an {{mainCtrl.input.register.mail}}</h2>
-    <h3>Bitte rufe diese auf und bestätige deine Registrierung</h3>
-</section>
-<section ng-if="!mainCtrl.input.register.mail">
-    <h3>Die Registrierung konnte nicht abgeschlossen werden</h3>
-</section>
+<md-card-title>
+    <md-card-title-text>
+        <span class="md-headline">Registrierung abgeschlossen</span>
+    </md-card-title-text>
+</md-card-title>
+
+<md-card-content ng-if="mainCtrl.input.register.mail">
+    <p>Die Registrierung wurde erfolgreich abgeschlossen. Du hast eine Bestätigungsmail an:{{mainCtrl.input.register.mail}} erhalten. <br>Melde dich nun mit deinen gewählten Daten an.</p>
+</md-card-content>
+
+<md-card-content ng-if="!mainCtrl.input.register.mail">
+    <p>Es ist ein Fehler aufgetreten</p>
+</md-card-content>
