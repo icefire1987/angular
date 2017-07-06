@@ -54,6 +54,10 @@
                  <md-icon>recent_actors</md-icon>
                  <span>Kunden</span>
              </md-list-item>
+             <md-list-item ui-sref="protected.verwaltung.users.start" ui-sref-active="{'active': 'protected.verwaltung.users.*'}" class="child" ng-if="'protected.verwaltung' | includedByState">
+                 <md-icon>people</md-icon>
+                 <span>Nutzer</span>
+             </md-list-item>
 
              <md-divider ng-if="'protected.logistik' | includedByState"></md-divider>
 

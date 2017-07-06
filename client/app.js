@@ -375,6 +375,40 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     }
                 }
             },
+            {
+                name: 'protected.verwaltung.users',
+                val: {
+                    abstract: true,
+                    url: '/nutzer',
+                    views: {
+                        'verwaltung_content': {
+                            templateUrl: '/client/view/protected/verwaltung/users.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+                        managementService.getKeyaccountusers();
+                    }
+                }
+            },
+            {
+                name: 'protected.verwaltung.users.start',
+                val: {
+                    url: '/',
+                    views: {
+                        'users_content': {
+                            templateUrl: '/client/view/protected/verwaltung/users_start.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+                        //if(managementService.input.customername){
+                         //   managementService.locals.submit.customersearch();
+                        //}
+
+                    }
+                }
+            },
         ];
 
         for (var x = 0; x < states.length; x++) {

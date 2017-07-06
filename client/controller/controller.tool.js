@@ -5,7 +5,7 @@ myApp.controller('toolCtrl', function(
     authService,componentService,cropperService,
     teamService,helperService,imageService,flickrService,
     $http,$scope,
-    socketService,newsService,userService,logisticService,managementService,customerService){
+    socketService,newsService,userService,logisticService,managementService,customerService,userService){
 console.log("tool")
 
     var vm = this;
@@ -54,7 +54,18 @@ console.log("tool")
             }
         );
     };
-
+    vm.locals.submit.usersearch = function(){
+        vm.user.search({key:"name",value:vm.user.input.username}).then(
+            function(data){
+                if(data){
+                    vm.user.searchResult = data.data;
+                }
+            },
+            function(err){
+                console.log(err)
+            }
+        );
+    };
 
 
 
