@@ -280,6 +280,21 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         }
     };
 
+    vm.locals.submit.usersearch = function(){
+        console.log("userserach")
+        userService.search({key:"name",value:vm.input.username}).then(
+            function(data){
+                if(data){
+                    console.log(data)
+                    vm.searchResult = data.data;
+                }
+            },
+            function(err){
+                console.log(err)
+            }
+        );
+    };
+
     vm.locals.edit = function(address){
         vm.input.retouraddress = angular.copy(address);
         location.href = "#management_customer_form";

@@ -6,7 +6,7 @@ html, body{
     min-height:100%;
 }
 #public{
-    background: url(/server/media/backgrounds/pinecat.jpg) no-repeat center center fixed;
+    background: url(/server/media/backgrounds/low/08.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

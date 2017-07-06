@@ -1,0 +1,26 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "zuumeo studio",
+  "main": "app.js",
+  "repository": "https://github.com/icefire1987/angular",
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-animate": "^1.6.4",
+    "angular-aria": "^1.6.4",
+    "angular-file-upload": "^2.5.0",
+    "angular-material-data-table": "0.10.10",
+    "angular-chart.js": "^1.1.1",
+    "angular-material": "^1.1.4",
+    "angular-ui-router": "^1.0.3",
+    "angular-socket-io": "0.7.0",
+    "cropperjs": "^1.0.0-rc.1",
+    "jquery": "^3.2.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "CJay",
+  "license": "ISC"
+}

@@ -399,7 +399,34 @@ module.exports = function (app, express, io) {
 
         });
     });
+    router.get('/user/name/:name', function(req, res, next){
+        User.get('name',req.params.name,function(err,userdata) {
+            if (err){
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else{
+                var user = [];
+                if (userdata != null && typeof(userdata[0] != undefined)) {
+                    for(var x=0;x<userdata.length; x++){
+                        user.push({
+                            id: userdata[x].id,
+                            username: userdata[x].username,
+                            email: userdata[x].email,
+                            roles: userdata[x].roles.split(",")
+                        });
+                    }
+                }
+                res.json({
+                    user: user
+                });
+            }
 
+
+
+        });
+    });
 
     router.get('/user/email/:email', function(req, res, next){
         User.get('email',cleanInput(req.params.email,true),function(err,userdata) {
@@ -425,8 +452,8 @@ module.exports = function (app, express, io) {
         });
     });
     router.get('/user/token/:token', function(req, res, next){
-        console.log("---");
-        console.log("Token:")
+
+
         //console.log(req.params.token)
         if(req.params.token != "undefined"){
             Auth.getTokenObj(req.params.token,function(err,userdata) {

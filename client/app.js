@@ -434,7 +434,6 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
 
     myApp.run(['$rootScope', '$state', 'authService','logService', function ($rootScope, $state, authService,logService) {
         $rootScope.$on('$stateChangeStart', function (event,toState) {
-            console.log(toState)
             authService.authorize().then(
                 function(status){
                     console.log("run auth:"+status)
