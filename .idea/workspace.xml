@@ -5,124 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f9c052c4-e3f9-4c2d-b9d0-ca3c85c1c653" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/01.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/02.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/03.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/04.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/05.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/06.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/07.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/08.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/09.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/10.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/11.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/12.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/13.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/14.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/15.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/16.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/17.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/18.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/19.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/20.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/21.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/22.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/23.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/24.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/25.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/26.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/27.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/28.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/29.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/30.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/31.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/32.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/33.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/34.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/35.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/36.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/37.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/38.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/39.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/40.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/41.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/42.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/43.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/44.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/45.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/46.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/47.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/01.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/02.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/03.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/04.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/05.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/06.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/07.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/08.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/09.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/10.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/11.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/12.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/13.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/14.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/15.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/16.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/17.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/18.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/19.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/20.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/21.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/22.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/23.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/24.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/25.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/26.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/27.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/28.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/29.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/30.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/31.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/32.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/33.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/34.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/35.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/36.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/37.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/38.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/39.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/40.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/41.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/42.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/43.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/44.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/45.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/46.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/server/media/backgrounds/low/47.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/package.json" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/env.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/media/backgrounds/black.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/media/backgrounds/camera.jpeg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/media/backgrounds/canon.jpeg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/media/backgrounds/lighthouse.jpeg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/media/backgrounds/pinecat.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/media/backgrounds/xmas.jpeg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/media/backgrounds/black.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/media/backgrounds/camera.jpeg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/media/backgrounds/canon.jpeg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/media/backgrounds/lighthouse.jpeg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/media/backgrounds/pinecat.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/server/media/backgrounds/xmas.jpeg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/app.js" afterPath="$PROJECT_DIR$/client/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/controller/controller.tool.js" afterPath="$PROJECT_DIR$/client/controller/controller.tool.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/service/service.management.js" afterPath="$PROJECT_DIR$/client/service/service.management.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/style/main.css" afterPath="$PROJECT_DIR$/client/style/main.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/view/protected/verwaltung/users_start.html" afterPath="$PROJECT_DIR$/client/view/protected/verwaltung/users_start.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/lib/user.js" afterPath="$PROJECT_DIR$/server/lib/user.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/log/test.txt" afterPath="$PROJECT_DIR$/server/log/test.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/route/api.js" afterPath="$PROJECT_DIR$/server/route/api.js" />
     </list>
     <ignored path="angular.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -148,8 +31,8 @@
       <file leaf-file-name="controller.tool.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/controller/controller.tool.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
+            <state relative-caret-position="581">
+              <caret line="66" column="44" lean-forward="true" selection-start-line="66" selection-start-column="44" selection-end-line="66" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -165,7 +48,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="service.user.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="7395">
+              <caret line="435" column="70" lean-forward="false" selection-start-line="435" selection-start-column="70" selection-end-line="435" selection-end-column="70" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="service.user.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/service/service.user.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="340">
@@ -215,11 +108,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="29" column="38" lean-forward="false" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
+            <state relative-caret-position="213">
+              <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -248,8 +141,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>https://we.tl/ZAv3wrcfNi</find>
-      <find>user/tok</find>
       <find>isInAnyRole</find>
       <find>anyR</find>
       <find>authenticate</find>
@@ -271,13 +162,15 @@
       <find>toolCtrl a</find>
       <find>toolCtr</find>
       <find>toolCtrl as</find>
-      <find>10</find>
       <find>10.1.</find>
-      <find>10.1.1</find>
-      <find>Token:</find>
       <find>Token:</find>
       <find>/user/u</find>
       <find>like</find>
+      <find>Token:</find>
+      <find>l</find>
+      <find>10</find>
+      <find>10.1</find>
+      <find>10.1.1</find>
     </findStrings>
     <replaceStrings>
       <replace>teamCtrl</replace>
@@ -289,8 +182,8 @@
       <dir>C:\xampp\htdocs\angular\server\route</dir>
       <dir>C:\xampp\htdocs\angular\client\service</dir>
       <dir>C:\xampp\htdocs\angular\client</dir>
-      <dir>C:\xampp\htdocs\angular</dir>
       <dir>C:\xampp\htdocs\angular\server</dir>
+      <dir>C:\xampp\htdocs\angular</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -368,10 +261,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="1912" />
-    <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1216" />
+    <option name="x" value="1920" />
+    <option name="y" value="13" />
+    <option name="width" value="1918" />
+    <option name="height" value="1160" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -428,86 +321,6 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="angular" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="angular" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="media" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="backgrounds" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="angular" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="angular" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="media" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="backgrounds" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="low" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="angular" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="angular" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="server" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="media" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="angular" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="angular" />
-              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="client" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
@@ -526,7 +339,7 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="style" />
+              <option name="myItemId" value="view" />
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
@@ -687,7 +500,7 @@
       <workItem from="1498567206532" duration="2796000" />
       <workItem from="1498809655297" duration="169000" />
       <workItem from="1499077253279" duration="31451000" />
-      <workItem from="1499332864256" duration="5353000" />
+      <workItem from="1499332864256" duration="7826000" />
     </task>
     <task id="LOCAL-00001" summary="change db to &quot;zuumeo_studio&quot;">
       <created>1485791014032</created>
@@ -885,11 +698,18 @@
       <option name="project" value="LOCAL" />
       <updated>1499184951193</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="logistik">
+      <created>1499354840805</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1499354840805</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1069101000" />
+    <option name="totallyTimeSpent" value="1071574000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -901,14 +721,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1216" extended-state="6" />
+    <frame x="1920" y="13" width="1918" height="1160" extended-state="0" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19166666" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19348055" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32851985" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881662" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32520324" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32971996" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32971996" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1245,26 +1065,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="435" column="70" lean-forward="false" selection-start-line="435" selection-start-column="70" selection-end-line="435" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/view/protected/verwaltung/users_start.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
           <caret line="10" column="87" lean-forward="false" selection-start-line="10" selection-start-column="87" selection-end-line="10" selection-end-column="87" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/controller/controller.tool.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
-          <caret line="56" column="0" lean-forward="false" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1317,14 +1121,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="29" column="38" lean-forward="false" selection-start-line="29" selection-start-column="38" selection-end-line="29" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/server/lib/user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="241">
@@ -1337,6 +1133,30 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
           <caret line="29" column="39" lean-forward="false" selection-start-line="29" selection-start-column="39" selection-end-line="29" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7395">
+          <caret line="435" column="70" lean-forward="false" selection-start-line="435" selection-start-column="70" selection-end-line="435" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/controller/controller.tool.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="581">
+          <caret line="66" column="44" lean-forward="true" selection-start-line="66" selection-start-column="44" selection-end-line="66" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="30" column="0" lean-forward="true" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
           <folding />
         </state>
       </provider>
