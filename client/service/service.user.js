@@ -24,14 +24,11 @@ angular.module('myApp').service('userService', function ($localStorage,$http,aut
             )
         };
         vm.search = function(obj){
-            console.log("search User")
-            console.log(obj)
             if(obj){
                 return $http.get("/api/user/"+obj.key+"/"+obj.value);
             }else{
                 return $http.get("/api/user/all");
             }
-
         };
         /*vm.getAll = function(filter){
             if(filter){

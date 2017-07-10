@@ -287,6 +287,7 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
                 if(data){
                     console.log(data)
                     vm.searchResult = data.data;
+
                 }
             },
             function(err){

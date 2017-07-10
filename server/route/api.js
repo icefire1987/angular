@@ -414,7 +414,8 @@ module.exports = function (app, express, io) {
                             id: userdata[x].id,
                             username: userdata[x].username,
                             email: userdata[x].email,
-                            roles: userdata[x].roles.split(",")
+                            roles: userdata[x].roles.split(","),
+                            teams: userdata[x].teams.split(",")
                         });
                     }
                 }

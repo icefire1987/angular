@@ -1,5 +1,4 @@
 <md-card class="md-padding">
-
     <form ng-submit="toolCtrl.management.locals.submit.usersearch()" layout="row">
         <md-input-container class="md-block" flex>
             <label>Nutzer suchen</label>
@@ -13,6 +12,30 @@
             </md-button>
         </div>
     </form>
+    <div ng-if="toolCtrl.management.searchResult" layout="column">
+
+        <div class="md-padding" ng-if="!toolCtrl.management.searchResult.user.length">
+            <md-subhead >
+                Es wurde kein Nutzer gefunden.
+            </md-subhead>
+        </div>
+        <md-list ng-if="toolCtrl.management.searchResult.user.length">
+            <md-subheader class="md-no-sticky">Suchergebnis</md-subheader>
+            <md-list-item
+                    ng-repeat="row in toolCtrl.management.searchResult.user"
+                    ui-sref="protected.verwaltung.users.edit({userID: row.id})" layout="row">
+                <span flex= "30">
+                    {{row.username}}
+                </span>
+                <span flex= "30">
+                    {{row.email}}
+                </span>
+                <span flex>
+                    {{row.teams.join()}}
+                </span>
+            </md-list-item>
+        </md-list>
+    </div>
     <!--
     <div ng-if="toolCtrl.management.searchResult" layout="column">
 
