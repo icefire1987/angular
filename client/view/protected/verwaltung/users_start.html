@@ -21,17 +21,36 @@
         </div>
         <md-list ng-if="toolCtrl.management.searchResult.user.length">
             <md-subheader class="md-no-sticky">Suchergebnis</md-subheader>
+            <md-list-item layout="row" layout-align="start center" class="header">
+                <h3 flex="20">
+                    Nutzername
+                </h3>
+                <h3 flex="20">
+                    Name
+                </h3>
+                <h3 flex="auto">
+                    eMail
+                </h3>
+                <h3 flex layout="column" layout-align="end end">
+                    <span>Teams</span>
+                </h3>
+            </md-list-item>
             <md-list-item
                     ng-repeat="row in toolCtrl.management.searchResult.user"
-                    ui-sref="protected.verwaltung.users.edit({userID: row.id})" layout="row">
-                <span flex= "30">
+                    ui-sref="protected.verwaltung.users.edit({userID: row.id})" layout="row" layout-align="start center">
+                <span flex="20">
                     {{row.username}}
                 </span>
-                <span flex= "30">
+                <span flex="20">
+                    {{row.name}}
+                </span>
+                <span flex="auto">
                     {{row.email}}
                 </span>
-                <span flex>
-                    {{row.teams.join()}}
+                <span flex layout="column" layout-align="end end">
+                    <span ng-repeat="team in row.teams">
+                        {{team}}
+                    </span>
                 </span>
             </md-list-item>
         </md-list>

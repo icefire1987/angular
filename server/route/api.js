@@ -375,6 +375,7 @@ module.exports = function (app, express, io) {
         });
     });
     router.get('/user/username/:username', function(req, res, next){
+
         User.get('username',req.params.username,function(err,userdata) {
             if (err){
                 var error = err;
@@ -400,6 +401,9 @@ module.exports = function (app, express, io) {
         });
     });
     router.get('/user/name/:name', function(req, res, next){
+        if(req.params.name == 'undefined'){
+            req.params.name='';
+        }
         User.get('name',req.params.name,function(err,userdata) {
             if (err){
                 err.debug = err.message;
@@ -413,12 +417,14 @@ module.exports = function (app, express, io) {
                         user.push({
                             id: userdata[x].id,
                             username: userdata[x].username,
+                            name: userdata[x].fullname,
                             email: userdata[x].email,
-                            roles: userdata[x].roles.split(","),
-                            teams: userdata[x].teams.split(",")
+                            roles: (userdata[x].roles != null)?(userdata[x].roles.split(",")):"",
+                            teams: (userdata[x].teams != null)?(userdata[x].teams.split(",")):"",
                         });
                     }
                 }
+                console.log(user)
                 res.json({
                     user: user
                 });

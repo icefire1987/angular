@@ -27,7 +27,7 @@ angular.module('myApp').service('userService', function ($localStorage,$http,aut
             if(obj){
                 return $http.get("/api/user/"+obj.key+"/"+obj.value);
             }else{
-                return $http.get("/api/user/all");
+                return $http.get("/api/user/name/");
             }
         };
         /*vm.getAll = function(filter){
