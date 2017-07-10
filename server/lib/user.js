@@ -29,7 +29,7 @@ module.exports = {
                 query = 'select user.id, user.username,user.email, user.roles,user.salt,user.login,CONCAT(user.prename," ",user.lastname) as fullname, GROUP_CONCAT(teams.name) as teams, user.password from user ' +
                     'LEFT JOIN teams_user On teams_user.userID = user.id ' +
                     'LEFT JOIN teams ON teams.id = teams_user.teamID ' +
-                    'WHERE CONCAT(user.prename," ",user.lastname) LIKE ? ' +
+                    'WHERE CONCAT(user.prename," ",user.lastname," ",user.username) LIKE ? ' +
                     'GROUP BY user.id';
                 break;
             case "email":
