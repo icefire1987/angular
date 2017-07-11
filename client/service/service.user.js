@@ -24,10 +24,10 @@ angular.module('myApp').service('userService', function ($localStorage,$http,aut
             )
         };
         vm.search = function(obj){
-            if(obj){
+            if(obj && typeof obj.key !== 'undefined'){
                 return $http.get("/api/user/"+obj.key+"/"+obj.value);
             }else{
-                return $http.get("/api/user/name/");
+                return $http.get("/api/user/");
             }
         };
         /*vm.getAll = function(filter){

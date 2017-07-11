@@ -14,157 +14,37 @@
     </form>
     <div ng-if="toolCtrl.management.searchResult" layout="column">
 
-        <div class="md-padding" ng-if="!toolCtrl.management.searchResult.user.length">
-            <md-subhead >
-                Es wurde kein Nutzer gefunden.
-            </md-subhead>
-        </div>
-        <md-list ng-if="toolCtrl.management.searchResult.user.length">
-            <md-subheader class="md-no-sticky">Suchergebnis</md-subheader>
-            <md-list-item layout="row" layout-align="start center" class="header">
-                <h3 flex="20">
-                    Nutzername
-                </h3>
-                <h3 flex="20">
-                    Name
-                </h3>
-                <h3 flex="auto">
-                    eMail
-                </h3>
-                <h3 flex layout="column" layout-align="end end">
-                    <span>Teams</span>
-                </h3>
-            </md-list-item>
-            <md-list-item
-                    ng-repeat="row in toolCtrl.management.searchResult.user"
-                    ui-sref="protected.verwaltung.users.edit({userID: row.id})" layout="row" layout-align="start center">
-                <span flex="20">
-                    {{row.username}}
-                </span>
-                <span flex="20">
-                    {{row.name}}
-                </span>
-                <span flex="auto">
-                    {{row.email}}
-                </span>
-                <span flex layout="column" layout-align="end end">
-                    <span ng-repeat="team in row.teams">
-                        {{team}}
-                    </span>
-                </span>
-            </md-list-item>
-        </md-list>
-    </div>
-    <!--
-    <div ng-if="toolCtrl.management.searchResult" layout="column">
-
-        <div class="md-padding" ng-if="!toolCtrl.management.searchResult.length">
+        <div class="md-padding" ng-if="toolCtrl.management.searchResult && !toolCtrl.management.searchResult.user.length">
             <md-subhead >
                 Es wurde kein Nutzer gefunden.
             </md-subhead>
         </div>
 
-        <md-list ng-if="toolCtrl.management.searchResult.length">
-            <md-subheader class="md-no-sticky">Suchergebnis</md-subheader>
-<!--
-            <md-list-item layout="row">
-                <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.filter.customer.active= +!toolCtrl.management.filter.customer.active" aria-label="show hidden">
-                    <md-icon aria-label="show" ng-if="toolCtrl.management.filter.customer.active">visibility</md-icon>
-                    <md-tooltip  ng-if="toolCtrl.management.filter.customer.active">Inaktive Kunden anzeigen</md-tooltip>
-                    <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.customer.active">visibility_off</md-icon>
-                    <md-tooltip  ng-if="!toolCtrl.management.filter.customer.active">Inaktive Kunden ausblenden</md-tooltip>
-                </md-button>
+        <md-table-container  flex="100" ng-if="toolCtrl.management.searchResult.user.length">
 
-            </md-list-item>
-
-
-            <md-list-item layout="row">
-
-                <span style="width:50px">
-
-                </span>
-                <span flex="40">
-                    <md-icon aria-label="edit">business</md-icon>
-                    <span>Kundenname</span>
-                </span>
-                <span flex="30">
-                    <md-icon md-font-set="fa" md-font-icon="fa-user"></md-icon>
-                    <span>Ansprechpartner</span>
-                </span>
-                <span flex>
-
-                </span>
-            </md-list-item>
-            <md-list-item
-                    ng-repeat="row in toolCtrl.management.searchResult | filter: (toolCtrl.management.filter.customer.active ? {active: toolCtrl.management.filter.customer.active} : '' ) "
-                    ui-sref="protected.verwaltung.customers.edit({customerID: row.id})" layout="row">
-                <span style="width:50px">
-                    <alt-avatar data-color="200" data-text="{{row.name}}" data-filepath="{{(row.logo)?('/client/media/customer_logo/'+row.logo):''}}" ng-image-reload></alt-avatar>
-                </span>
-                <span flex= "40" ng-class="row.active===0 ? 'inactive' : ''">
-                    {{row.name}}
-                </span>
-                <span flex="30">
-                    <span  ng-repeat="user in row.users" >
-                        <md-tooltip>{{user.prename}} {{user.lastname}}</md-tooltip>
-                        <alt-avatar data-color="{{user.avatar_alt}}" data-text="{{user.prename}} {{user.lastname}}" data-filepath="{{user.avatar}}"></alt-avatar>
-                    </span>
-                </span>
-                <md-icon aria-label="Send Email" class="md-secondary md-hue-3" >build</md-icon>
-
-
-            </md-list-item>
-
-        </md-list>
+            <table md-table md-row-select multiple ng-model="toolCtrl.management.tables.users.model" md-progress="promise">
+                <thead md-head md-order="toolCtrl.management.tables.users.orderBy">
+                <tr md-row>
+                    <th md-column md-order-by="username"><span>Nutzername</span></th>
+                    <th md-column><span>Name</span></th>
+                    <th md-column md-order-by="email"><span>eMail</span></th>
+                    <th md-column><span>Teams</span></th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row md-select="row.id" md-select-id="id" md-auto-select  ng-repeat="row in toolCtrl.management.searchResult.user | orderBy: toolCtrl.management.tables.users.orderBy">
+                    <td md-cell>{{row.username}}</td>
+                    <td md-cell>{{row.name}}</td>
+                    <td md-cell>{{row.email}}</td>
+                    <td md-cell>
+                        <span class="md-block" ng-repeat="team in row.teams">
+                            {{team}}
+                        </span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <data-md-table-pagination md-limit="20" md-page="toolCtrl.management.tables.users.page" md-total="{{toolCtrl.management.searchResult.user.length}}"></data-md-table-pagination>
     </div>
-
-
-    <md-card-actions>
-        <md-button class="md-raised  md-accent" aria-label="create team" ng-click="toolCtrl.management.locals.show_newCustomer = true">
-            <md-icon>edit</md-icon>
-            Kunden anlegen
-        </md-button>
-
-    </md-card-actions>
 </md-card>
-<md-card ng-if="toolCtrl.management.locals.show_newCustomer">
-    <form name="newCustomer" ng-submit="toolCtrl.management.locals.submit.customer_add()">
-    <md-card-title>
-        <md-card-title-text>
-
-            <md-input-container>
-                <label>Kundenname</label>
-                <input name="name" ng-model="toolCtrl.management.input.newCustomer.name" required>
-                <div ng-messages="newCustomer.name.$error">
-                    <div ng-message="required">This is required.</div>
-                </div>
-            </md-input-container>
-            <md-input-container>
-                <label>Zuumeo KeyAccount</label>
-                <md-contact-chips
-                        ng-model="toolCtrl.management.input.keyaccount"
-                        md-contacts="toolCtrl.management.search_keyaccountusers($query)"
-                        md-contact-name="name"
-                        md-contact-image="avatar"
-                        md-contact-email="username"
-                        md-require-match="true"
-                        md-highlight-flags="i"
-                        md-min-length="2"
-                        secondary-placeholder="Name eingeben">
-                </md-contact-chips>
-            </md-input-container>
-
-            <imagecropper cropper="toolCtrl.management.cropper" input="toolCtrl.management.input.newCustomer" text-input-file="neues Kundenlogo"></imagecropper>
-        </md-card-title-text>
-    </md-card-title>
-    <md-card-actions layout="row" layout-align="end center">
-        <md-button type="submit" class="md-raised md-primary" ng-disabled="newCustomer.$invalid">
-            <md-icon>check</md-icon> anlegen
-        </md-button>
-        <md-button class="md-raised md-warn" ng-click="toolCtrl.management.locals.show_newCustomer = false; toolCtrl.management.input_reset()">
-            <md-icon>close</md-icon> abbrechen
-        </md-button>
-    </md-card-actions>
-    </form>
-</md-card>
- -->

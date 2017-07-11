@@ -92,6 +92,9 @@ md-list-item.child{
 .md-error{
     color: darkred;
 }
+.md-block {
+    display:block;
+}
 
 #dialog_orderCreate {
     height: 90vh;

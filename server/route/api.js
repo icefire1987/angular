@@ -110,9 +110,6 @@ function cleanInput(inputval,toLowerCase){
 
 module.exports = function (app, express, io) {
     var router = express.Router();
-    router.get('/user', function(req, res, next){
-        res.send("/user")
-    });
 
     router.get('/user/all', function(req, res, next){
         var query = 'select * from user';
@@ -405,6 +402,37 @@ module.exports = function (app, express, io) {
             req.params.name='';
         }
         User.get('name',req.params.name,function(err,userdata) {
+            if (err){
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else{
+                var user = [];
+                if (userdata != null && typeof(userdata[0] != undefined)) {
+                    for(var x=0;x<userdata.length; x++){
+                        user.push({
+                            id: userdata[x].id,
+                            username: userdata[x].username,
+                            name: userdata[x].fullname,
+                            email: userdata[x].email,
+                            roles: (userdata[x].roles != null)?(userdata[x].roles.split(",")):"",
+                            teams: (userdata[x].teams != null)?(userdata[x].teams.split(",")):"",
+                        });
+                    }
+                }
+                console.log(user)
+                res.json({
+                    user: user
+                });
+            }
+
+
+
+        });
+    });
+    router.get('/user', function(req, res, next){
+        User.get('name','',function(err,userdata) {
             if (err){
                 err.debug = err.message;
                 res.status(500).json({

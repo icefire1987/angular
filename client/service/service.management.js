@@ -23,6 +23,19 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         customer: {active: 1},
         retouraddress: {active: 1}
     };
+
+    var initDataTable = {
+        model: [],
+        page: 1
+    };
+
+    vm.tables = {
+        users: {
+            model: [],
+            page: 1,
+            orderBy: 'username'
+        }
+    };
     /*
     vm.uploader = {}
     vm.uploader.customerLogo = new FileUploader();
@@ -260,7 +273,11 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
 
     };
     vm.locals.submit.customersearch = function(){
-        customerService.search({key:"name",value:vm.input.customername}).then(
+        var obj = {};
+        if(vm.input.customername){
+            obj = {key:"name",value:vm.input.customername};
+        }
+        customerService.search(obj).then(
             function(data){
                 vm.searchResult = data;
             }
@@ -281,8 +298,11 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
     };
 
     vm.locals.submit.usersearch = function(){
-        console.log("userserach")
-        userService.search({key:"name",value:vm.input.username}).then(
+        var obj = {};
+        if(vm.input.username){
+           obj = {key:"name",value:vm.input.username};
+        }
+        userService.search(obj).then(
             function(data){
                 if(data){
                     console.log(data)

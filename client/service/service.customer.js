@@ -10,15 +10,25 @@ angular.module('myApp').service('customerService', function ($q, $http,$filter,c
 
 
     vm.search = function(obj,callback){
-        if(obj){
+        if(obj && typeof obj.key !== 'undefined'){
             return $http.get("/api/customer/"+obj.key+"/"+obj.value).then(
-                    function(res){
-                        return res.data;
-                    },
-                    function(err){
-                        console.log(err);
-                        return false;
-                    }
+                function(res){
+                    return res.data;
+                },
+                function(err){
+                    console.log(err);
+                    return false;
+                }
+            );
+        }else{
+            return $http.get("/api/customer/").then(
+                function(res){
+                    return res.data;
+                },
+                function(err){
+                    console.log(err);
+                    return false;
+                }
             );
         }
     };
