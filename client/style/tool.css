@@ -121,9 +121,10 @@ md-list-item.child{
     background-color:#ddd;
 
 }
-.inactive {
-    color: #aaa
+.inactive *{
+    color: #aaa !important;
 }
+
 /* Select*/
 md-option md-icon{
     text-align: center;
@@ -230,5 +231,9 @@ md-sidenav md-badge{
     align-content: center;
     align-items: center;
 }
-
-
+[ng-click],
+[ui-sref],
+[data-ng-click],
+[x-ng-click] {
+    cursor: pointer;
+}

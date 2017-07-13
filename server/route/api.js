@@ -449,6 +449,7 @@ module.exports = function (app, express, io) {
                             email: userdata[x].email,
                             roles: (userdata[x].roles != null)?(userdata[x].roles.split(",")):"",
                             teams: (userdata[x].teams != null)?(userdata[x].teams.split(",")):"",
+                            user_is: JSON.parse(userdata[x].user_is),
                         });
                     }
                 }
@@ -824,7 +825,10 @@ module.exports = function (app, express, io) {
                     error: err
                 });
             }else if(data){
-                res.json(data);
+                console.log(data)
+                res.json({
+                    customers: data
+                });
             }else{
 
                 res.json([])

@@ -26,9 +26,14 @@ module.exports = {
                 break;
             case "name":
                 var value = "%"+value+"%";
-                query = 'select user.id, user.username,user.email, user.roles,user.salt,user.login,CONCAT(user.prename," ",user.lastname) as fullname, GROUP_CONCAT(teams.name) as teams, user.password from user ' +
+                query = 'select ' +
+                    'user.id, user.username,user.email, user.roles,user.salt,user.login,' +
+                    'CONCAT(user.prename," ",user.lastname) as fullname, GROUP_CONCAT(teams.name) as teams, ' +
+                    'JSON_ARRAY(user_is.name) as user_is, ' +
+                    'user.password from user ' +
                     'LEFT JOIN teams_user On teams_user.userID = user.id ' +
                     'LEFT JOIN teams ON teams.id = teams_user.teamID ' +
+                    'LEFT JOIN user_is ON user_is.userID = user.id ' +
                     'WHERE CONCAT(IFNULL(user.prename,"")," ",IFNULL(user.lastname,"")," ",user.username) LIKE ? ' +
                     'GROUP BY user.id';
                 break;

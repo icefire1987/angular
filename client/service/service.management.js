@@ -34,6 +34,11 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             model: [],
             page: 1,
             orderBy: 'username'
+        },
+        customers: {
+            model: [],
+            page: 1,
+            orderBy: 'name'
         }
     };
     /*

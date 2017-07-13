@@ -71,15 +71,20 @@ module.exports = {
                 break;
             default:
 
-                var query = 'select ' +
-                    'customers.*,user.id as userID, user.username as userUsername,CONCAT(user.prename," ",user.lastname) as userName,user.avatar as userAvatar,count(orders.id) as orders_count ' +
+                var query = 'select DISTINCT ' +
+                    'customers.*, ' +
+                    'IF(user.username is null,null,CONCAT("[",GROUP_CONCAT(JSON_OBJECT(' +
+                    '"username", user.username,"prename", user.prename,"lastname", user.lastname,' +
+                    '"avatar", user.avatar,"avatar_alt", user.avatar_alt' +
+                    ')),"]" )) as users,' +
+                    'count(customers_retour.id) as retouraddressCount ' +
                     'from customers ' +
-                    'LEFT JOIN orders ON orders.customerID = customers.id ' +
                     'LEFT JOIN customers_user ON customers_user.customerID = customers.id ' +
+                    'LEFT JOIN customers_retour ON customers_retour.customerID = customers.id and customers_retour.active=1 ' +
                     'LEFT JOIN user ON customers_user.userID = user.id ' +
                     'WHERE 1=1 ' + where_additional +
-                    'GROUP BY customers.id ' +
-                    'ORDER BY customers.name';
+                    'GROUP BY customers.id,customers_retour.id ';
+                console.log(query)
                 for(var i=0;i<where_additional_val.length;i++){
                     queryValues.push(where_additional_val[i]);
                 }

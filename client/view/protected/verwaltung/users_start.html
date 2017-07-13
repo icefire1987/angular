@@ -12,33 +12,38 @@
             </md-button>
         </div>
     </form>
-    <div ng-if="toolCtrl.management.searchResult" layout="column">
+    <div ng-if="toolCtrl.management.searchResult.user" layout="column">
 
-        <div class="md-padding" ng-if="toolCtrl.management.searchResult && !toolCtrl.management.searchResult.user.length">
+        <div class="md-padding" ng-if="toolCtrl.management.searchResult.user && !toolCtrl.management.searchResult.user.length">
             <md-subhead >
                 Es wurde kein Nutzer gefunden.
             </md-subhead>
         </div>
 
-        <md-table-container  flex="100" ng-if="toolCtrl.management.searchResult.user.length">
-
-            <table md-table md-row-select multiple ng-model="toolCtrl.management.tables.users.model" md-progress="promise">
+        <md-table-container  ng-if="toolCtrl.management.searchResult.user.length">
+            <table md-table md-row-select ng-model="toolCtrl.management.tables.users.model" md-progress="promise">
                 <thead md-head md-order="toolCtrl.management.tables.users.orderBy">
                 <tr md-row>
                     <th md-column md-order-by="username"><span>Nutzername</span></th>
                     <th md-column><span>Name</span></th>
                     <th md-column md-order-by="email"><span>eMail</span></th>
                     <th md-column><span>Teams</span></th>
+                    <th md-column><span>Funktionen</span></th>
                 </tr>
                 </thead>
                 <tbody md-body>
-                <tr md-row md-select="row.id" md-select-id="id" md-auto-select  ng-repeat="row in toolCtrl.management.searchResult.user | orderBy: toolCtrl.management.tables.users.orderBy">
+                <tr md-row  ng-repeat="row in toolCtrl.management.searchResult.user | orderBy: toolCtrl.management.tables.users.orderBy">
                     <td md-cell>{{row.username}}</td>
                     <td md-cell>{{row.name}}</td>
                     <td md-cell>{{row.email}}</td>
                     <td md-cell>
                         <span class="md-block" ng-repeat="team in row.teams">
                             {{team}}
+                        </span>
+                    </td>
+                    <td md-cell>
+                        <span class="md-block" ng-repeat="functional in row.user_is">
+                            {{functional}}
                         </span>
                     </td>
                 </tr>

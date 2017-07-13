@@ -13,85 +13,58 @@
             </md-button>
         </div>
     </form>
-    <div ng-if="toolCtrl.management.searchResult" layout="column">
+    <div ng-if="toolCtrl.management.searchResult.customers" layout="column">
 
-        <div class="md-padding" ng-if="!toolCtrl.management.searchResult.length">
+        <div class="md-padding" ng-if="toolCtrl.management.searchResult.customers && !toolCtrl.management.searchResult.customers.length">
             <md-subhead >
                 Es wurde kein Kunde gefunden.
             </md-subhead>
         </div>
-        <!--<md-table-container ng-if="toolCtrl.management.searchResult.length">
-            <table md-table>
-                <thead md-head>
-                <tr md-row>
-                   <th>Kundenname</th>
-                    <th>KeyAccount</th>
 
+        <div flex="100">
+            <md-button class="md-fab md-mini " ng-click="toolCtrl.management.filter.customer.active= +!toolCtrl.management.filter.customer.active" aria-label="show hidden">
+                <md-icon aria-label="show" ng-if="toolCtrl.management.filter.customer.active">visibility</md-icon>
+                <md-tooltip  ng-if="toolCtrl.management.filter.customer.active">Inaktive Kunden anzeigen</md-tooltip>
+                <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.customer.active">visibility_off</md-icon>
+                <md-tooltip  ng-if="!toolCtrl.management.filter.customer.active">Inaktive Kunden ausblenden</md-tooltip>
+            </md-button>
+        </div>
+
+        <md-table-container  flex="100" ng-if="toolCtrl.management.searchResult.customers.length">
+            <table md-table md-row-select ng-model="toolCtrl.management.tables.customers.model" md-progress="promise">
+                <thead md-head md-order="toolCtrl.management.tables.customers.orderBy">
+                <tr md-row>
+                    <th md-column><span></span></th>
+                    <th md-column md-order-by="name"><span>Kundenname</span></th>
+                    <th md-column><span>Ansprechpartner</span></th>
+                    <th md-column md-order-by="retouraddressCount"><span>Retouraddressen</span></th>
                 </tr>
                 </thead>
                 <tbody md-body>
-                <tr md-row ng-repeat="row in toolCtrl.management.searchResult" class="text-right">
+                <tr md-row
+                    ng-repeat="row in toolCtrl.management.searchResult.customers
+                        | orderBy: toolCtrl.management.tables.customers.orderBy
+                        | filter: (toolCtrl.management.filter.customer.active ? {active: toolCtrl.management.filter.customer.active} : '' )"
+                    ui-sref="protected.verwaltung.customers.edit({customerID: row.id})"
+                    ng-class="row.active==0?'inactive':''" >
                     <td md-cell>
-                        <span>{{row}}</span>
+                        <alt-avatar data-color="200" data-text="{{row.name}}" data-filepath="{{(row.logo)?('/client/media/customer_logo/'+row.logo):''}}" ng-image-reload></alt-avatar>
                     </td>
+                    <td md-cell>{{row.name}}</td>
                     <td md-cell>
-                        <alt-avatar data-color="{{row.userAvatarAlt}}" data-text="{{row.userAvatarText}}" data-filepath="{{row.userAvatar}}"></alt-avatar>
+                        <span  ng-repeat="user in row.users" >
+                            <md-tooltip>{{user.prename}} {{user.lastname}}</md-tooltip>
+                            <alt-avatar data-color="{{user.avatar_alt}}" data-text="{{user.prename}} {{user.lastname}}" data-filepath="{{user.avatar}}"></alt-avatar>
+                        </span>
                     </td>
+                    <td md-cell>{{row.retouraddressCount}}</td>
+
                 </tr>
                 </tbody>
             </table>
-        </md-table-container>-->
-        <md-list ng-if="toolCtrl.management.searchResult.length">
-            <md-subheader class="md-no-sticky">Suchergebnis</md-subheader>
+        </md-table-container>
+        <data-md-table-pagination md-limit="20" md-page="toolCtrl.management.tables.customers.page" md-total="{{toolCtrl.management.searchResult.customers.length}}"></data-md-table-pagination>
 
-            <md-list-item layout="row">
-                <md-button class="md-fab md-mini md-fab-top-right" ng-click="toolCtrl.management.filter.customer.active= +!toolCtrl.management.filter.customer.active" aria-label="show hidden">
-                    <md-icon aria-label="show" ng-if="toolCtrl.management.filter.customer.active">visibility</md-icon>
-                    <md-tooltip  ng-if="toolCtrl.management.filter.customer.active">Inaktive Kunden anzeigen</md-tooltip>
-                    <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.customer.active">visibility_off</md-icon>
-                    <md-tooltip  ng-if="!toolCtrl.management.filter.customer.active">Inaktive Kunden ausblenden</md-tooltip>
-                </md-button>
-
-            </md-list-item>
-
-
-            <md-list-item layout="row" class="header">
-
-                <span style="width:50px">
-
-                </span>
-                <span flex="40">
-                    <md-icon aria-label="edit">business</md-icon>
-                    <span>Kundenname</span>
-                </span>
-                <span flex="30">
-                    <md-icon md-font-set="fa" md-font-icon="fa-user"></md-icon>
-                    <span>Ansprechpartner</span>
-                </span>
-                <span flex>
-
-                </span>
-            </md-list-item>
-            <md-list-item
-                    ng-repeat="row in toolCtrl.management.searchResult | filter: (toolCtrl.management.filter.customer.active ? {active: toolCtrl.management.filter.customer.active} : '' ) "
-                    ui-sref="protected.verwaltung.customers.edit({customerID: row.id})" layout="row">
-                <span style="width:50px">
-                    <alt-avatar data-color="200" data-text="{{row.name}}" data-filepath="{{(row.logo)?('/client/media/customer_logo/'+row.logo):''}}" ng-image-reload></alt-avatar>
-                </span>
-                <span flex= "40" ng-class="row.active===0 ? 'inactive' : ''">
-                    {{row.name}}
-                </span>
-                <span flex="30">
-                    <span  ng-repeat="user in row.users" >
-                        <md-tooltip>{{user.prename}} {{user.lastname}}</md-tooltip>
-                        <alt-avatar data-color="{{user.avatar_alt}}" data-text="{{user.prename}} {{user.lastname}}" data-filepath="{{user.avatar}}"></alt-avatar>
-                    </span>
-                </span>
-                <md-icon aria-label="Send Email" class="md-secondary md-hue-3" >build</md-icon>
-
-
-            </md-list-item>
-        </md-list>
     </div>
 
 
