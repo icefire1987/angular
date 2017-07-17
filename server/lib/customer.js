@@ -261,8 +261,7 @@ module.exports = {
                 if(err){
                     console.log("getConnErr:" + err)
                     return callback(err,null);
-                }
-                if (rows.affectedRows > 0) {
+                }else if (rows.affectedRows > 0) {
                     return callback(null,{id: rows.insertId});
                 }else{
                     return callback(err,null);

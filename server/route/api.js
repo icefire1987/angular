@@ -1005,9 +1005,8 @@ module.exports = function (app, express, io) {
             if(req.query.logo.length>0){
                 upload.single('file')(req,res,function(err) {
                     if(err){
-                        var response = {};
-                        response.debug = "Upload fehlgeschlagen";
-                        res.status(420).json(response);
+                        err.debug = "Upload fehlgeschlagen";
+                        res.status(500).json(err);
                         return;
                     }
                     fs.rename('tmp/' + req.query.logo, '../client/media/customer_logo/'+req.query.logo, function(err) {
