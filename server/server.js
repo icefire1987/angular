@@ -63,7 +63,7 @@ else {
         console.log('Server started on port ' + port);
     });
 
-    process.on('uncaughtException', function () {
+    process.on('uncaughtException', function (err) {
         console.log(err);
         //Send some notification about the error
         process.exit(1);

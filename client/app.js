@@ -409,6 +409,21 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     }
                 }
             },
+            {
+                name: 'protected.verwaltung.users.edit',
+                val: {
+                    url: '/edit/{userID:int}',
+                    views: {
+                        'users_content': {
+                            templateUrl: '/client/view/protected/verwaltung/users_edit.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+                        managementService.getUser($stateParams.userID);
+                    }
+                }
+            }
         ];
 
         for (var x = 0; x < states.length; x++) {

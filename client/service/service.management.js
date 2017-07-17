@@ -110,6 +110,16 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         );
     };
 
+    vm.getUser = function(userID){
+        userService.search({key:"id", value:userID}).then(
+            function(res){
+                console.log(res.data.user);
+                if(res.data.user.length==1){
+                    vm.user = res.data.user[0];
+                }
+            }
+        );
+    };
     vm.retouraddress_switch_view = function(active){
         var filter = {};
         if(typeof active!="undefined"){
@@ -277,6 +287,17 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         );
 
     };
+    vm.locals.submit.user_edit = function() {
+
+        userService.edit(vm.customer).then(
+            function(){
+                //vm.input_reset();
+                $state.go("protected.verwaltung.users.start");
+            }
+        );
+
+    };
+
     vm.locals.submit.customersearch = function(){
         var obj = {};
         if(vm.input.customername){
@@ -299,6 +320,22 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
                     $state.reload();
                 }
             );
+        }
+    };
+    vm.locals.submit.user_state= function(active){
+        if(vm.user.id) {
+            // TO DO !!
+            /*
+            customerService.update_state({
+                customerID:  vm.customer.id,
+                active: active
+            }).then(
+                function (response) {
+                    console.log(response)
+                    $state.reload();
+                }
+            );
+            */
         }
     };
 

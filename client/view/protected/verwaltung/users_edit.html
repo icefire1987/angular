@@ -1,0 +1,80 @@
+<md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+        <h3 flex>
+            <md-button class="md-icon-button" ui-sref="protected.verwaltung.users.start">
+                <md-icon>keyboard_backspace</md-icon>
+            </md-button>
+
+            {{toolCtrl.management.user.displayname}} bearbeiten</h3>
+
+        <md-menu md-position-mode="target-right target">
+            <md-button ng-click="$mdMenu.open($event)" aria-label="Open User Menu"  class="md-icon-button">
+                <md-icon> more_vert </md-icon>
+            </md-button>
+            <md-menu-content width="4" >
+                <md-menu-item>
+                    <md-button ng-if="toolCtrl.management.user.active" ng-click="toolCtrl.management.locals.submit.user_state(0)">
+                        <md-icon> visibility_off </md-icon>
+                        Datensatz deaktivieren
+                    </md-button>
+                    <md-button ng-if="!toolCtrl.management.user.active" ng-click="toolCtrl.management.locals.submit.user_state(1)">
+                        <md-icon> visibility </md-icon>
+                        Datensatz aktivieren
+                    </md-button>
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
+    </div>
+
+</md-toolbar>
+<md-tabs md-dynamic-height="" md-border-bottom>
+    <md-tab label="stammdaten">
+        <md-content class="md-padding">
+            <md-card>
+                <md-card-content>
+                    <form ng-submit="toolCtrl.management.user_edit()" role="form" name="user_edit"></form>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>eMail-Adresse</label>
+                            <input ng-model="toolCtrl.management.user.email" required type="email">
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Nutzername</label>
+                            <input ng-model="toolCtrl.management.user.username" required>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>Vorname</label>
+                            <input ng-model="toolCtrl.management.user.prename" required>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Nachname</label>
+                            <input ng-model="toolCtrl.management.user.lastname" required>
+                        </md-input-container>
+                    </div>
+                    <section>
+                        <h3>Funktionen</h3>
+                        <md-list>
+                            <md-list-item>
+                                <md-switch></md-switch>
+                                <span>Keyaccount</span>
+                            </md-list-item>
+                        </md-list>
+                    </section>
+                <md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised md-warn" ui-sref="protected.verwaltung.users.start">
+                        <md-icon>close</md-icon> abbrechen
+                    </md-button>
+                    <md-button type="submit" class="md-raised md-primary">
+                        <md-icon>check</md-icon> speichern
+                    </md-button>
+                </md-card-actions>
+            </md-card>
+        </md-content>
+    </md-tab>
+
+
+</md-tabs>

@@ -359,12 +359,16 @@ module.exports = function (app, express, io) {
         User.get('id',req.params.userid,function(err,userdata) {
             if (err){
                 var error = err;
-                error.debug = "Error getting data by username";
+                error.debug = "Error getting data by userid";
                 res.status(420).json(error);
             }
             if (userdata != null) {
                 var user = userdata;
-
+                if(user[0].prename && user[0].lastname){
+                    user[0].displayname = user[0].prename +" "+ user[0].lastname;
+                }else{
+                    user[0].displayname = user[0].username;
+                }
                 res.json({
                     user: user
                 });
@@ -383,11 +387,17 @@ module.exports = function (app, express, io) {
             var user = [];
             if (userdata != null && typeof(userdata[0] != undefined)) {
                 for(var x=0;x<userdata.length; x++){
+                    if(userdata[x].prename && userdata[x].lastname){
+                        userdata[x].displayname = userdata[x].prename +" "+ userdata[x].lastname;
+                    }else{
+                        userdata[x].displayname = userdata[x].username;
+                    }
                     user.push({
                         id: userdata[x].id,
                         username: userdata[x].username,
                         email: userdata[x].email,
-                        roles: userdata[x].roles.split(",")
+                        roles: userdata[x].roles.split(","),
+                        displayname: userdata[x].displayname
                     });
                 }
             }
