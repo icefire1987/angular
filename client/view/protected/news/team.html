@@ -1,0 +1,65 @@
+<div class="md-padding" layout="row" >
+    <md-card flex="30">
+        <md-card-content class="news_teams">
+            <md-list-item class="md-3-line" ng-repeat="team in toolCtrl.news.teams | orderBy : '-latest' "
+                          ui-sref="protected.news.team.single({teamid: team.id})"  ui-sref-opts="{reload: false}"
+                          ng-class="{'unread': toolCtrl.news.unread[team.id],' active': (team.id==toolCtrl.news.teamSelected.id)}">
+                <img alt="{{ team.name }}" ng-src="/server/tmp/{{ team.avatar }}" class="md-avatar" ng-if="team.avatar"/>
+                <div style="background:hsl({{ team.avatar_alt }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-hide="team.avatar"><span>{{team.name_short}}</span></div>
+                <div class="md-list-item-text" layout="column">
+                    <h3 class="md-body-2">{{ team.name }}</h3>
+                    <span><i>{{team.news[0].dateSend | date:'dd.MM HH:mm'}}</i></span>
+                    <span>{{team.news[0].title}}</span>
+                </div>
+
+            </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+    <md-card flex="70">
+        <md-card-content class="news_teams_single">
+            <md-list>
+                <md-list-item ng-repeat="news in toolCtrl.news.teamSelected.news" layout="row">
+                    <div class="md-list-item-text" layout="column" flex="100">
+                        <div layout="row" layout-align="start center">
+                            <span class="send">{{news.dateSend | date:'dd.MM HH:mm'}}</span>
+                            <h3 md-colors="{{(news.dateSend>toolCtrl.news.teamSelected.lastRead)?'{color:\'accent\'} ':''}}" class="md-body-2" layout-padding>{{ news.title }}</h3>
+                        </div>
+                        <p>{{news.message}}</p>,
+                    </div>
+
+                    <md-menu class="md-secondary">
+                        <md-button aria-label="Open menu" class="md-icon-button">
+                            <md-icon md-menu-origin>more_horiz</md-icon>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button >
+                                    Profil öffnen
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    ????
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-divider></md-menu-divider>
+                            <md-menu-item>
+                                <md-button ng-disabled="toolCtrl.news.teamSelected.right_team_post!=1" ng-click="toolCtrl.news.postDelete(news.id)">
+                                    Post löschen
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <div>
+                        <md-tooltip md-direction="top">{{news.username}}</md-tooltip>
+                        <img alt="{{ news.username }}" ng-src="/server/tmp/{{ news.avatar }}" class="md-avatar" ng-if="news.avatar"/>
+                        <div style="background:hsl({{ news.avatar_alt }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-hide="news.avatar" >
+                            <span>{{news.prename.substr(0,1) + news.lastname.substr(0,1)}}</span>
+                        </div>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+</div>

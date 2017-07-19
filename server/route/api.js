@@ -1290,6 +1290,7 @@ module.exports = function (app, express, io) {
             }
         });
     });
+
     router.post('/order',ensureAuthorized, function(req, res){
         console.log(req.body);
         req.body.userID = global_user.id;
@@ -1327,6 +1328,24 @@ module.exports = function (app, express, io) {
             }
 
         });
+    });
+
+    router.get('/log/user/:userid',ensureAuthorized, function(req, res){
+        var log = {};
+        log.orders = [];
+        Order.get_log_keyaccount(req.params.userid, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        })
     });
 
     router.get('/protected', ensureAuthorized, function(req,res){

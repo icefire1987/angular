@@ -4,12 +4,21 @@
              <md-icon>dashboard</md-icon>
              <span>Dashboard</span>
          </md-list-item>
-         <md-list-item ui-sref="protected.news.all" ui-sref-active="active">
+         <md-list-item ui-sref="protected.news" ui-sref-active="active">
              <md-icon>textsms</md-icon>
              <span>News</span>
              <md-badge ng-show="toolCtrl.helpers.object_len(toolCtrl.news.unread)>0">{{toolCtrl.helpers.object_len(toolCtrl.news.unread)}}</md-badge>
-
          </md-list-item>
+             <md-list-item ui-sref="protected.news.team.all" ui-sref-active="{'active': 'protected.news.team.*'}" class="child" ng-if="'protected.news' | includedByState">
+                 <md-icon>people</md-icon>
+                 <span>Teams</span>
+                 <md-badge ng-show="toolCtrl.helpers.object_len(toolCtrl.news.unread)>0">{{toolCtrl.helpers.object_len(toolCtrl.news.unread)}}</md-badge>
+             </md-list-item>
+             <md-list-item ui-sref="protected.news.log_userIs.all" ui-sref-active="{'active': 'protected.news.log_userIs.*'}" class="child" ng-if="'protected.news' | includedByState">
+                 <md-icon>receipt</md-icon>
+                 <span>Aktivitäten</span>
+
+             </md-list-item>
          <md-list-item ui-sref="protected.team" ui-sref-active="active">
              <md-icon>group</md-icon>
              <span>Team</span>

@@ -55,6 +55,9 @@ angular.module('myApp').service('newsService', function ($q,teamService,authServ
         });
         return defer.promise;
     };
+    vm.getLog = function (name){
+
+    };
     vm.getTeams = function(callback){
         teamService.search({key:"user",value:authService.getUser().obj.id}).then(
             function(result) {
@@ -80,7 +83,18 @@ angular.module('myApp').service('newsService', function ($q,teamService,authServ
             }
         );
     };
+    vm.getUserNews = function(callback){
+        $http.get("/api/log/user/"+authService.getUser().obj.id+"/").then(
+            function(result) {
+                if (result.data && result.data.length>0 ) {
+                    callback(result.data);
+                }else{
+                    callback([]);
+                }
 
+            }
+        );
+    };
     vm.updateNews = function(teamID){
         vm.getTeamNews(teamID, function(result_news){
 

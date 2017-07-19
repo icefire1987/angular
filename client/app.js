@@ -203,17 +203,28 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     }
                 }
             },
-            {
-                name: 'protected.news.all',
-                val: {
-                    url: '/',
-                    onEnter: function(newsService, $stateParams){
-                        newsService.getNews();
-                    }
-                }
-            },
                 {
-                    name: 'protected.news.single',
+                    name: 'protected.news.team',
+                    val: {
+                        url: '/team',
+                        views: {
+                            'news_content': {
+                                templateUrl: '/client/view/protected/news/team.html'
+                            }
+                        }
+                    }
+                },
+                {
+                    name: 'protected.news.team.all',
+                    val: {
+                        url: '/',
+                        onEnter: function(newsService, $stateParams){
+                            newsService.getNews();
+                        }
+                    }
+                },
+                {
+                    name: 'protected.news.team.single',
                     val: {
                         url: '/{teamid:int}',
                         onEnter: function(newsService, $stateParams){
@@ -229,6 +240,30 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         }
                     }
                 },
+                {
+                    name: 'protected.news.log_userIs',
+                    val: {
+                        url: '/aktivitaeten',
+                        views: {
+                            'news_content': {
+                                templateUrl: '/client/view/protected/news/log_userIs.html'
+                            }
+                        }
+                    }
+                },
+                {
+                    name: 'protected.news.log_userIs.all',
+                    val: {
+                        url: '/',
+                        onEnter: function(newsService, $stateParams){
+                            newsService.getUserNews(function(data){
+                                console.log("data");
+                                console.log(data)
+                            });
+                        }
+                    }
+                },
+
             {
                 name: 'protected.team',
                 val: {

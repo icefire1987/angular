@@ -49,6 +49,27 @@ module.exports = {
             });
         });
     },
+    get_log_keyaccount: function(userID,callback){
+        var query = "SELECT orders.id, customers.name, orders.comment " +
+            "FROM orders_user " +
+            "LEFT JOIN orders on orders.id = orders_user.orderID " +
+            "LEFT JOIN customers on customers.id = orders.customerID " +
+            "WHERE orders_user.userID = ? "
+        pool.getConnection(function (err, connection) {
+            var sql = connection.query(query, userID, function (err, rows) {
+                connection.release();
+                if(err){
+                    console.log("getConnErr:" + err)
+                    return callback(err,null);
+                }
+                if (rows.length > 0) {
+                    return callback(null,rows);
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
     post_new: function(data,callback){
         if(data.customerID == undefined || data.customerID == ""){
             var err ={userFeedback: 'Customer is missing'};
