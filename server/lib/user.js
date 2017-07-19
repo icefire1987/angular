@@ -28,7 +28,7 @@ module.exports = {
                 var value = "%"+value+"%";
                 query = 'select ' +
                     'user.id, user.username,user.email, user.roles,user.salt,user.login,' +
-                    'CONCAT(user.prename," ",user.lastname) as fullname, GROUP_CONCAT(teams.name) as teams, ' +
+                    'CONCAT(user.prename," ",user.lastname) as fullname, user.prename,user.lastname,GROUP_CONCAT(teams.name) as teams, ' +
                     'JSON_ARRAY(user_is.name) as user_is, ' +
                     'user.password from user ' +
                     'LEFT JOIN teams_user On teams_user.userID = user.id ' +
@@ -41,7 +41,16 @@ module.exports = {
                 query = 'select * from user WHERE email=?';
                 break;
             case "id":
-                query = 'select * from user WHERE id=?';
+                query = 'select ' +
+                    'user.id, user.username,user.email, user.roles,user.login,' +
+                    'CONCAT(user.prename," ",user.lastname) as fullname, user.prename,user.lastname, GROUP_CONCAT(teams.name) as teams, ' +
+                    'JSON_ARRAY(IFNULL(user_is.name,"")) as user_is ' +
+                    'from user ' +
+                    'LEFT JOIN teams_user On teams_user.userID = user.id ' +
+                    'LEFT JOIN teams ON teams.id = teams_user.teamID ' +
+                    'LEFT JOIN user_is ON user_is.userID = user.id ' +
+                    'WHERE user.id = ? ' +
+                    'GROUP BY user.id';
                 break;
             case "team":
                 query = 'select user.id, user.username,user.email, roles.name as role,roles.id as roleID from teams_user ' +
@@ -75,8 +84,12 @@ module.exports = {
 
         var params = {};
         var criteria = [];
+
+        var expected = [
+            "prename","lastname","avatar_alt","email","username","password","avatar"
+        ];
         for(var key in userObj){
-            if(userObj.hasOwnProperty(key)){
+            if(userObj.hasOwnProperty(key) && expected.indexOf(key)>-1){
                 params[key] = userObj[key];
             }
         }
@@ -98,6 +111,39 @@ module.exports = {
             });
         });
     },
+    userIs_put: function(data, callback){
+        var query = "INSERT INTO user_is SET ? ";
+        pool.getConnection(function (err, connection) {
+            var sql = connection.query(query, data, function (err, rows) {
+                connection.release();
+                if(err){
+                    return callback(err,null);
+                }
+                if (rows.affectedRows > 0) {
+                    return callback(null,true);
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
+    userIs_delete: function(data, callback){
+        var query = "DELETE FROM user_is WHERE userID=? AND name=? ";
+        pool.getConnection(function (err, connection) {
+            var sql = connection.query(query, [data.userID,data.name], function (err, rows) {
+                connection.release();
+                if(err){
+                    return callback(err,null);
+                }
+                if (rows.affectedRows > 0) {
+                    return callback(null,true);
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
+
     updateToken : function(userid,token,callback){
 
         var query = 'UPDATE user SET session_token=? WHERE id=?';

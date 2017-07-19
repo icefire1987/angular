@@ -143,6 +143,16 @@ angular.module('myApp').service('helperService', function () {
 
         return arr;
     };
+    vm.object_keys = function(obj,filter){
+        var arr = [];
+        for( var prop in obj ) {
+            if( this.hasOwnProperty( prop ) ) {
+                if( filter && filter.byvalue && obj[ prop ] === filter.byvalue ) arr.push(prop);
+                if( filter && filter.bykey && obj[ prop ] === filter.bykey ) arr.push(prop);
+            }
+        }
+        return arr;
+    };
 
     vm.selectedClearFalse = function(obj){
         for(var x in obj){
@@ -153,6 +163,22 @@ angular.module('myApp').service('helperService', function () {
     };
 
 
+    vm.switch_array = function(array,f_name, callback){
+        console.log(" \r\n switch_array ")
+
+        var index = array.indexOf(f_name);
+        if( index > -1){
+            //element vorhanden -> aus array entfernen
+            console.log(">-1")
+            array.splice(index,1);
+            callback(0);
+        }else{
+            //element nicht vorhanden -> zu array hinzu
+            console.log("else")
+            array.push(f_name);
+            callback(1);
+        }
+    };
     vm.time = {
         timestamp: 0,
         setTimestamp: function(value){

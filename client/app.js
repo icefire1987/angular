@@ -402,9 +402,7 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         }
                     },
                     onEnter: function(managementService, $stateParams){
-                        //if(managementService.input.customername){
-                         //   managementService.locals.submit.customersearch();
-                        //}
+
 
                     }
                 }

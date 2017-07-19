@@ -31,9 +31,10 @@
 <md-tabs md-dynamic-height="" md-border-bottom>
     <md-tab label="stammdaten">
         <md-content class="md-padding">
+{{toolCtrl.management.locals.submit.update_user_is}}
             <md-card>
+                <form ng-submit="toolCtrl.management.locals.submit.user_edit()" name="user_edit">
                 <md-card-content>
-                    <form ng-submit="toolCtrl.management.user_edit()" role="form" name="user_edit"></form>
                     <div layout="row">
                         <md-input-container>
                             <label>eMail-Adresse</label>
@@ -58,12 +59,21 @@
                         <h3>Funktionen</h3>
                         <md-list>
                             <md-list-item>
-                                <md-switch></md-switch>
+                                <md-switch
+                                        ng-model="toolCtrl.management.user.functions.keyaccount"
+                                        ng-change="toolCtrl.helpers.switch_array(
+                                            toolCtrl.management.user.user_is,
+                                            'keyaccount',
+                                            toolCtrl.management.locals.submit.user_is_keyaccount
+                                        )"
+                                        ng-disabled="toolCtrl.management.locals.switch_functions.keyaccount"
+                                        aria-label="Nutzerfunktionen"
+                                ></md-switch>
                                 <span>Keyaccount</span>
                             </md-list-item>
                         </md-list>
                     </section>
-                <md-card-content>
+                </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
                     <md-button class="md-raised md-warn" ui-sref="protected.verwaltung.users.start">
                         <md-icon>close</md-icon> abbrechen
@@ -72,7 +82,9 @@
                         <md-icon>check</md-icon> speichern
                     </md-button>
                 </md-card-actions>
+            </form>
             </md-card>
+
         </md-content>
     </md-tab>
 

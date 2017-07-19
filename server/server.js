@@ -2,7 +2,7 @@
 var cluster = require('cluster');
 if (cluster.isMaster) {
     var i = 0;
-    for (i; i< 4; i++){
+    for (i; i< 1; i++){
         cluster.fork();
     }
     //if the worker dies, restart it.

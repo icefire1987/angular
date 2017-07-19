@@ -6,6 +6,7 @@ angular.module('myApp').factory('logService',function ($q,$timeout,$anchorScroll
     vm.timers=[];
     vm.feedback = [];
     vm.setFeedback = function(data){
+        console.log(data)
 /*
         vm.timers[data.timer] = $timeout(function(){
             data.visible = false;
@@ -21,18 +22,25 @@ angular.module('myApp').factory('logService',function ($q,$timeout,$anchorScroll
                 .hideDelay(data.msecondsToDisplay)
                 .parent('#content')
                 .action('Details');
+            $mdToast.show(toast).then(function(response) {
+                if ( response == 'ok' ) {
+                    alert(data.debug);
+                }
+            });
         }else{
             var toast = $mdToast.simple()
                 .textContent(data.text)
                 .position('top','right' )
                 .hideDelay(data.msecondsToDisplay)
                 .parent('#content')
+                .action('X');
+            $mdToast.show(toast).then(function(response) {
+                if ( response == 'ok' ) {
+                    $mdToast.hide();
+                }
+            });
         }
-        $mdToast.show(toast).then(function(response) {
-            if ( response == 'ok' ) {
-                alert(data.debug);
-            }
-        });
+
 
 
     };
@@ -81,12 +89,14 @@ angular.module('myApp').factory('logService',function ($q,$timeout,$anchorScroll
                 classname = classbase + "highlight";
             }
             var debug='';
-
+            console.log(source)
             if(typeof source.serverFeedback != "undefined" && source.serverFeedback != "" && source.serverFeedback.data != null && source.serverFeedback.data.error != null){
                 debug = source.serverFeedback.data.error.debug;
+            }else if(typeof source.serverFeedback != "undefined" && source.serverFeedback != "" && source.serverFeedback.data != null && source.serverFeedback.data.code != null){
+                debug = source.serverFeedback.data.code;
             }
             vm.setFeedback({
-                text:source.userFeedback,
+                text:(source.userFeedback ? source.userFeedback : source.code),
                 msecondsToDisplay: msecondsToDisplay,
                 visible: true,
                 class: classname,

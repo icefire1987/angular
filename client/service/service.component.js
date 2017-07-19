@@ -91,8 +91,13 @@ angular.module('myApp').service('componentService', function ($mdMenu,$mdMedia,$
     };
 
     vm.createFilterLowercase = function(query) {
+
         var lowercaseQuery = angular.lowercase(query);
         return function filterFn(obj) {
+            console.log(obj)
+            if(obj.name == null){
+                obj.name = obj.username;
+            }
             return (obj.name.toLowerCase().indexOf(lowercaseQuery) !== -1);
         };
 

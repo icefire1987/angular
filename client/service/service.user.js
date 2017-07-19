@@ -2,7 +2,7 @@
  * Created by Chris on 11.11.16.
  */
 
-angular.module('myApp').service('userService', function ($localStorage,$http,authService) {
+angular.module('myApp').service('userService', function ($localStorage,$http,authService,$q) {
 
         var vm = this;
 
@@ -40,9 +40,36 @@ angular.module('myApp').service('userService', function ($localStorage,$http,aut
         };*/
 
         vm.update = function(data){
-            console.log("update")
-            return $http.put("/api/user/"+authService.getUser().obj.id,{prename: data.prename,lastname: data.lastname,avatar_alt: data.avatar_alt});
+            var deferred = $q.defer();
+            if(!data.id){
+                deferred.reject("");
+                return deferred.promise;
+            }
+            var expected = [
+                "prename","lastname","avatar_alt","email"
+            ];
+            var data_to_parse = {};
+
+            for(var element in data){
+                if(expected.indexOf(element)>-1){
+                    data_to_parse[element] = data[element];
+                }
+            }
+            console.log(data_to_parse);
+
+            return $http.put("/api/user/id/"+data.id,data_to_parse);
         };
 
+        vm.update_user_is = function(userID,f_name,f_value){
+            console.log(userID)
+            console.log(f_name)
+            console.log(f_value)
+            if(f_value == 0){
+                return $http.delete("/api/user/user_is/",{params: {userID:userID,name:f_name}});
+            }else if(f_value == 1){
+                return $http.put("/api/user/user_is/",{userID:userID,name:f_name});
+            }
+
+        };
        return vm;
     });

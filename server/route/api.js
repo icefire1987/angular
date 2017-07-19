@@ -356,21 +356,27 @@ module.exports = function (app, express, io) {
 
 // /User
     router.get('/user/id/:userid', function(req, res, next){
-        User.get('id',req.params.userid,function(err,userdata) {
+        User.get('id',req.params.userid,function(err,response) {
             if (err){
-                var error = err;
-                error.debug = "Error getting data by userid";
-                res.status(420).json(error);
+                err.debug = "Fehler bei Nutzerabfrage";
+                res.status(500).json(err);
             }
-            if (userdata != null) {
-                var user = userdata;
-                if(user[0].prename && user[0].lastname){
-                    user[0].displayname = user[0].prename +" "+ user[0].lastname;
+
+            if (response != null && response.length==1) {
+
+                var user = response[0];
+                user.user_is = JSON.parse(user.user_is);
+                user.functions = {};
+                for(var x=0;x<user.user_is.length;x++){
+                    user.functions[user.user_is[x]] = true;
+                }
+                if(user.fullname && user.fullname.length>1){
+                    user.displayname = user.fullname;
                 }else{
-                    user[0].displayname = user[0].username;
+                    user.displayname = user.username;
                 }
                 res.json({
-                    user: user
+                    user: [user]
                 });
             }
         });
@@ -522,7 +528,7 @@ module.exports = function (app, express, io) {
             });
         }
     });
-    router.put("/user/:userid",function(req,res,next){
+    router.put("/user/id/:userid",function(req,res,next){
         if(req.params.userid != "undefined"){
             console.log(req.body);
             if(req.body.password != undefined) {
@@ -545,6 +551,44 @@ module.exports = function (app, express, io) {
         }else{
             res.status(420).json({
                 error: {debug: "User unknown"}
+            });
+        }
+    });
+    router.put("/user/user_is/",function(req,res,next){
+        if(req.body.userID != undefined && req.body.name != undefined ) {
+            User.userIs_put({userID: req.body.userID, name: req.body.name}, function(err,result){
+                if(err){
+                    err.debug = err.message
+                    res.status(500).json({
+                        error: err
+                    });
+                }
+                if (result != null) {
+                    res.json({userFeedback: "Funktion hinzugefügt", type: "success",data: result});
+                }
+            });
+        }else{
+            res.status(420).json({
+                error: {debug: "/user/user_is Data missing"}
+            });
+        }
+    });
+    router.delete("/user/user_is/",function(req,res,next){
+        if(req.query.userID != undefined && req.query.name != undefined ) {
+            User.userIs_delete({userID: req.query.userID, name: req.query.name}, function(err,result){
+                if(err){
+                    err.debug = err.message
+                    res.status(500).json({
+                        error: err
+                    });
+                }
+                if (result != null) {
+                    res.json({userFeedback: "Funktion entfernt", type: "success",data: result});
+                }
+            });
+        }else{
+            res.status(420).json({
+                error: {debug: "/user/user_is Data missing"}
             });
         }
     });

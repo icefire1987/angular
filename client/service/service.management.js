@@ -16,7 +16,12 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         };
     };
     vm.dialog = {};
-    vm.locals = {submit:{}};
+    vm.locals = {
+        submit:{},
+        switch_functions: {
+            keyaccount: false
+        }
+    };
 
     vm.customer = {};
     vm.filter = {
@@ -113,7 +118,6 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
     vm.getUser = function(userID){
         userService.search({key:"id", value:userID}).then(
             function(res){
-                console.log(res.data.user);
                 if(res.data.user.length==1){
                     vm.user = res.data.user[0];
                 }
@@ -281,17 +285,17 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         }
         customerService.edit(vm.customer).then(
             function(){
-                //vm.input_reset();
+
                 $state.go("protected.verwaltung.customers.start");
             }
         );
 
     };
     vm.locals.submit.user_edit = function() {
-
-        userService.edit(vm.customer).then(
+        console.log("user_edit")
+        userService.update(vm.user).then(
             function(){
-                //vm.input_reset();
+                vm.locals.submit.usersearch();
                 $state.go("protected.verwaltung.users.start");
             }
         );
@@ -357,6 +361,14 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             }
         );
     };
+    vm.locals.submit.user_is_keyaccount = function(f_value){
+        vm.locals.switch_functions.keyaccount = true;
+        userService.update_user_is(vm.user.id,"keyaccount",f_value).then(
+            function(data){
+                vm.locals.switch_functions.keyaccount = false;
+            }
+        );
+    };
 
     vm.locals.edit = function(address){
         vm.input.retouraddress = angular.copy(address);
@@ -381,8 +393,10 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
     };
 
     vm.search_keyaccountusers = function(query){
+        console.log(query)
         return query ? vm.locals.keyaccountusers.filter( componentService.createFilterLowercase(query) ) : vm.locals.keyaccountusers;
     };
+
 
     return vm;
 });
