@@ -1,1 +1,17 @@
-<h3>LOG</h3>
+<div class="md-padding" layout="row" >
+    <md-card flex="100">
+        <md-card-content class="news_teams">
+            {{toolCtrl.news}}
+            <md-list-item class="md-3-line" ng-repeat="entry in toolCtrl.news.userNews | orderBy : '-is_read' "
+                          ng-class="{'unread': entry.is_read}">
+                <!--<img alt="{{ team.name }}" ng-src="/server/tmp/{{ team.avatar }}" class="md-avatar" ng-if="team.avatar"/>
+                <div style="background:hsl({{ team.avatar_alt }},100%,50%)" class="md-avatar" layout=row" layout-align="center center" ng-hide="team.avatar"><span>{{team.name_short}}</span></div>-->
+                <div class="md-list-item-text" layout="column">
+                    <span><i>{{entry.created | date:'dd.MM HH:mm'}}</i></span>
+                    <span bind-html-compile="entry.content"></span>
+                </div>
+            </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+</div>

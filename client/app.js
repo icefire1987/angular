@@ -256,10 +256,7 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     val: {
                         url: '/',
                         onEnter: function(newsService, $stateParams){
-                            newsService.getUserNews(function(data){
-                                console.log("data");
-                                console.log(data)
-                            });
+                            newsService.getUserNews();
                         }
                     }
                 },
@@ -294,7 +291,7 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                 {
                     name: 'protected.logistik.orders',
                     val: {
-                        url: '/orders',
+                        url: '/auftraege',
                         views: {
                             'logistik_content': {
                                 templateUrl: '/client/view/protected/logistik/orders.html'
@@ -303,6 +300,26 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         },
                         onEnter: function(logisticService, $stateParams){
                             logisticService.getOrders({latest: 5});
+                        }
+                    }
+                },
+                {
+                    name: 'protected.logistik.order',
+                    val: {
+                        url: '/auftrag/{orderid:int}',
+                        params: {
+                            action: ''
+                        },
+                        views: {
+                            'logistik_content': {
+                                templateUrl: '/client/view/protected/logistik/addarticle.html'
+
+                            }
+                        },
+                        onEnter: function(logisticService, $stateParams, $rootScope){
+                            console.log("Add Article To Order" + $stateParams.action);
+                            logisticService.setOrderObj($stateParams.orderid);
+
                         }
                     }
                 },
@@ -456,6 +473,22 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                         managementService.getUser($stateParams.userID);
                     }
                 }
+            },
+            {
+                name: 'protected.auftrag',
+                val: {
+                    url: '/orders/{orderID:int}',
+                    views: {
+                        'protected_content': {
+                            templateUrl: '/client/view/protected/orders/overview.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams, $rootScope){
+                        console.log("Single Order" + $stateParams.orderID)
+                        console.log($rootScope.state_previous)
+                    }
+                }
             }
         ];
 
@@ -481,9 +514,10 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
     });
 
     myApp.run(['$rootScope', '$state', 'authService','logService', function ($rootScope, $state, authService,logService) {
-        $rootScope.$on('$stateChangeStart', function (event,toState) {
+        $rootScope.$on('$stateChangeStart', function (event,toState,toStateP,fromState) {
             authService.authorize().then(
                 function(status){
+                    $rootScope.state_previous = fromState;
                     console.log("run auth:"+status)
                 },
                 function(err){

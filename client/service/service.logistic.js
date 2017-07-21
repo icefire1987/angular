@@ -18,6 +18,16 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,$
        )
     };
 
+    vm.order = {};
+    vm.setOrderObj = function(orderID){
+        vm.order.updated = false;
+        $http.get("/api/order/single/"+orderID).then(
+            function(response){
+                vm.order = response.data[0];
+                vm.order.updated = true;
+            }
+        );
+    };
 
     vm.dialog = {};
     vm.dialog.create =  componentService.getInstance("dialogTab");
@@ -220,6 +230,9 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,$
         )*/
     };
 
+    vm.locals = {
+
+    }
 
     return vm;
 });

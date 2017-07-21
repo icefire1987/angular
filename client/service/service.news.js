@@ -5,6 +5,7 @@ angular.module('myApp').service('newsService', function ($q,teamService,authServ
 
     var vm = this;
     vm.teams = [];
+    vm.userNews = [];
     vm.teamSelected = {};
 
 
@@ -55,7 +56,18 @@ angular.module('myApp').service('newsService', function ($q,teamService,authServ
         });
         return defer.promise;
     };
-    vm.getLog = function (name){
+    vm.getLog = function (userid,callback){
+        $http.get("/api/user/log/"+userid+"/").then(
+            function(result) {
+                console.log(result)
+                if (result.data && result.data.length>0 ) {
+                    callback(result.data);
+                }else{
+                    callback([]);
+                }
+
+            }
+        );
 
     };
     vm.getTeams = function(callback){
@@ -83,17 +95,19 @@ angular.module('myApp').service('newsService', function ($q,teamService,authServ
             }
         );
     };
-    vm.getUserNews = function(callback){
-        $http.get("/api/log/user/"+authService.getUser().obj.id+"/").then(
-            function(result) {
-                if (result.data && result.data.length>0 ) {
-                    callback(result.data);
-                }else{
-                    callback([]);
-                }
+    vm.getUserNews = function(){
+        var defer = $q.defer();
+        vm.userNews = [];
+console.log("getUserNews")
+        //get Teams
 
-            }
-        );
+        vm.getLog(authService.getUser().obj.id, function(result_news) {
+            console.log("getLog")
+            vm.userNews = result_news;
+            defer.resolve(true);
+        });
+
+        return defer.promise;
     };
     vm.updateNews = function(teamID){
         vm.getTeamNews(teamID, function(result_news){

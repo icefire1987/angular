@@ -177,5 +177,41 @@ module.exports = {
                 }
             });
         });
-    }
+    },
+    get_log : function(userid, callback){
+        var query = 'SELECT * FROM user_log WHERE userID=?';
+        pool.getConnection(function (err, connection) {
+            connection.query(query, [userid], function (err, rows) {
+                connection.release();
+                if(err){
+                    return callback(err,null);
+                }
+                if (rows.length > 0) {
+                    return callback(null,rows);
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
+    post_log : function(data, callback){
+        var data_to_insert = {
+            userID: data.userID,
+            content: data.content
+        }
+        var query = "INSERT INTO user_log SET ? ";
+        pool.getConnection(function (err, connection) {
+            var sql = connection.query(query, data_to_insert, function (err, rows) {
+                connection.release();
+                if(err){
+                    return callback(err,null);
+                }
+                if (rows.affectedRows > 0) {
+                    return callback(null,true);
+                }else{
+                    return callback(err,null);
+                }
+            });
+        });
+    },
 };

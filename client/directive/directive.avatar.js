@@ -32,6 +32,7 @@ angular.module('myApp').directive('altAvatar', function($interval) {
             };
 
 
+            console.log(scope.filepath)
             scope.$on('$destroy', function () {
                 scope.progress=false;
                 elem.off('change');

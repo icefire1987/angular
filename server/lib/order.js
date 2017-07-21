@@ -14,13 +14,19 @@ module.exports = {
         var where = "";
         var orderby = "";
         var limit = "";
-        var data_to_insert = {};
+        var data_to_insert = [];
         for(var filterKey in filter){
             switch(filterKey){
                 case "latest":
                     if(orderby.length>0){ orderby += ","}else{ orderby += " ORDER BY " };
                     orderby += " orders.created DESC ";
                     limit +=  " LIMIT "+filter[filterKey];
+                    break;
+                case "id":
+                    if(where.length>0){ where += " AND "}else{ where += " where " };
+                    where += " orders.id = ? ";
+                    data_to_insert.push(filter[filterKey])
+                    limit +=  " LIMIT 1 ";
                     break;
             }
         }
@@ -50,7 +56,7 @@ module.exports = {
         });
     },
     get_log_keyaccount: function(userID,callback){
-        var query = "SELECT orders.id, customers.name, orders.comment " +
+        var query = "SELECT orders.id as orderID, customers.name as customerName, orders.comment as orderComment, orders.created as orderCreated " +
             "FROM orders_user " +
             "LEFT JOIN orders on orders.id = orders_user.orderID " +
             "LEFT JOIN customers on customers.id = orders.customerID " +

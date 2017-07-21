@@ -1,0 +1,77 @@
+<md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+        <h3 flex>
+            <md-button class="md-icon-button" ui-sref="protected.logistik.orders">
+                <md-icon>keyboard_backspace</md-icon>
+            </md-button>
+
+            {{toolCtrl.logistic.order.id | numberFixedLen:6}} - Artikel hinzufügen</h3>
+
+        <md-menu md-position-mode="target-right target">
+            <md-button ng-click="$mdMenu.open($event)" aria-label="Open User Menu"  class="md-icon-button">
+                <md-icon> more_vert </md-icon>
+            </md-button>
+            <md-menu-content width="4" >
+                <md-menu-item>
+
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
+    </div>
+
+</md-toolbar>
+
+<md-card>
+    <md-card-header>
+            <alt-avatar
+                    ng-if="toolCtrl.logistic.order.updated == true"
+                    data-color="{{toolCtrl.logistic.order.keyaccount_avatar_alt}}"
+                    data-text="{{toolCtrl.logistic.order.customer_name}}"
+                    data-filepath="/client/media/customer_logo/{{toolCtrl.logistic.order.logo}}">
+            </alt-avatar>
+        <md-card-header-text>
+            <span class="md-title">{{toolCtrl.logistic.order.customer_name}} </span>
+            <span class="md-subhead">{{toolCtrl.logistic.order.created | date : 'dd.MM.yyyy'}}</span>
+        </md-card-header-text>
+    </md-card-header>
+    <md-card-content>
+        <md-button class="md-raised  md-accent" aria-label="create team" ng-click="toolCtrl.logistic.locals.addArticle = true">
+            <md-icon>edit</md-icon>
+            einzelnen Artikel hinzufügen
+        </md-button>
+        <form ng-show="toolCtrl.logistic.locals.addArticle" ng-submit="">
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Artikelnummer</label>
+                    <input ng-model="toolCtrl.logistic.input.article_single.articlenumber" required ng-trim="true">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Scancode</label>
+                    <input ng-model="toolCtrl.logistic.input.article_single.scancode" ng-trim="true">
+                    <md-tooltip>Falls leer, wird die Artikelnummer als Scancode übernommen</md-tooltip>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>WG</label>
+                    <select-table source="wg" selected=""></select-table>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <md-button type="submit" class="md-raised md-accent">
+                        <md-icon>add</md-icon>
+                    </md-button>
+                </md-input-container>
+            </div>
+
+        </form>
+    </md-card-content>
+</md-card>
+
+
+
+<md-card ng-if="1==2">
+    {{toolCtrl.logistic.order}}
+</md-card>

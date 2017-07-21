@@ -118,13 +118,13 @@ myApp.controller('mainCtrl', function($timeout,$scope,$log,authService,dateServi
 
         var counter=0;
         $interval(function(){
-            vm.setBackground('#public',vm.imagepath+'backgrounds/low/'+data.files[counter]);
+            vm.setBackground('#public',vm.imagepath+'backgrounds/'+data.files[counter]);
             //vm.setBackground('#public',vm.imagepath+'backgrounds/'+data.files[counter]);
             counter++;
             if(counter>=data.files.length){
                 counter=0;
             }
-        }, 20000);
+        }, 15000);
     }).error(function(err){
         console.log(err)
     });

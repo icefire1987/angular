@@ -29,7 +29,6 @@ angular.module('myApp').service('socketService', function (socketFactory) {
             });
 
             vm.mySocket.on('userlist', function(data){
-                console.log("userlist");
                 vm.users_connected = data;
             });
 

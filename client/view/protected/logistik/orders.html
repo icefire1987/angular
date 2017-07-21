@@ -29,7 +29,7 @@
                                     <p ng-if="order.comment"><small>Info:</small> {{order.comment }}</p>
                                 </md-card-content>
                                 <md-card-actions layout="row" layout-align="start center">
-                                    <md-button class="md-button-small"><md-tooltip>Artikel hinzufügen</md-tooltip><md-icon>add</md-icon></md-button>
+                                    <md-button class="md-button-small" ui-sref="protected.logistik.order({orderid:order.id, action: 'addArticle'})"><md-tooltip>Artikel hinzufügen</md-tooltip><md-icon>add</md-icon></md-button>
                                     <md-button class="md-button-small"><md-tooltip>Wareneingang einbuchen</md-tooltip><md-icon  md-font-set="fa" md-font-icon="fa-cubes"></md-icon></md-button>
                                     <md-button class="md-button-small"><md-tooltip>Warenausgang ausbuchen</md-tooltip><md-icon  md-font-set="fa" md-font-icon="fa-ship"></md-icon></md-button>
                                     <md-button class="md-button-small"><md-tooltip>Auftrag bearbeiten</md-tooltip><md-icon>edit</md-icon></md-button>

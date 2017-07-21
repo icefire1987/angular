@@ -1291,6 +1291,23 @@ module.exports = function (app, express, io) {
         });
     });
 
+    router.get('/order/single/:orderid',ensureAuthorized, function(req,res){
+        Order.get({id:req.params.orderid}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+
+                res.json([])
+            }
+        });
+    });
+
     router.post('/order',ensureAuthorized, function(req, res){
         console.log(req.body);
         req.body.userID = global_user.id;
@@ -1321,19 +1338,31 @@ module.exports = function (app, express, io) {
                     error: err
                 });
             }else if(data){
-                res.json({ userFeedback: "Nutzer zugewiesen", type:"success", id:data.id});
+                var text = "Du wurdest im Auftrag <link-order orderid='"+req.body.orderID+"'></link-order> als zuständiger Keyaccount hinterlegt.";
+                User.post_log({userID: req.body.userID, content: text},function(err,data){
+                    if(err) {
+                        console.log(err)
+                        err.debug = err.message + " Auftrag wurde jedoch erstellt, aber ohne Info an Keyaccount";
+                        res.status(500).json({
+                            error: err
+                        });
+                    }else if(data){
+                        res.json({ userFeedback: "Nutzer zugewiesen", type:"success", id:data.id});
+                    }else{
+                        res.json([])
+                    }
+                });
             }else{
-
                 res.json([])
             }
 
         });
     });
 
-    router.get('/log/user/:userid',ensureAuthorized, function(req, res){
+    router.get('/user/log/:userid',ensureAuthorized, function(req, res){
         var log = {};
         log.orders = [];
-        Order.get_log_keyaccount(req.params.userid, function(err,data){
+        User.get_log(req.params.userid, function(err,data){
             if(err) {
                 console.log(err)
                 err.debug = err.message;
