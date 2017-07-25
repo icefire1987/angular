@@ -35,7 +35,7 @@
             <span class="md-subhead">{{toolCtrl.logistic.order.created | date : 'dd.MM.yyyy'}}</span>
         </md-card-header-text>
     </md-card-header>
-    <md-card-content>
+    <md-card-content >
         <md-button class="md-raised  md-accent" aria-label="create team" ng-click="toolCtrl.logistic.locals.addArticle = true">
             <md-icon>edit</md-icon>
             einzelnen Artikel hinzufügen
@@ -56,8 +56,39 @@
 
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>WG</label>
-                    <select-table source="wg" selected=""></select-table>
+                    <select-table source="wg" selected="toolCtrl.logistic.input.article_single.wg"></select-table>
                 </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Geschlecht</label>
+                    <select-table source="gender" selected="toolCtrl.logistic.input.article_single.gender"></select-table>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+
+                    <md-menu ng-if="toolCtrl.logistic.locals.commenttypes">
+                        <md-button aria-label="Open phone interactions menu" class="md-icon-button"  ng-click="$mdOpenMenu($event)">
+                            <md-icon md-menu-origin>comment</md-icon>
+                            <md-tooltip>Kommentar hinzufügen</md-tooltip>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item ng-repeat="item in toolCtrl.logistic.locals.commenttypes " >
+                                <md-button aria-label="{{item.name}}" ng-click="toolCtrl.logistic.input.article_single.comment">
+                                    <md-icon aria-label="{{item.name}}">add</md-icon>
+                                    {{item.name}}
+                                </md-button>
+                            </md-menu-item>
+
+                        </md-menu-content>
+                    </md-menu>
+
+
+                </md-input-container>
+                <md-input-container ng-if="" class="md-block" flex-gt-sm>
+                    <label>Info</label>
+                    <select-table source="comment" selected="toolCtrl.logistic.input.article_single.commenttype"></select-table>
+                   <input ng-if="toolCtrl.logistic.input.article_single.commenttype" ng-model="toolCtrl.logistic.input.article_single.info" ng-trim="true">
+                </md-input-container>
+
 
                 <md-input-container class="md-block" flex-gt-sm>
                     <md-button type="submit" class="md-raised md-accent">
@@ -69,7 +100,7 @@
         </form>
     </md-card-content>
 </md-card>
-
+{{toolCtrl.logistic.locals}}
 
 
 <md-card ng-if="1==2">

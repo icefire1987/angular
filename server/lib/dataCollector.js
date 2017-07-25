@@ -40,5 +40,21 @@ module.exports = {
                 }
             });
         });
-    }
+    },
+    commenttype : function(callback) {
+        var query = " SELECT id, name,icon FROM options_comment WHERE visible=1 ";
+        pool.getConnection(function (err, connection) {
+            connection.query(query , function (err, rows) {
+                connection.release();
+                if (err) {
+                    return callback(err, null);
+                }
+                if (rows.length > 0) {
+                    return callback(null, rows);
+                } else {
+                    return callback(err, null);
+                }
+            });
+        });
+    },
 };

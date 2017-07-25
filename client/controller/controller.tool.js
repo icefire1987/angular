@@ -27,6 +27,7 @@ console.log("tool")
 
 
 
+
     vm.socket = socketService;
     vm.socket.connect();
     vm.socket.user = authService.getUser();

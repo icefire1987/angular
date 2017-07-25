@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('logisticService', function ($q, $http,$filter,$state,componentService,userService) {
+angular.module('myApp').service('logisticService', function ($q, $http,$filter,$state,componentService,userService,dbDataCollectorService) {
 
     var vm = this;
 
@@ -231,8 +231,14 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,$
     };
 
     vm.locals = {
+        fabIsOpen: false
+    };
 
-    }
+    dbDataCollectorService.getCommentTyp().then(
+        function(res){
+            vm.locals.commenttypes = res.data;
+        }
+    )
 
     return vm;
 });

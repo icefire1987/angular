@@ -16,7 +16,6 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
             scope.options = [];
 
             var myCallback = function(res){
-                console.log(res)
                 if(res.data.length>0){
                     for(var row in res.data){
                         var depth=1;
@@ -77,6 +76,9 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                         break;
                     case "wg":
                         dbDataCollectorService.getWG().then(myCallback);
+                        break;
+                    case "comment":
+                        dbDataCollectorService.getCommentTyp().then(myCallback);
                         break;
                 }
             }
