@@ -40,12 +40,12 @@
             <md-icon>edit</md-icon>
             einzelnen Artikel hinzufügen
         </md-button>
-        <form ng-show="toolCtrl.logistic.locals.addArticle" ng-submit="">
+        <form ng-if="toolCtrl.logistic.locals.addArticle" ng-submit="toolCtrl.logistic.locals.submit.addArticle_toModel()">
 
             <div layout-gt-sm="row">
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>Artikelnummer</label>
-                    <input ng-model="toolCtrl.logistic.input.article_single.articlenumber" required ng-trim="true">
+                    <input ng-model="toolCtrl.logistic.input.article_single.articlenumber" required ng-trim="true" autofocus>
                 </md-input-container>
 
                 <md-input-container class="md-block" flex-gt-sm>
@@ -53,7 +53,10 @@
                     <input ng-model="toolCtrl.logistic.input.article_single.scancode" ng-trim="true">
                     <md-tooltip>Falls leer, wird die Artikelnummer als Scancode übernommen</md-tooltip>
                 </md-input-container>
-
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Prozess</label>
+                    <input-process model="toolCtrl.logistic.input.article_single.process"></input-process>
+                </md-input-container>
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>WG</label>
                     <select-table source="wg" selected="toolCtrl.logistic.input.article_single.wg"></select-table>
@@ -62,17 +65,27 @@
                     <label>Geschlecht</label>
                     <select-table source="gender" selected="toolCtrl.logistic.input.article_single.gender"></select-table>
                 </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm ng-repeat="commentitem in toolCtrl.logistic.locals.commenttypes_selected">
+                        <md-icon class="md-accent" ng-click="toolCtrl.logistic.locals.commenttypes_selected.splice(toolCtrl.logistic.locals.commenttypes_selected.indexOf(commentitem),1)">
+                            <md-tooltip>{{commentitem.name}}-Kommentar entfernen</md-tooltip>
+                            delete
+                        </md-icon>
+                    <label>{{commentitem.name}}</label>
+                    <input ng-model="toolCtrl.logistic.input.article_single.info[commentitem.identifier]" ng-trim="true">
 
+                </md-input-container>
                 <md-input-container class="md-block" flex-gt-sm>
 
                     <md-menu ng-if="toolCtrl.logistic.locals.commenttypes">
                         <md-button aria-label="Open phone interactions menu" class="md-icon-button"  ng-click="$mdOpenMenu($event)">
-                            <md-icon md-menu-origin>comment</md-icon>
+                            <md-icon md-menu-origin>
+                                comment
+                            </md-icon>
                             <md-tooltip>Kommentar hinzufügen</md-tooltip>
                         </md-button>
                         <md-menu-content width="4">
                             <md-menu-item ng-repeat="item in toolCtrl.logistic.locals.commenttypes " >
-                                <md-button aria-label="{{item.name}}" ng-click="toolCtrl.logistic.input.article_single.comment">
+                                <md-button aria-label="{{item.name}}" ng-click="toolCtrl.logistic.locals.commenttypes_selected.push(item)">
                                     <md-icon aria-label="{{item.name}}">add</md-icon>
                                     {{item.name}}
                                 </md-button>
@@ -80,29 +93,52 @@
 
                         </md-menu-content>
                     </md-menu>
-
-
-                </md-input-container>
-                <md-input-container ng-if="" class="md-block" flex-gt-sm>
-                    <label>Info</label>
-                    <select-table source="comment" selected="toolCtrl.logistic.input.article_single.commenttype"></select-table>
-                   <input ng-if="toolCtrl.logistic.input.article_single.commenttype" ng-model="toolCtrl.logistic.input.article_single.info" ng-trim="true">
                 </md-input-container>
 
-
-                <md-input-container class="md-block" flex-gt-sm>
-                    <md-button type="submit" class="md-raised md-accent">
+                <md-input-container class="md-block" flex-gt-sm="10">
+                    <md-button type="submit" class="md-fab md-mini md-accent">
                         <md-icon>add</md-icon>
                     </md-button>
                 </md-input-container>
+
             </div>
 
         </form>
     </md-card-content>
 </md-card>
-{{toolCtrl.logistic.locals}}
 
 
-<md-card ng-if="1==2">
-    {{toolCtrl.logistic.order}}
+<md-card>
+    <md-table-container  ng-if="toolCtrl.logistic.articles.length">
+        <table md-table md-row-select ng-model="toolCtrl.logistic.articles" md-progress="promise">
+            <thead md-head>
+            <tr md-row>
+                <th md-column md-order-by="articlenumber"><span>Artikelnummer</span></th>
+                <th md-column><span>Scancode</span></th>
+                <th md-column><span>Prozess</span></th>
+                <th md-column><span>WG</span></th>
+                <th md-column><span>Geschlecht</span></th>
+                <th md-column><span>Info</span></th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row  ng-repeat="row in toolCtrl.logistic.articles " >
+                <td md-cell>{{row.articlenumber}}</td>
+                <td md-cell>{{row.scancode}}</td>
+                <td md-cell>{{row.process}}</td>
+                <td md-cell>{{row.wg}}</td>
+                <td md-cell>{{row.gender}}</td>
+                <td md-cell>
+                        <span class="md-block" ng-repeat="comment in row.info">
+                            {{comment}}
+                        </span>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
 </md-card>
+
+{{toolCtrl.logistic.locals}}
+{{toolCtrl.logistic.input}}

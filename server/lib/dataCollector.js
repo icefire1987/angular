@@ -42,7 +42,7 @@ module.exports = {
         });
     },
     commenttype : function(callback) {
-        var query = " SELECT id, name,icon FROM options_comment WHERE visible=1 ";
+        var query = " SELECT id, name,icon,identifier FROM options_comment WHERE visible=1 ";
         pool.getConnection(function (err, connection) {
             connection.query(query , function (err, rows) {
                 connection.release();

@@ -33,25 +33,25 @@
                  <md-icon>assignment</md-icon>
                  <span>Auftrag</span>
              </md-list-item>
-             <md-list-item ui-sref="protected.logistik.inbound" ui-sref-active="active" class="child" ng-if="'protected.logistik' | includedByState">
+             <md-list-item ui-sref="protected.logistik.inbound" ui-sref-active="active" class="child inactive" ng-if="'protected.logistik' | includedByState" >
                  <md-icon>repeat</md-icon>
                  <span>Warenstrom</span>
              </md-list-item>
-             <md-list-item ui-sref="protected.logistik.stockdata" ui-sref-active="active" class="child" ng-if="'protected.logistik' | includedByState">
+             <md-list-item ui-sref="protected.logistik.stockdata" ui-sref-active="active" class="child inactive" ng-if="'protected.logistik' | includedByState">
                  <md-icon>storage</md-icon>
                  <span>Stammdaten</span>
              </md-list-item>
              <md-divider ng-if="'protected.logistik' | includedByState"></md-divider>
-         <md-list-item ui-sref="protected.produktion" ui-sref-active="active">
+         <md-list-item ui-sref="protected.produktion" ui-sref-active="active" class="inactive">
              <md-icon>memory</md-icon>
              <span>Produktion</span>
          </md-list-item>
-         <md-list-item ui-sref="protected.operations">
+         <md-list-item ui-sref="protected.operations" class="inactive">
              <md-icon>traffic</md-icon>
              <span>Operations</span>
          </md-list-item>
          <md-divider ></md-divider>
-         <md-list-item ui-sref="protected.reporting">
+         <md-list-item ui-sref="protected.reporting" class="inactive">
              <md-icon>equalizer</md-icon>
              <span>Reporting</span>
          </md-list-item>

@@ -19,6 +19,7 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,$
     };
 
     vm.order = {};
+    vm.articles = [];
     vm.setOrderObj = function(orderID){
         vm.order.updated = false;
         $http.get("/api/order/single/"+orderID).then(
@@ -231,8 +232,32 @@ angular.module('myApp').service('logisticService', function ($q, $http,$filter,$
     };
 
     vm.locals = {
-        fabIsOpen: false
+        fabIsOpen: false,
+        input_keep: false,
+        commenttypes_selected: [],
+        submit: {}
     };
+
+    vm.locals.submit.addArticle_single = function(article){
+        var data_to_submit = {
+            articles: [vm.input.article_single],
+            orderid: vm.order.id
+        };
+        return $http.post('/api/order/articles',data_to_submit, function(err,data){
+
+        });
+    };
+    vm.locals.submit.addArticle_toModel = function(article){
+        if(!article){
+            article = vm.input.article_single;
+        }
+        vm.articles.push(angular.copy(article));
+
+        if(!vm.locals.input_keep || vm.locals.input_keep==false){
+            vm.input.article_single = {};
+        }
+    };
+
 
     dbDataCollectorService.getCommentTyp().then(
         function(res){
