@@ -475,6 +475,55 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                 }
             },
             {
+                name: 'protected.verwaltung.process',
+                val: {
+                    abstract: true,
+                    url: '/prozess',
+                    views: {
+                        'verwaltung_content': {
+                            templateUrl: '/client/view/protected/verwaltung/process.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+                        managementService.getKeyaccountusers();
+                    }
+                }
+            },
+            {
+                name: 'protected.verwaltung.process.start',
+                val: {
+                    url: '/',
+                    views: {
+                        'process_content': {
+                            templateUrl: '/client/view/protected/verwaltung/process_start.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+
+
+                    }
+                }
+            },
+            {
+                name: 'protected.verwaltung.process.stage_edit',
+                val: {
+                    url: '/stage_edit/:stageID',
+                    views: {
+                        'process_content': {
+                            templateUrl: '/client/view/protected/verwaltung/process_stage_edit.html'
+
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+                        managementService.getStage($stateParams.stageID);
+                    }
+                }
+            },
+
+
+            {
                 name: 'protected.auftrag',
                 val: {
                     url: '/orders/{orderID:int}',

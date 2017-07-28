@@ -12,6 +12,8 @@ var mail = require('../lib/mail.js');
 var Customer = require('../lib/customer.js');
 var Data = require('../lib/dataCollector.js');
 var Order = require('../lib/order.js');
+var Location = require('../lib/location.js');
+
 const fs = require('fs');
 
 var multer  = require('multer')
@@ -1373,7 +1375,78 @@ module.exports = function (app, express, io) {
 
         });
     });
-
+    router.get('/location/stage/id/:id',ensureAuthorized, function(req,res){
+        Location.get({id:req.params.id}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json({stage: data});
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.get('/location/stage/name/:name',ensureAuthorized, function(req,res){
+        Location.get({name:req.params.name}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.get('/location/stage',ensureAuthorized, function(req,res){
+        Location.get(null, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.post('/location/stage',ensureAuthorized, function(req, res){
+        console.log(req.body);
+        Location.post_stage(req.body, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+               res.json({ userFeedback: "Produktionsstation erstellt", type:"success", id:data.id});
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.post('/location/stage/active',ensureAuthorized, function(req,res){
+        console.log(req.body)
+        Location.update_stage({stageID: req.body.stageid, data: {active: req.body.active} },function(err,result){
+            if(err){
+                res.status(420).json(errors[0]);
+            }else{
+                var userFeedback =  (req.body.active==1 ? "Station aktiviert" : "Station deaktiviert");
+                res.json({ userFeedback: userFeedback, type:"success"});
+            }
+        });
+    });
     router.get('/user/log/:userid',ensureAuthorized, function(req, res){
         var log = {};
         log.orders = [];

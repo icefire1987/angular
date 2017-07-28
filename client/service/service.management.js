@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService,$state) {
+angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService,locationService,$state) {
 
     var vm = this;
 
@@ -41,6 +41,11 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             orderBy: 'username'
         },
         customers: {
+            model: [],
+            page: 1,
+            orderBy: 'name'
+        },
+        stage: {
             model: [],
             page: 1,
             orderBy: 'name'
@@ -120,6 +125,16 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             function(res){
                 if(res.data.user.length==1){
                     vm.user = res.data.user[0];
+                }
+            }
+        );
+    };
+    vm.getStage = function(stageID){
+        locationService.stage_search({key:"id", value:stageID}).then(
+            function(res){
+                console.log(res)
+                if(res.stage.length==1){
+                    vm.stage = res.stage[0];
                 }
             }
         );
@@ -237,6 +252,66 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
                 }
             );
         }
+    };
+    vm.locals.submit.stage_search = function(){
+        var obj = {};
+        if(vm.input.stage && vm.input.stage.name){
+            obj = {key:"name",value:vm.input.stage.name};
+        }
+        locationService.stage_search(obj).then(
+            function(data){
+                vm.searchResult = {stage: data};
+            }
+        )
+    };
+    vm.locals.submit.stage_add = function() {
+        locationService.stage_search({key:"name",value:vm.input.stage.name}).then(
+            function(data){
+                if(data.length==0){
+                    locationService.stage_add(vm.input.stage).then(
+                        function(){
+                            vm.input_reset();
+                        }
+                    );
+                }else{
+                    vm.dialog.dublicate =  componentService.getInstance("dialogConfirm");
+                    vm.dialog.dublicate.config = {
+                        title:  'Station mit ähnlichem Namen vorhanden',
+                        textContent:  data.map(function(customer){
+                            return customer.name;
+                        }).join(", "),
+                        ok: 'Station trotzdem anlegen',
+                        cancel: 'abbrechen',
+                        ariaLabel: 'Station erstellen'
+                    };
+                    vm.dialog.dublicate.callback.ok = function () {
+                        locationService.stage_add(vm.input.stage).then(
+                            function(){
+                                vm.input_reset();
+                            }
+                        );
+                    };
+                    vm.dialog.dublicate.show();
+                }
+                vm.locals.show_newStage=false;
+            }
+        );
+    };
+    vm.locals.submit.stage_state= function(active){
+        if(vm.stage.id) {
+            locationService.update_stage_state({
+                stageID:  vm.stage.id,
+                active: active
+            }).then(
+                function (response) {
+                    console.log(response)
+                    $state.reload();
+                }
+            );
+        }
+    };
+    vm.locals.submit.process_add = function() {
+
     };
     vm.locals.submit.customer_add = function() {
         if (vm.input.newCustomer.logo_data) {

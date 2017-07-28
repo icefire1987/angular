@@ -40,7 +40,7 @@
             <md-icon>edit</md-icon>
             einzelnen Artikel hinzufügen
         </md-button>
-        <form ng-if="toolCtrl.logistic.locals.addArticle" ng-submit="toolCtrl.logistic.locals.submit.addArticle_toModel()">
+        <form ng-if="toolCtrl.logistic.locals.addArticle" ng-submit="toolCtrl.logistic.locals.submit.addArticle_toModel()" name="addArticle_single">
 
             <div layout-gt-sm="row">
                 <md-input-container class="md-block" flex-gt-sm>
@@ -55,7 +55,7 @@
                 </md-input-container>
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>Prozess</label>
-                    <input-process model="toolCtrl.logistic.input.article_single.process"></input-process>
+                    <select-table source="process" selected="toolCtrl.logistic.input.article_single.process"></select-table>
                 </md-input-container>
                 <md-input-container class="md-block" flex-gt-sm>
                     <label>WG</label>
@@ -96,7 +96,7 @@
                 </md-input-container>
 
                 <md-input-container class="md-block" flex-gt-sm="10">
-                    <md-button type="submit" class="md-fab md-mini md-accent">
+                    <md-button type="button" class="md-fab md-mini md-accent" button-submit ng-disabled="addArticle_single.$invalid">
                         <md-icon>add</md-icon>
                     </md-button>
                 </md-input-container>

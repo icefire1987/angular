@@ -1,0 +1,58 @@
+<md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+        <h3 flex>
+            <md-button class="md-icon-button" ui-sref="protected.verwaltung.process.start">
+                <md-icon>keyboard_backspace</md-icon>
+            </md-button>
+            {{toolCtrl.management.stage.name}} bearbeiten</h3>
+
+        <md-menu md-position-mode="target-right target">
+            <md-button ng-click="$mdMenu.open($event)" aria-label="Open Stage Menu"  class="md-icon-button">
+                <md-icon> more_vert </md-icon>
+            </md-button>
+            <md-menu-content width="4" >
+                <md-menu-item>
+                    <md-button ng-if="toolCtrl.management.stage.active" ng-click="toolCtrl.management.locals.submit.stage_state(0)">
+                        <md-icon> visibility_off </md-icon>
+                        Datensatz deaktivieren
+                    </md-button>
+                    <md-button ng-if="!toolCtrl.management.stage.active" ng-click="toolCtrl.management.locals.submit.stage_state(1)">
+                        <md-icon> visibility </md-icon>
+                        Datensatz aktivieren
+                    </md-button>
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
+    </div>
+
+</md-toolbar>
+<md-tabs md-dynamic-height="" md-border-bottom>
+    <md-tab label="stammdaten">
+        <md-content class="md-padding">
+            <md-card>
+                <md-card-content>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>Prosuktionsstationsname</label>
+                            <input ng-model="toolCtrl.management.stage.name" disabled>
+                        </md-input-container>
+
+                    </div>
+
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised md-warn" ui-sref="protected.verwaltung.customers.start">
+                        <md-icon>close</md-icon> abbrechen
+                    </md-button>
+                    <md-button class="md-raised md-primary">
+                        <md-icon>check</md-icon> schließen
+                    </md-button>
+
+                </md-card-actions>
+            </md-card>
+        </md-content>
+    </md-tab>
+
+</md-tabs>
+{{toolCtrl.management.stage}}
