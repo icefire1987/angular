@@ -89,7 +89,7 @@ angular.module('myApp').factory('logService',function ($q,$timeout,$anchorScroll
                 classname = classbase + "highlight";
             }
             var debug='';
-            console.log(source)
+
             if(typeof source.serverFeedback != "undefined" && source.serverFeedback != "" && source.serverFeedback.data != null && source.serverFeedback.data.error != null){
                 debug = source.serverFeedback.data.error.debug;
             }else if(typeof source.serverFeedback != "undefined" && source.serverFeedback != "" && source.serverFeedback.data != null && source.serverFeedback.data.code != null){

@@ -14,7 +14,7 @@ angular.module('myApp').directive('buttonSubmit', function($state,$filter) {
 
             scope.$on('$destroy', function () {
                 scope.progress=false;
-                elem.off('change');
+                element.off('change');
             });
 
 

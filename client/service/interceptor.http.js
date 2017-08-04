@@ -31,7 +31,6 @@ angular.module('myApp').service('myHttpInterceptor',
             },
 
             responseError: function(response) {
-                console.log(response.data);
                 $rootScope.requestRunning = false;
                 if(response.status === 401) {
                     if(response.data.error){

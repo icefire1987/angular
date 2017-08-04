@@ -33,14 +33,43 @@ angular.module('myApp').service('locationService', function ($q, $http,$filter,c
             );
         }
     };
+    vm.process_search = function(obj,callback){
+        if(obj && typeof obj.key !== 'undefined'){
+            return $http.get("/api/location/process/"+obj.key+"/"+obj.value).then(
+                function(res){
+                    console.log(res)
+                    return res.data;
+                },
+                function(err){
+                    console.log(err);
+                    return false;
+                }
+            );
+        }else{
+            return $http.get("/api/location/process/").then(
+                function(res){
+                    return res.data;
+                },
+                function(err){
+                    console.log(err);
+                    return false;
+                }
+            );
+        }
+    };
 
     vm.stage_add = function(obj){
         console.log(obj);
         if(!obj){
-            return false;
+            return $q.reject({
+                userFeedback: "Funktion ohne Argument aufgerufen"
+            });
         }
         if(!obj.name || obj.name.length<1){
-            return false;
+            return $q.reject({
+                userFeedback: "Stationsname fehlt",
+                serverFeedback: {data:{error:{debug:JSON.stringify(obj)}}}
+            });
         }
         var data_Stage = {
             name: obj.name
@@ -52,18 +81,85 @@ angular.module('myApp').service('locationService', function ($q, $http,$filter,c
 
             },
             function(err){
-                console.log("err keyaccount_add");
-                return false;
+                return $q.reject({
+                    userFeedback: "Funktionsfehler",
+                    serverFeedback: {data:{error:{debug:JSON.stringify(err)}}}
+                });
             }
         );
     };
-    vm.update_stage_state = function(obj){
-
+    vm.process_add = function(obj){
+        console.log(obj);
         if(!obj){
-            return false;
+            return $q.reject({
+                userFeedback: "Funktion ohne Argument aufgerufen"
+            });
         }
-        if(!obj.customerID || typeof obj.active === undefined){
-            return false;
+        if(!obj.description || obj.description.length<1){
+            return $q.reject({
+                userFeedback: "Prozessbeschreibung fehlt",
+                serverFeedback: {data:{error:{debug:JSON.stringify(obj)}}}
+            });
+        }
+
+        var data_Process = {
+            description: obj.description,
+        };
+
+        return $http.post("/api/location/process/new",data_Process).then(
+            function(result){
+                return result.data;
+            },
+            function(err){
+                return $q.reject({
+                    userFeedback: "Funktionsfehler",
+                    serverFeedback: {data:{error:{debug:JSON.stringify(err)}}}
+                });
+            }
+        );
+    };
+    vm.stageset_add = function(obj){
+        console.log(obj);
+        if(!obj){
+            return $q.reject({
+                userFeedback: "Funktion ohne Argument aufgerufen"
+            });
+        }
+        if(!obj.processID || !obj.stageset || obj.stageset.length<1){
+            return $q.reject({
+                userFeedback: "Informationen fehlen",
+                serverFeedback: {data:{error:{debug:JSON.stringify(obj)}}}
+            });
+        }
+
+        var data_stageSet = {
+            stages: obj.stageset
+        };
+
+        return $http.post("/api/location/process/stageset/"+obj.processID,data_stageSet).then(
+            function(result){
+                return result.data;
+            },
+            function(err){
+                return $q.reject({
+                    userFeedback: "Funktionsfehler",
+                    serverFeedback: {data:{error:{debug:JSON.stringify(err)}}}
+                });
+            }
+        );
+    };
+
+    vm.update_stage_state = function(obj){
+        if(!obj){
+            return $q.reject({
+                userFeedback: "Funktion ohne Argument aufgerufen"
+            });
+        }
+        if(!obj.stageID || typeof obj.active === undefined){
+            return $q.reject({
+                userFeedback: "Funktion mit fehelnden Daten aufgerufen",
+                serverFeedback: {data:{error:{debug:JSON.stringify(obj)}}}
+            });
         }
 
         return $http.post("/api/location/stage/active",{
@@ -75,8 +171,10 @@ angular.module('myApp').service('locationService', function ($q, $http,$filter,c
                 return result;
             },
             function(err){
-                console.log("err keyaccount_remove");
-                return false;
+                return $q.reject({
+                    userFeedback: "Funktionsfehler",
+                    serverFeedback: {data:{error:{debug:JSON.stringify(err)}}}
+                });
             }
         );
     };

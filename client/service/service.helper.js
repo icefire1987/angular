@@ -191,5 +191,23 @@ angular.module('myApp').service('helperService', function () {
         }
     };
 
+    vm.sortByProperty = function(array, prop){
+        function compare(a,b) {
+            if (a[prop] < b[prop])
+                return -1;
+            if (a[prop] > b[prop])
+                return 1;
+            return 0;
+        }
+        array.sort(compare);
+    };
+
+    vm.valueIfUndefined = function(variable, default_value){
+        if ( typeof variable === 'undefined' || !variable ){
+            return default_value;
+        }else{
+            return variable;
+        }
+    }
     return vm;
 });

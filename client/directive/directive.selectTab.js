@@ -7,7 +7,8 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
             source: "@",
             selected: "=",
             filter: "=",
-            hasIcon: "@"
+            hasIcon: "@",
+            objectAsValue: "@"
 
         },
         templateUrl: '/client/directive/template/tpl.selectTable.html',
@@ -22,16 +23,22 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                         if(res.data[row].depth){
                             depth=res.data[row].depth;
                         }
+                        var value = "";
+                        if(scope.objectAsValue=="true"){
+                            value = res.data[row];
+                        }else{
+                            value = res.data[row].id;
+                        }
                         if(scope.hasIcon=="false"){
                             scope.options.push({
-                                value: res.data[row].id,
+                                value: value,
                                 text: res.data[row].person.concat(" ", res.data[row].street," ", res.data[row].postal," ", res.data[row].city),
                                 depth: depth
                             });
                         }else{
                             if(res.data[row].icon.indexOf('fa')==0) {
                                 scope.options.push({
-                                    value: res.data[row].id,
+                                    value: value,
                                     text: res.data[row].name,
                                     icon_value: res.data[row].icon,
                                     fontset: 'fa',
@@ -39,7 +46,7 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                                 });
                             }else if(res.data[row].icon.indexOf('icon-')==0){
                                 scope.options.push({
-                                    value: res.data[row].id,
+                                    value: value,
                                     text: res.data[row].name,
                                     icon_value: res.data[row].icon,
                                     fontset: 'Fontsaddict',
@@ -48,7 +55,7 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
 
                             }else{
                                 scope.options.push({
-                                    value: res.data[row].id,
+                                    value: value,
                                     text: res.data[row].name,
                                     icon_md: res.data[row].icon,
                                     depth: depth
@@ -76,6 +83,10 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                         break;
                     case "wg":
                         dbDataCollectorService.getWG().then(myCallback);
+                        break;
+                    case "stages":
+                        console.log("stages")
+                        dbDataCollectorService.getStages().then(myCallback);
                         break;
                     case "comment":
                         dbDataCollectorService.getCommentTyp().then(myCallback);

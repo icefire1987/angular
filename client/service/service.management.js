@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService,locationService,$state) {
+angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService,locationService,helperService,$state) {
 
     var vm = this;
 
@@ -305,12 +305,91 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             }).then(
                 function (response) {
                     console.log(response)
-                    $state.reload();
+                    //$state.reload();
+                },
+                function(err){
+                    console.log("res err")
+                    logService.log(err);
                 }
             );
         }
     };
+
+    vm.locals.submit.view_addStage = function() {
+        if(!vm.input.process){
+            vm.input.process={
+                stageset:[]
+            }
+        }
+        if(!vm.input.process.stageset){
+            vm.input.process.stageset=[];
+        }
+        var stage = JSON.parse(vm.input.process.stage);
+        stage.final = helperService.valueIfUndefined(vm.input.process.final,0);
+        vm.input.process.stageset.push(stage);
+    };
+    vm.locals.submit.process_search = function(){
+        var obj = {};
+        if(vm.input.process && vm.input.process.name){
+            obj = {key:"name",value:vm.input.process.name};
+        }
+        locationService.process_search(obj).then(
+            function(data){
+                vm.searchResult = {process: data};
+            }
+        )
+    };
     vm.locals.submit.process_add = function() {
+        var sorted_string = "";
+        var sorted_array = angular.copy(vm.input.process.stageset);
+        helperService.sortByProperty(sorted_array, 'id');
+        sorted_string = sorted_array.map(function(elem){
+            return elem.id;
+            }
+        ).join(",");
+        locationService.process_search({key:"join_id",value:sorted_string}).then(
+            function(data){
+                if(data.length==0){
+                    locationService.process_add(vm.input.process).then(
+                        function(data){
+                            console.log(data)
+                            vm.input.process.processID = data.id;
+                            locationService.stageset_add(vm.input.process).then(
+                                function(){
+                                    vm.input_reset();
+                                }
+                            );
+                        }
+                    );
+                }else{
+                    vm.dialog.dublicate =  componentService.getInstance("dialogConfirm");
+                    vm.dialog.dublicate.config = {
+                        title:  'Prozess mit gleichen Stationen vorhanden',
+                        textContent:  data.map(function(stage){
+                            return stage.name;
+                        }).join(", "),
+                        ok: 'Prozess trotzdem anlegen',
+                        cancel: 'abbrechen',
+                        ariaLabel: 'Prozess erstellen'
+                    };
+                    vm.dialog.dublicate.callback.ok = function () {
+                        locationService.process_add(vm.input.process).then(
+                            function(data){
+                                console.log(data)
+                                vm.input.process.processID = data.id;
+                                locationService.stageset_add(vm.input.process).then(
+                                    function(){
+                                        vm.input_reset();
+                                    }
+                                );
+                            }
+                        );
+                    };
+                    vm.dialog.dublicate.show();
+                }
+                vm.locals.show_newProcess=false;
+            }
+        );
 
     };
     vm.locals.submit.customer_add = function() {

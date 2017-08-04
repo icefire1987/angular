@@ -12,6 +12,10 @@ angular.module('myApp').service('dbDataCollectorService', function ($localStorag
         vm.getWG = function(){
             return $http.get("/api/data/articlewg/");
         };
+        vm.getStages = function(){
+            return $http.get("/api/data/stage/");
+        };
+
         vm.getCommentTyp = function(){
             return $http.get("/api/data/commenttype/");
         };

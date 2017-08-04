@@ -1290,6 +1290,21 @@ module.exports = function (app, express, io) {
             }
         });
     });
+    router.get('/data/stage',ensureAuthorized, function(req,res){
+        Location.get_stage(null, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        });
+    });
 
     router.get('/order/latest/:count',ensureAuthorized, function(req,res){
         Order.get({latest:req.params.count}, function(err,data){
@@ -1376,7 +1391,7 @@ module.exports = function (app, express, io) {
         });
     });
     router.get('/location/stage/id/:id',ensureAuthorized, function(req,res){
-        Location.get({id:req.params.id}, function(err,data){
+        Location.get_stage({id:req.params.id}, function(err,data){
             if(err) {
                 console.log(err)
                 err.debug = err.message;
@@ -1391,7 +1406,7 @@ module.exports = function (app, express, io) {
         });
     });
     router.get('/location/stage/name/:name',ensureAuthorized, function(req,res){
-        Location.get({name:req.params.name}, function(err,data){
+        Location.get_stage({name:req.params.name}, function(err,data){
             if(err) {
                 console.log(err)
                 err.debug = err.message;
@@ -1406,7 +1421,7 @@ module.exports = function (app, express, io) {
         });
     });
     router.get('/location/stage',ensureAuthorized, function(req,res){
-        Location.get(null, function(err,data){
+        Location.get_stage(null, function(err,data){
             if(err) {
                 console.log(err)
                 err.debug = err.message;
@@ -1447,6 +1462,85 @@ module.exports = function (app, express, io) {
             }
         });
     });
+
+    router.post('/location/process/new',ensureAuthorized, function(req, res){
+        console.log(req.body);
+        Location.post_process(req.body, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json({ userFeedback: "Prozess erstellt", type:"success", id:data.id});
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.post('/location/process/stageset/:processID',ensureAuthorized, function(req, res){
+
+        Location.post_stageset({processID:req.params.processID, stages: req.body.stages}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json({ userFeedback: "Abteilungen dem Prozess zugeordnet", type:"success", id:data.id});
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.get('/location/process/join_id/:ids',ensureAuthorized, function(req,res){
+        Location.get_process({join_id:req.params.ids}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.get('/location/process/name/:name',ensureAuthorized, function(req,res){
+        Location.get_process({name:req.params.name}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.get('/location/process',ensureAuthorized, function(req,res){
+        Location.get_process({name:""}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        });
+    });
+
     router.get('/user/log/:userid',ensureAuthorized, function(req, res){
         var log = {};
         log.orders = [];
