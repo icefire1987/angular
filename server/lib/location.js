@@ -58,16 +58,19 @@ module.exports = {
 
     get_process: function(filter,callback){
         var where = "";
+        //var where = " WHERE stages.id is not null ";
         var having = "";
         var groupby = "";
         var limit = "";
         var data_to_insert = [];
+        var data_where = [];
+        var data_having = [];
         for(var filterKey in filter){
             switch(filterKey){
                 case "join_id":
                     if(having.length>0){ having += " AND "}else{ having += " HAVING " };
                     having += " GROUP_CONCAT(stages.id SEPARATOR ',') = ? ";
-                    data_to_insert.push(filter[filterKey]);
+                    data_having.push(filter[filterKey]);
 
                     if(groupby.length>0){ groupby += " , "}else{ groupby += " GROUP BY " };
                     groupby += " processes.id ";
@@ -76,7 +79,7 @@ module.exports = {
                 case "name":
                     if(having.length>0){ having += " AND "}else{ having += " HAVING " };
                     having += " name LIKE ? ";
-                    data_to_insert.push('%' + filter[filterKey] + '%');
+                    data_having.push('%' + filter[filterKey] + '%');
 
                     if(groupby.length>0){ groupby += " , "}else{ groupby += " GROUP BY " };
                     groupby += " processes.id ";
@@ -85,21 +88,38 @@ module.exports = {
                 case "id":
                     if(where.length>0){ where += " AND "}else{ where += " where " };
                     where += " processes.id = ? ";
-                    data_to_insert.push(filter[filterKey]);
+                    data_where.push(filter[filterKey]);
+                    break;
+                case "filter":
+                    // OBJEKT!
+
+                    for(var avoidKey in filter[filterKey]){
+                        switch(avoidKey){
+                            case "id":
+                                if(where.length>0){ where += " AND "}else{ where += " where " };
+                                where += " processes.id != ? ";
+                                data_where.push(filter[filterKey][avoidKey]);
+                                break;
+                        }
+                    }
+
                     break;
             }
         }
 
         var query = "SELECT " +
             "processes.id, " +
+            "processes.active, " +
             "processes.description, " +
             "GROUP_CONCAT(stages.name) as name, " +
-            "CONCAT('[',GROUP_CONCAT(JSON_OBJECT('name', stages.name, 'final', stagesets.final, 'icon', stages.icon)) ,']') as stages_json " +
+            "CONCAT('[',GROUP_CONCAT(JSON_OBJECT('id',stages.id, 'name', stages.name, 'final', stagesets.final, 'icon', stages.icon)) ,']') as stages_json " +
             "FROM processes " +
             "LEFT JOIN stagesets ON stagesets.processID = processes.id " +
             "LEFT JOIN stages ON stages.id = stagesets.stageID " +
             ""+where+" "+groupby+" "+having+" "+limit;
 
+        if(data_where.length>0){ data_to_insert.push(data_where); }
+        if(data_having.length>0){ data_to_insert.push(data_having); }
         pool.getConnection(function (err, connection) {
             var sql = connection.query(query, data_to_insert, function (err, rows) {
                 connection.release();
@@ -107,10 +127,11 @@ module.exports = {
                     console.log("getConnErr:" + err)
                     return callback(err,null);
                 }
+
                 if (rows.length > 0) {
                     for(var x=0; x<rows.length;x++){
                         if(rows[x].stages_json){
-                            rows[x].stages_json = JSON.parse(rows[x].stages_json);
+                            rows[x].stages = JSON.parse(rows[x].stages_json);
                         }
 
                     }
@@ -231,5 +252,91 @@ module.exports = {
                 }
             });
         });
-    }
+    },
+    update_process: function(data,callback){
+        if(data.processID == undefined || data.processID == ""){
+            var err ={userFeedback: 'Process is missing'};
+            return callback(err,null);
+        }
+        var insert_data = {
+            description: data.data.description
+        };
+        var where = [
+            data.processID
+        ];
+
+        var query = "UPDATE processes SET ? WHERE id=? ";
+
+        pool.getConnection(function (err, connection) {
+            connection.query('START TRANSACTION');
+            var sql = connection.query(query, [insert_data,where], function (err, rows) {
+                if(err){
+                    console.log("getConnErr:" + err);
+                    connection.query('ROLLBACK');
+                    connection.release();
+                    return callback(err,null);
+
+                }else if (rows.affectedRows > 0) {
+
+                    if(data.data.stages && data.data.stages.length>0){
+                        var data_to_insert = [];
+                        for(var stagekey in data.data.stages){
+                            data_to_insert.push([data.processID, data.data.stages[stagekey].id,0,data.data.stages[stagekey].final])
+                        }
+
+                        var query = "DELETE FROM stagesets WHERE processID=? ";
+
+                        var sql = connection.query(query, [where], function (err, rows) {
+                            if(err){
+                                console.log("getConnErr:" + err);
+                                connection.query('ROLLBACK');
+                                connection.release();
+                                return callback(err,null);
+                            }
+
+                            if (rows.affectedRows > 0) {
+                                connection.query('COMMIT');
+                                var query = "INSERT INTO stagesets (processID,stageID,optional,final) VALUES ? ON DUPLICATE KEY UPDATE final = VALUES(final) ";
+                                var sql = connection.query(query, [data_to_insert], function (err, rows) {
+
+                                    if(err){
+                                        console.log("getConnErr:" + err);
+                                        connection.query('ROLLBACK');
+                                        connection.release();
+                                        return callback(err,null);
+                                    }
+
+                                    if (rows.affectedRows > 0) {
+                                        connection.query('COMMIT');
+                                        connection.release();
+                                        return callback(null,{id: rows.insertId});
+                                    }else{
+                                        connection.query('ROLLBACK');
+                                        connection.release();
+                                        return callback(err,null);
+                                    }
+                                });
+                            }else{
+                                connection.query('ROLLBACK');
+                                connection.release();
+                                return callback(err,null);
+                            }
+                        });
+
+
+                    }else{
+                        connection.query('COMMIT');
+                        connection.release();
+                        return callback(null,{id: rows.insertId});
+                    }
+
+                }else{
+                    connection.query('ROLLBACK');
+                    connection.release();
+                    console.log("ElseConnErr:" + err);
+                    return callback(err,null);
+                }
+            });
+        });
+    },
 };

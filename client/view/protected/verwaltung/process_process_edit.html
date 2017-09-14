@@ -1,0 +1,85 @@
+<md-toolbar class="md-hue-3">
+    <div class="md-toolbar-tools">
+        <h3 flex>
+            <md-button class="md-icon-button" ui-sref="protected.verwaltung.process.start">
+                <md-icon>keyboard_backspace</md-icon>
+            </md-button>
+            {{toolCtrl.management.process.description}} bearbeiten</h3>
+
+        <md-menu md-position-mode="target-right target">
+            <md-button ng-click="$mdMenu.open($event)" aria-label="Open Stage Menu"  class="md-icon-button">
+                <md-icon> more_vert </md-icon>
+            </md-button>
+            <md-menu-content width="4" >
+                <md-menu-item>
+                    <md-button ng-if="toolCtrl.management.process.active" ng-click="toolCtrl.management.locals.submit.process_state(0)">
+                        <md-icon> visibility_off </md-icon>
+                        Datensatz deaktivieren
+                    </md-button>
+                    <md-button ng-if="!toolCtrl.management.process.active" ng-click="toolCtrl.management.locals.submit.process_state(1)">
+                        <md-icon> visibility </md-icon>
+                        Datensatz aktivieren
+                    </md-button>
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
+    </div>
+
+</md-toolbar>
+<md-tabs md-dynamic-height="" md-border-bottom>
+    <md-tab label="Daten">
+        <md-content class="md-padding">
+            <md-card>
+                <md-card-content>
+                    <form name="editProcess" ng-submit="toolCtrl.management.locals.submit.process_edit()" layout="column" >
+                        <md-input-container>
+                            <label>Beschreibung</label>
+                            <input ng-model="toolCtrl.management.input.process.description" required>
+                        </md-input-container>
+                        <div layout="row" layout-align="start center">
+                            <md-input-container>
+                                <label>Station hinzufügen</label>
+                                <select-table source="stages" selected="toolCtrl.management.input.process.stage" object-as-value="true" ></select-table>
+                            </md-input-container>
+                            <md-input-container layout-padding="" layout="row" layout-align="start center">
+                                <label>final</label>
+                                <md-switch
+                                        ng-model="toolCtrl.management.input.process.final"
+                                        ng-true-value="1"
+                                        aria-label="Prozessabschluss"
+                                ></md-switch>
+                            </md-input-container>
+                            <md-input-container layout="row">
+                                <md-button type="button" class="md-primary" ng-disabled="!toolCtrl.management.input.process.stage" ng-click="toolCtrl.management.locals.submit.view_addStage(toolCtrl.management.input.process.stages)"><md-icon>add</md-icon></md-button>
+                            </md-input-container>
+                        </div>
+                        <div layout="row">
+                            <md-chips ng-model="toolCtrl.management.input.process.stages" readonly="true"
+                                      md-removable="true">
+                                <md-chip-template>
+
+                                <span>
+                                  <strong>{{$chip.name}}</strong>
+                                  <em>{{($chip.final)?'(final)':''}}</em>
+                                </span>
+                                </md-chip-template>
+                            </md-chips>
+                        </div>
+
+                        <md-input-container layout="row" layout-align="end center">
+                            <md-button class="md-raised md-warn" ui-sref="protected.verwaltung.process.start">
+                                <md-icon>close</md-icon> abbrechen
+                            </md-button>
+                            <md-button class="md-raised md-primary" button-submit="" >
+                                <md-icon>check</md-icon> speichern
+                            </md-button>
+                        </md-input-container>
+                    </form>
+                </md-card-content>
+            </md-card>
+        </md-content>
+    </md-tab>
+
+</md-tabs>
+{{toolCtrl.management.input.process}}

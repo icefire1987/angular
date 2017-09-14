@@ -1455,7 +1455,7 @@ module.exports = function (app, express, io) {
         console.log(req.body)
         Location.update_stage({stageID: req.body.stageid, data: {active: req.body.active} },function(err,result){
             if(err){
-                res.status(420).json(errors[0]);
+                res.status(420).json(err[0]);
             }else{
                 var userFeedback =  (req.body.active==1 ? "Station aktiviert" : "Station deaktiviert");
                 res.json({ userFeedback: userFeedback, type:"success"});
@@ -1496,7 +1496,28 @@ module.exports = function (app, express, io) {
         });
     });
     router.get('/location/process/join_id/:ids',ensureAuthorized, function(req,res){
-        Location.get_process({join_id:req.params.ids}, function(err,data){
+        var filter = {}
+        if(req.query){
+            // Filterobjekt
+            filter = req.query;
+        }
+        Location.get_process({join_id:req.params.ids,filter:filter}, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        });
+    });
+    router.get('/location/process/id/:id',ensureAuthorized, function(req,res){
+
+        Location.get_process({id:req.params.id}, function(err,data){
             if(err) {
                 console.log(err)
                 err.debug = err.message;
@@ -1540,7 +1561,28 @@ module.exports = function (app, express, io) {
             }
         });
     });
+    router.post('/location/process/active',ensureAuthorized, function(req,res){
+        Location.update_process({processID: req.body.processid, data: {active: req.body.active} },function(err,result){
+            if(err){
+                res.status(420).json(err[0]);
+            }else{
+                var userFeedback =  (req.body.active==1 ? "Prozess aktiviert" : "Prozess deaktiviert");
+                res.json({ userFeedback: userFeedback, type:"success"});
+            }
+        });
+    });
+    router.post('/location/process/id/:processid',ensureAuthorized, function(req,res){
+        console.log(req.body)
 
+        Location.update_process({processID: req.params.processid, data: {description: req.body.description, stages: req.body.stages} },function(err,result){
+            if(err){
+                res.status(420).json(err[0]);
+            }else{
+                var userFeedback =  "Prozess aktualisiert";
+                res.json({ userFeedback: userFeedback, type:"success"});
+            }
+        });
+    });
     router.get('/user/log/:userid',ensureAuthorized, function(req, res){
         var log = {};
         log.orders = [];

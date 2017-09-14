@@ -500,8 +500,11 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
 
                         }
                     },
-                    onEnter: function(managementService, $stateParams){
-
+                    onEnter: function(managementService, $rootScope){
+                        console.log($rootScope.previousStateParams)
+                        if($rootScope.previousStateParams && $rootScope.previousStateParams.processID){
+                            managementService.locals.submit.process_search($rootScope.previousStateParams.processID);
+                        }
 
                     }
                 }
@@ -521,7 +524,21 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
                     }
                 }
             },
+            {
+                name: 'protected.verwaltung.process.process_edit',
+                val: {
+                    url: '/process_edit/:processID',
+                    views: {
+                        'process_content': {
+                            templateUrl: '/client/view/protected/verwaltung/process_process_edit.html'
 
+                        }
+                    },
+                    onEnter: function(managementService, $stateParams){
+                        managementService.getProcess($stateParams.processID);
+                    }
+                }
+            },
 
             {
                 name: 'protected.auftrag',
@@ -563,7 +580,8 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
     });
 
     myApp.run(['$rootScope', '$state', 'authService','logService', function ($rootScope, $state, authService,logService) {
-        $rootScope.$on('$stateChangeStart', function (event,toState,toStateP,fromState) {
+        $rootScope.$on('$stateChangeStart', function (event,toState,toStateP,fromState,fromStateP) {
+            $rootScope.previousStateParams = fromStateP;
             authService.authorize().then(
                 function(status){
                     $rootScope.state_previous = fromState;

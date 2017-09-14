@@ -1,7 +1,7 @@
 /**
  * Created by Chris on 14.12.16.
  */
-angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService,locationService,helperService,$state) {
+angular.module('myApp').service('managementService', function ($q, $http,$filter,customerService,userService,componentService,FileUploader,logService,cropperService,imageService,locationService,helperService,$state,$rootScope) {
 
     var vm = this;
 
@@ -49,60 +49,15 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             model: [],
             page: 1,
             orderBy: 'name'
-        }
-    };
-    /*
-    vm.uploader = {}
-    vm.uploader.customerLogo = new FileUploader();
-    vm.uploader.customerLogo.filters.push({
-        name: 'imageFilter',
-        fn: function(item /*{File|FileLikeObject}*//*, options) {
-            var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
-            return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
-        }
-    });
-
-    vm.cropper = cropperService;
-
-    function upload_error(fileItem, response, status, headers){
-        logService.log({
-            userFeedback: "Dateiupload fehlgeschlagen",
-            serverFeedback: { data: { error: {debug: "Details: " + response}}}
-
-        });
-    };
-    function upload_success(fileItem, response, status, headers,model){
-        if(fileItem.length>0){
-            var fr = new FileReader;
-            fr.onload = function() { // file is loaded
-                var img = new Image;
-                img.onload = function() {
-                    var obj = {};
-                    obj.type = "internal";
-                    obj.cropArea = 'cropper_customerlogo';
-                    obj.image = img;
-                    obj.previewArea = '#cropperPreview_customerlogo';
-                    vm.cropper.setSource(fileItem[0]);
-                    vm.cropper.cropper(obj);
-                    obj.image.addEventListener('cropstart', function () {
-                        vm.input.newCustomer.logo = null;
-                    });
-                };
-                img.src = fr.result; // is the data URL because called with readAsDataURL
-            };
-            fr.readAsDataURL(fileItem[0]._file);
-        }
+        },
+        process: {
+            model: [],
+            page: 1,
+            orderBy: 'name'
+        },
     };
 
-    vm.uploader.customerLogo.onWhenAddingFileFailed =
-        vm.uploader.customerLogo.onErrorItem =
-            vm.uploader.customerLogo.onErrorItem =
-                function(fileItem, response, status, headers){upload_error(fileItem, response, status, headers)};
 
-    vm.uploader.customerLogo.onAfterAddingFile =
-        vm.uploader.customerLogo.onAfterAddingAll =
-            function(fileItem, response, status, headers){ upload_success(fileItem, response, status, headers,vm.input.newCustomer)};
-*/
     vm.getCustomer = function(customerID){
         customerService.search({key:"id", value: customerID}).then(
             function(data){
@@ -139,6 +94,19 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             }
         );
     };
+    vm.getProcess = function(processID){
+        locationService.process_search({key:"id", value:processID}).then(
+            function(res){
+                console.log(res)
+                if(res.length==1){
+                    vm.process = res[0];
+                    vm.input.process = res[0];
+                }
+            }
+        );
+    };
+
+
     vm.retouraddress_switch_view = function(active){
         var filter = {};
         if(typeof active!="undefined"){
@@ -314,25 +282,68 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
             );
         }
     };
-
-    vm.locals.submit.view_addStage = function() {
-        if(!vm.input.process){
-            vm.input.process={
-                stageset:[]
-            }
+    vm.locals.submit.process_state= function(active){
+        if(vm.process.id) {
+            locationService.update_process_state({
+                processID:  vm.process.id,
+                active: active
+            }).then(
+                function (response) {
+                    console.log(response)
+                    //$state.reload();
+                },
+                function(err){
+                    console.log("res err")
+                    logService.log(err);
+                }
+            );
         }
-        if(!vm.input.process.stageset){
-            vm.input.process.stageset=[];
-        }
-        var stage = JSON.parse(vm.input.process.stage);
-        stage.final = helperService.valueIfUndefined(vm.input.process.final,0);
-        vm.input.process.stageset.push(stage);
     };
-    vm.locals.submit.process_search = function(){
+
+    vm.locals.submit.view_addStage = function(model) {
+        if(model){
+            if(!model){
+                model=[];
+            }
+            var stage = JSON.parse(vm.input.process.stage);
+            stage.final = helperService.valueIfUndefined(vm.input.process.final,0);
+            var dublicate = model.findIndex(x => x.id == stage.id);
+
+            if(dublicate>=0){
+
+                    model.splice(dublicate,1);
+
+
+            }
+
+            model.push(stage);
+
+
+
+
+        }else{
+            if(!vm.input.process){
+                vm.input.process={
+                    stageset:[]
+                }
+            }
+            if(!vm.input.process.stageset){
+                vm.input.process.stageset=[];
+            }
+            var stage = JSON.parse(vm.input.process.stage);
+            stage.final = helperService.valueIfUndefined(vm.input.process.final,0);
+            vm.input.process.stageset.push(stage);
+        }
+
+    };
+    vm.locals.submit.process_search = function(processID) {
         var obj = {};
-        if(vm.input.process && vm.input.process.name){
+        if(typeof processID != "undefined"){
+            obj = {key:"id",value:processID};
+        }else if(vm.input.process && vm.input.process.name){
             obj = {key:"name",value:vm.input.process.name};
         }
+
         locationService.process_search(obj).then(
             function(data){
                 vm.searchResult = {process: data};
@@ -392,6 +403,53 @@ angular.module('myApp').service('managementService', function ($q, $http,$filter
         );
 
     };
+    vm.locals.submit.process_edit = function() {
+        var sorted_string = "";
+        var sorted_array = angular.copy(vm.input.process.stages);
+
+        helperService.sortByProperty(sorted_array, 'id');
+        sorted_string = sorted_array.map(function(elem){
+                return elem.id;
+            }
+        ).join(",");
+
+        locationService.process_search({key:"join_id",value:sorted_string,filter:{id:vm.input.process.id}}).then(
+            function(data){
+                if(data.length==0){
+                    locationService.process_update(vm.input.process).then(
+                        function(data){
+                            vm.input_reset();
+                            $state.go("protected.verwaltung.process.start");
+
+                        }
+                    );
+                }else{
+                    vm.dialog.dublicate =  componentService.getInstance("dialogConfirm");
+                    vm.dialog.dublicate.config = {
+                        title:  'Prozess mit gleichen Stationen vorhanden',
+                        textContent:  data.map(function(stage){
+                            return "["+ stage.id + "] "+stage.description+" (" + stage.name + ") ";
+                        }).join(", "),
+                        ok: 'Prozess trotzdem ändern',
+                        cancel: 'abbrechen',
+                        ariaLabel: 'Prozess ändern'
+                    };
+                    vm.dialog.dublicate.callback.ok = function () {
+                        locationService.process_update(vm.input.process).then(
+                            function(data){
+                                vm.input_reset();
+                                $state.go("protected.verwaltung.process.start");
+                            }
+                        );
+                    };
+                    vm.dialog.dublicate.show();
+                }
+                vm.locals.show_newProcess=false;
+            }
+        );
+
+    };
+
     vm.locals.submit.customer_add = function() {
         if (vm.input.newCustomer.logo_data) {
             var file = imageService.dataURLToFile(vm.input.newCustomer.logo_data);

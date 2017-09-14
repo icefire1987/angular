@@ -1,262 +1,197 @@
-
-    <md-card class="md-padding" flex="50" style="overflow: auto;">
-        <md-card-actions>
+    <md-card>
+        <md-card-content>
             <md-button class="md-raised  md-accent" aria-label="create stage" ng-click="toolCtrl.management.locals.show_newStage = true">
                 <md-icon>edit</md-icon>
                 Produktionsstation anlegen
             </md-button>
-        </md-card-actions>
-        <form ng-if="toolCtrl.management.locals.show_newStage" name="newStage" ng-submit="toolCtrl.management.locals.submit.stage_add()">
-            <md-card-title>
-                <md-card-title-text>
-                    <md-input-container>
-                        <label>Name</label>
-                        <input ng-model="toolCtrl.management.input.stage.name" required>
-                    </md-input-container>
-                </md-card-title-text>
-            </md-card-title>
-            <md-card-actions layout="row" layout-align="end center">
-                <md-button type="button" button-submit class="md-raised md-primary" ng-disabled="newStage.$invalid">
-                    <md-icon>check</md-icon> anlegen
-                </md-button>
-                <md-button class="md-raised md-warn" ng-click="toolCtrl.management.locals.show_newStage = false; toolCtrl.management.input_reset()">
-                    <md-icon>close</md-icon> abbrechen
-                </md-button>
-            </md-card-actions>
-        </form>
-        <form ng-submit="toolCtrl.management.locals.submit.stage_search()" layout="row">
-            <md-input-container class="md-block" flex>
-                <label>Stationsnamen suchen</label>
-                <md-icon>search</md-icon>
-                <input name="customername" ng-model="toolCtrl.management.input.stage.name">
-            </md-input-container>
+            <form ng-if="toolCtrl.management.locals.show_newStage" name="newStage" ng-submit="toolCtrl.management.locals.submit.stage_add()" layout="column"  class="md-whiteframe-1dp" layout-margin>
+                <md-input-container layout="row">
+                    <label>Name</label>
+                    <input ng-model="toolCtrl.management.input.stage.name" required>
+                </md-input-container>
 
-            <div>
-                <md-button class="md-raised md-primary" aria-label="search stage" type="submit">
-                    <md-icon>send</md-icon>
-                </md-button>
-            </div>
-        </form>
+                <md-input-container layout="row" layout-align="end center">
+                    <md-button type="button" button-submit class="md-raised md-primary" ng-disabled="newStage.$invalid">
+                        <md-icon>check</md-icon> anlegen
+                    </md-button>
+                    <md-button class="md-raised md-warn" ng-click="toolCtrl.management.locals.show_newStage = false; toolCtrl.management.input_reset()">
+                        <md-icon>close</md-icon> abbrechen
+                    </md-button>
+                </md-input-container>
+            </form>
 
-        <div ng-if="toolCtrl.management.searchResult.stage" layout="column">
+            <form ng-submit="toolCtrl.management.locals.submit.stage_search()" layout="row">
+                <md-input-container class="md-block" flex>
+                    <label>Stationsnamen suchen</label>
+                    <md-icon>search</md-icon>
+                    <input name="customername" ng-model="toolCtrl.management.input.stage.name">
+                </md-input-container>
 
-            <div class="md-padding" ng-if="toolCtrl.management.searchResult.stage && !toolCtrl.management.searchResult.stage.length">
-                <md-subhead >
-                    Es wurde keine Station gefunden.
-                </md-subhead>
-            </div>
+                <md-input-container>
+                    <md-button class="md-raised md-primary" aria-label="search stage" type="submit">
+                        <md-icon>send</md-icon>
+                    </md-button>
+                </md-input-container>
+            </form>
+            <div ng-if="toolCtrl.management.searchResult.stage" layout="column">
+                <div class="md-padding" ng-if="toolCtrl.management.searchResult.stage && !toolCtrl.management.searchResult.stage.length">
+                    <md-subhead >
+                        Es wurde keine Station gefunden.
+                    </md-subhead>
+                </div>
 
-            <div flex="100">
-                <md-button class="md-fab md-mini " ng-click="toolCtrl.management.filter.stage.active= +!toolCtrl.management.filter.stage.active" aria-label="show hidden">
-                    <md-icon aria-label="show" ng-if="toolCtrl.management.filter.stage.active">visibility</md-icon>
-                    <md-tooltip  ng-if="toolCtrl.management.filter.stage.active">Inaktive Stationen anzeigen</md-tooltip>
-                    <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.stage.active">visibility_off</md-icon>
-                    <md-tooltip  ng-if="!toolCtrl.management.filter.stage.active">Inaktive Stationen ausblenden</md-tooltip>
-                </md-button>
-            </div>
+                <div flex="100">
+                    <md-button class="md-fab md-mini " ng-click="toolCtrl.management.filter.stage.active= +!toolCtrl.management.filter.stage.active" aria-label="show hidden">
+                        <md-icon aria-label="show" ng-if="toolCtrl.management.filter.stage.active">visibility</md-icon>
+                        <md-tooltip  ng-if="toolCtrl.management.filter.stage.active">Inaktive Stationen anzeigen</md-tooltip>
+                        <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.stage.active">visibility_off</md-icon>
+                        <md-tooltip  ng-if="!toolCtrl.management.filter.stage.active">Inaktive Stationen ausblenden</md-tooltip>
+                    </md-button>
+                </div>
 
-            <md-table-container  flex="100" ng-if="toolCtrl.management.searchResult.stage.length">
-                <table md-table md-row-select ng-model="toolCtrl.management.tables.stage.model" md-progress="promise">
-                    <thead md-head md-order="toolCtrl.management.tables.stage.orderBy">
-                    <tr md-row>
+                <md-table-container  flex="100" ng-if="toolCtrl.management.searchResult.stage.length">
+                    <table md-table md-row-select ng-model="toolCtrl.management.tables.stage.model" md-progress="promise">
+                        <thead md-head md-order="toolCtrl.management.tables.stage.orderBy">
+                        <tr md-row>
 
-                        <th md-column md-order-by="name"><span>Stationsname</span></th>
+                            <th md-column md-order-by="name"><span>Stationsname</span></th>
 
-                    </tr>
-                    </thead>
-                    <tbody md-body>
-                    <tr md-row
-                        ng-repeat="row in toolCtrl.management.searchResult.stage
+                        </tr>
+                        </thead>
+                        <tbody md-body>
+                        <tr md-row
+                            ng-repeat="row in toolCtrl.management.searchResult.stage
                         | orderBy: toolCtrl.management.tables.stage.orderBy
                         | filter: (toolCtrl.management.filter.stage.active ? {active: toolCtrl.management.filter.stage.active} : '' )"
-                        ui-sref="protected.verwaltung.process.stage_edit({stageID: row.id})"
-                        ng-class="row.active==0?'inactive':''" >
+                            ui-sref="protected.verwaltung.process.stage_edit({stageID: row.id})"
+                            ng-class="row.active==0?'inactive':''" >
 
-                        <td md-cell>{{row.name}}</td>
+                            <td md-cell>{{row.name}}</td>
 
 
-                    </tr>
-                    </tbody>
-                </table>
-            </md-table-container>
-            <data-md-table-pagination md-limit="20" md-page="toolCtrl.management.tables.stage.page" md-total="{{toolCtrl.management.searchResult.stage.length}}"></data-md-table-pagination>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <data-md-table-pagination md-limit="20" md-page="toolCtrl.management.tables.stage.page" md-total="{{toolCtrl.management.searchResult.stage.length}}"></data-md-table-pagination>
 
-        </div>
+            </div>
+        </md-card-content>
     </md-card>
-    <md-card class="md-padding" flex="50" style="overflow: auto">
-        <md-card-actions>
-            <md-button class="md-raised  md-accent" aria-label="create team" ng-click="toolCtrl.management.locals.show_newProcess = true">
+    <md-card>
+        <md-card-content>
+            <md-button class="md-raised md-accent" aria-label="create team" ng-click="toolCtrl.management.locals.show_newProcess = true">
                 <md-icon>edit</md-icon>
                 Prozess anlegen
             </md-button>
-        </md-card-actions>
-        <form ng-if="toolCtrl.management.locals.show_newProcess" name="newProcess" ng-submit="toolCtrl.management.locals.submit.process_add()">
-            <md-card-title>
-                <md-card-title-text>
+
+            <form ng-if="toolCtrl.management.locals.show_newProcess" name="newProcess" ng-submit="toolCtrl.management.locals.submit.process_add()" layout="column" class="md-whiteframe-1dp" layout-margin>
+                <md-input-container>
+                    <label>Beschreibung</label>
+                    <input ng-model="toolCtrl.management.input.process.description" required>
+                </md-input-container>
+                <div layout="row" layout-align="start center">
                     <md-input-container>
-                        <label>Beschreibung</label>
-                        <input ng-model="toolCtrl.management.input.process.description" required>
+                            <label>Station hinzufügen</label>
+                            <select-table source="stages" selected="toolCtrl.management.input.process.stage" object-as-value="true"></select-table>
                     </md-input-container>
-                    <div layout="row" layout-align="start center"  layout-padding="">
-                        <md-input-container>
-                                <label>Station hinzufügen</label>
-                                <select-table source="stages" selected="toolCtrl.management.input.process.stage" object-as-value="true"></select-table>
-                        </md-input-container>
-                        <md-input-container layout="row" layout-align="start center">
-                            <label>final</label>
-                            <md-switch
-                                    ng-model="toolCtrl.management.input.process.final"
-                                    ng-true-value="1"
-                                    aria-label="Prozessabschluss"
-                            ></md-switch>
-                        </md-input-container>
-                        <md-input-container layout="row">
-                           <md-button type="button" ng-click="toolCtrl.management.locals.submit.view_addStage()"><md-icon>add</md-icon></md-button>
-                        </md-input-container>
-                    </div>
-                    <div layout="row">
+                    <md-input-container layout-padding="" layout="row" layout-align="start center">
+                        <label>final</label>
+                        <md-switch
+                                ng-model="toolCtrl.management.input.process.final"
+                                ng-true-value="1"
+                                aria-label="Prozessabschluss"
+                        ></md-switch>
+                    </md-input-container>
+                    <md-input-container layout="row">
+                       <md-button type="button" class="md-primary" ng-click="toolCtrl.management.locals.submit.view_addStage()"><md-icon>add</md-icon></md-button>
+                    </md-input-container>
+                </div>
+                <div layout="row">
+                        <md-chips ng-model="toolCtrl.management.input.process.stageset" readonly="true"
+                                  md-removable="true">
+                            <md-chip-template>
+                                <span>
+                                  <strong>[{{$index+1}}] {{$chip.name}}</strong>
+                                  <em>{{($chip.final)?'(final)':''}}</em>
+                                </span>
+                            </md-chip-template>
+                        </md-chips>
+                </div>
 
-                            <md-chips ng-model="toolCtrl.management.input.process.stageset" readonly="true"
-                                      md-removable="true">
-                                <md-chip-template>
-                                    <span>
-                                      <strong>[{{$index+1}}] {{$chip.name}}</strong>
-                                      <em>{{($chip.final)?'(final)':''}}</em>
-                                    </span>
-                                </md-chip-template>
-                            </md-chips>
-                        {{toolCtrl.management.input.process.stageset}}
-                    </div>
-                </md-card-title-text>
-            </md-card-title>
-            <md-card-actions layout="row" layout-align="end center">
-                <md-button type="button" button-submit class="md-raised md-primary" ng-disabled="newProcess.$invalid">
-                    <md-icon>check</md-icon> anlegen
-                </md-button>
-                <md-button class="md-raised md-warn" ng-click="toolCtrl.management.locals.show_newProcess = false; toolCtrl.management.input_reset()">
-                    <md-icon>close</md-icon> abbrechen
-                </md-button>
-            </md-card-actions>
-        </form>
-        <form ng-submit="toolCtrl.management.locals.submit.process_search()" layout="row">
-            <md-input-container class="md-block" flex>
-                <label>Prozess suchen</label>
-                <md-icon>search</md-icon>
-                <input name="processname" ng-model="toolCtrl.management.input.process.name">
-            </md-input-container>
+                <md-input-container layout="row" layout-align="end center">
+                    <md-button type="button" button-submit class="md-raised md-primary" ng-disabled="newProcess.$invalid">
+                        <md-icon>check</md-icon> anlegen
+                    </md-button>
+                    <md-button class="md-raised md-warn" ng-click="toolCtrl.management.locals.show_newProcess = false; toolCtrl.management.input_reset()">
+                        <md-icon>close</md-icon> abbrechen
+                    </md-button>
+                </md-input-container>
+            </form>
+            <form ng-submit="toolCtrl.management.locals.submit.process_search()" layout="row">
+                <md-input-container class="md-block" flex>
+                    <label>Prozess suchen</label>
+                    <md-icon>search</md-icon>
+                    <input name="processname" ng-model="toolCtrl.management.input.process.name">
+                </md-input-container>
 
-            <div>
-                <md-button class="md-raised md-primary" aria-label="search stage" type="submit">
-                    <md-icon>send</md-icon>
-                </md-button>
+                <div>
+                    <md-button class="md-raised md-primary" aria-label="search stage" type="submit">
+                        <md-icon>send</md-icon>
+                    </md-button>
+                </div>
+            </form>
+            <div ng-if="toolCtrl.management.searchResult.process" layout="column" >
+
+                <div class="md-padding" ng-if="toolCtrl.management.searchResult.process && !toolCtrl.management.searchResult.process.length">
+                    <md-subhead >
+                        Es wurde kein Prozess gefunden.
+                    </md-subhead>
+                </div>
+
+                <div flex="100">
+                    <md-button class="md-fab md-mini " ng-click="toolCtrl.management.filter.process.active= +!toolCtrl.management.filter.process.active" aria-label="show hidden">
+                        <md-icon aria-label="show" ng-if="toolCtrl.management.filter.process.active">visibility</md-icon>
+                        <md-tooltip  ng-if="toolCtrl.management.filter.process.active">Inaktive Prozesse anzeigen</md-tooltip>
+                        <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.process.active">visibility_off</md-icon>
+                        <md-tooltip  ng-if="!toolCtrl.management.filter.process.active">Inaktive Prozesse ausblenden</md-tooltip>
+                    </md-button>
+                </div>
+
+                <md-table-container  flex="100" ng-if="toolCtrl.management.searchResult.process.length">
+                    <table md-table md-row-select ng-model="toolCtrl.management.tables.process.model" md-progress="promise">
+                        <thead md-head md-order="toolCtrl.management.tables.process.orderBy">
+                        <tr md-row>
+
+                            <th md-column md-order-by="name"><span>Prozesssname</span></th>
+                            <th md-column md-order-by="short"><span>Prozessbeschreibung</span></th>
+                            <th md-column md-order-by="finish"><span>Prozessabschluss</span></th>
+                        </tr>
+                        </thead>
+                        <tbody md-body>
+                        <tr md-row
+                            ng-repeat="row in toolCtrl.management.searchResult.process
+                            | orderBy: toolCtrl.management.tables.process.orderBy
+                            | filter: (toolCtrl.management.filter.process.active ? {active: toolCtrl.management.filter.process.active} : '' )"
+                            ui-sref="protected.verwaltung.process.process_edit({processID: row.id})"
+                            ng-class="row.active==0?'inactive':''" >
+
+                            <td md-cell>{{row.name}}</td>
+                            <td md-cell>{{row.description}}</td>
+
+                            <td md-cell>
+                                <div ng-repeat="stage in row.stages | filter: {final:1}">
+                                    <md-icon>{{stage.icon}}</md-icon> <span>{{stage.name}}</span>
+                                </div>
+                            </td>
+
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <data-md-table-pagination md-limit="20" md-page="toolCtrl.management.tables.process.page" md-total="{{toolCtrl.management.searchResult.process.length}}"></data-md-table-pagination>
+
             </div>
-        </form>
-        <div ng-if="toolCtrl.management.searchResult.process" layout="column">
-
-            <div class="md-padding" ng-if="toolCtrl.management.searchResult.process && !toolCtrl.management.searchResult.process.length">
-                <md-subhead >
-                    Es wurde kein Prozess gefunden.
-                </md-subhead>
-            </div>
-
-            <div flex="100">
-                <md-button class="md-fab md-mini " ng-click="toolCtrl.management.filter.process.active= +!toolCtrl.management.filter.process.active" aria-label="show hidden">
-                    <md-icon aria-label="show" ng-if="toolCtrl.management.filter.process.active">visibility</md-icon>
-                    <md-tooltip  ng-if="toolCtrl.management.filter.process.active">Inaktive Prozesse anzeigen</md-tooltip>
-                    <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.process.active">visibility_off</md-icon>
-                    <md-tooltip  ng-if="!toolCtrl.management.filter.process.active">Inaktive Prozesse ausblenden</md-tooltip>
-                </md-button>
-            </div>
-
-            <md-table-container  flex="100" ng-if="toolCtrl.management.searchResult.process.length">
-                <table md-table md-row-select ng-model="toolCtrl.management.tables.process.model" md-progress="promise">
-                    <thead md-head md-order="toolCtrl.management.tables.process.orderBy">
-                    <tr md-row>
-
-                        <th md-column md-order-by="name"><span>Prozesssname</span></th>
-                        <th md-column md-order-by="short"><span>Prozessbeschreibung</span></th>
-                        <th md-column md-order-by="finish"><span>Prozessabschluss</span></th>
-                    </tr>
-                    </thead>
-                    <tbody md-body>
-                    <tr md-row
-                        ng-repeat="row in toolCtrl.management.searchResult.process
-                        | orderBy: toolCtrl.management.tables.process.orderBy
-                        | filter: (toolCtrl.management.filter.process.active ? {active: toolCtrl.management.filter.process.active} : '' )"
-                        ui-sref="protected.verwaltung.process.process_edit({processID: row.id})"
-                        ng-class="row.active==0?'inactive':''" >
-
-                        <td md-cell>{{row.name}}</td>
-                        <td md-cell>{{row.description}}</td>
-                        <td md-cell>{{row.final}}</td>
-                        <td md-cell>
-                            <div ng-repeat="stage in row.stages_json | filter: {final:1}">
-                                <md-icon>{{stage.icon}}</md-icon> <span>{{stage.name}}</span>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </md-table-container>
-            <data-md-table-pagination md-limit="20" md-page="toolCtrl.management.tables.stage.page" md-total="{{toolCtrl.management.searchResult.stage.length}}"></data-md-table-pagination>
-
-        </div>
+        </md-card-content>
     </md-card>
-
-<!--
-<md-card>
-    <div ng-if="toolCtrl.management.searchResult.customers" layout="column">
-
-        <div class="md-padding" ng-if="toolCtrl.management.searchResult.customers && !toolCtrl.management.searchResult.customers.length">
-            <md-subhead >
-                Es wurde kein Kunde gefunden.
-            </md-subhead>
-        </div>
-
-        <div flex="100">
-            <md-button class="md-fab md-mini " ng-click="toolCtrl.management.filter.customer.active= +!toolCtrl.management.filter.customer.active" aria-label="show hidden">
-                <md-icon aria-label="show" ng-if="toolCtrl.management.filter.customer.active">visibility</md-icon>
-                <md-tooltip  ng-if="toolCtrl.management.filter.customer.active">Inaktive Kunden anzeigen</md-tooltip>
-                <md-icon aria-label="show" ng-if="!toolCtrl.management.filter.customer.active">visibility_off</md-icon>
-                <md-tooltip  ng-if="!toolCtrl.management.filter.customer.active">Inaktive Kunden ausblenden</md-tooltip>
-            </md-button>
-        </div>
-
-        <md-table-container  flex="100" ng-if="toolCtrl.management.searchResult.customers.length">
-            <table md-table md-row-select ng-model="toolCtrl.management.tables.customers.model" md-progress="promise">
-                <thead md-head md-order="toolCtrl.management.tables.customers.orderBy">
-                <tr md-row>
-                    <th md-column><span></span></th>
-                    <th md-column md-order-by="name"><span>Kundenname</span></th>
-                    <th md-column><span>Ansprechpartner</span></th>
-                    <th md-column md-order-by="retouraddressCount"><span>Retouraddressen</span></th>
-                </tr>
-                </thead>
-                <tbody md-body>
-                <tr md-row
-                    ng-repeat="row in toolCtrl.management.searchResult.customers
-                        | orderBy: toolCtrl.management.tables.customers.orderBy
-                        | filter: (toolCtrl.management.filter.customer.active ? {active: toolCtrl.management.filter.customer.active} : '' )"
-                    ui-sref="protected.verwaltung.customers.edit({customerID: row.id})"
-                    ng-class="row.active==0?'inactive':''" >
-                    <td md-cell>
-                        <alt-avatar data-color="200" data-text="{{row.name}}" data-filepath="{{(row.logo)?('/client/media/customer_logo/'+row.logo):''}}" ng-image-reload></alt-avatar>
-                    </td>
-                    <td md-cell>{{row.name}}</td>
-                    <td md-cell>
-                        <span  ng-repeat="user in row.users" >
-                            <md-tooltip>{{user.prename}} {{user.lastname}}</md-tooltip>
-                            <alt-avatar data-color="{{user.avatar_alt}}" data-text="{{user.prename}} {{user.lastname}}" data-filepath="{{user.avatar}}"></alt-avatar>
-                        </span>
-                    </td>
-                    <td md-cell>{{row.retouraddressCount}}</td>
-
-                </tr>
-                </tbody>
-            </table>
-        </md-table-container>
-        <data-md-table-pagination md-limit="20" md-page="toolCtrl.management.tables.customers.page" md-total="{{toolCtrl.management.searchResult.customers.length}}"></data-md-table-pagination>
-
-    </div>
-</md-card>
--->
