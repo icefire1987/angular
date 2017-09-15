@@ -258,8 +258,14 @@ module.exports = {
             var err ={userFeedback: 'Process is missing'};
             return callback(err,null);
         }
+
+        var possible_keys = ["description","active"];
+        for (var i in data.data) if (possible_keys.indexOf(i) < 0) delete data.data[i];
+
+
         var insert_data = {
-            description: data.data.description
+            description: data.data.description,
+            active: data.data.active
         };
         var where = [
             data.processID
