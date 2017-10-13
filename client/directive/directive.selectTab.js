@@ -36,7 +36,8 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                                 depth: depth
                             });
                         }else{
-                            if(res.data[row].icon.indexOf('fa')==0) {
+                            console.log(res.data[row])
+                            if(res.data[row].icon && res.data[row].icon.indexOf('fa')==0) {
                                 scope.options.push({
                                     value: value,
                                     text: res.data[row].name,
@@ -44,7 +45,7 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                                     fontset: 'fa',
                                     depth: depth
                                 });
-                            }else if(res.data[row].icon.indexOf('icon-')==0){
+                            }else if(res.data[row].icon && res.data[row].icon.indexOf('icon-')==0){
                                 scope.options.push({
                                     value: value,
                                     text: res.data[row].name,
@@ -53,11 +54,18 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                                     depth: depth
                                 });
 
+                            }else if(res.data[row].icon_alt){
+                                scope.options.push({
+                                    value: value,
+                                    text: res.data[row].name,
+                                    icon_alt: res.data[row].icon_alt,
+                                    depth: depth
+                                });
                             }else{
                                 scope.options.push({
                                     value: value,
                                     text: res.data[row].name,
-                                    icon_md: res.data[row].icon,
+                                    icon_md: res.data[row].s,
                                     depth: depth
                                 });
                             }
@@ -85,8 +93,10 @@ angular.module('myApp').directive('selectTable', function($interval,dbDataCollec
                         dbDataCollectorService.getWG().then(myCallback);
                         break;
                     case "stages":
-                        console.log("stages")
                         dbDataCollectorService.getStages().then(myCallback);
+                        break;
+                    case "process":
+                        dbDataCollectorService.getProcess().then(myCallback);
                         break;
                     case "comment":
                         dbDataCollectorService.getCommentTyp().then(myCallback);

@@ -4,7 +4,9 @@
                 <md-icon>edit</md-icon>
                 Produktionsstation anlegen
             </md-button>
-            <form ng-if="toolCtrl.management.locals.show_newStage" name="newStage" ng-submit="toolCtrl.management.locals.submit.stage_add()" layout="column"  class="md-whiteframe-1dp" layout-margin>
+            <form ng-if="toolCtrl.management.locals.show_newStage" name="newStage" layout="column"  class="md-whiteframe-1dp"  md-colors="{background: 'Background-100'}"
+                  ng-submit="toolCtrl.management.locals.submit.stage_add()" layout-margin layout-padding>
+                <h4>Stationsanlage</h4>
                 <md-input-container layout="row">
                     <label>Name</label>
                     <input ng-model="toolCtrl.management.input.stage.name" required>
@@ -85,7 +87,11 @@
                 Prozess anlegen
             </md-button>
 
-            <form ng-if="toolCtrl.management.locals.show_newProcess" name="newProcess" ng-submit="toolCtrl.management.locals.submit.process_add()" layout="column" class="md-whiteframe-1dp" layout-margin>
+            <form ng-if="toolCtrl.management.locals.show_newProcess" name="newProcess"  md-colors="{background: 'Background-100'}"
+                  ng-submit="toolCtrl.management.locals.submit.process_add()" layout="column" class="md-whiteframe-1dp" layout-margin layout-padding>
+
+                <h4>Prozessanlage</h4>
+
                 <md-input-container>
                     <label>Beschreibung</label>
                     <input ng-model="toolCtrl.management.input.process.description" required>

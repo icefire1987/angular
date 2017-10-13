@@ -60,7 +60,6 @@ module.exports = {
         var where = "";
         //var where = " WHERE stages.id is not null ";
         var having = "";
-        var groupby = "";
         var limit = "";
         var data_to_insert = [];
         var data_where = [];
@@ -72,17 +71,11 @@ module.exports = {
                     having += " GROUP_CONCAT(stages.id SEPARATOR ',') = ? ";
                     data_having.push(filter[filterKey]);
 
-                    if(groupby.length>0){ groupby += " , "}else{ groupby += " GROUP BY " };
-                    groupby += " processes.id ";
-
                     break;
                 case "name":
                     if(having.length>0){ having += " AND "}else{ having += " HAVING " };
                     having += " name LIKE ? ";
                     data_having.push('%' + filter[filterKey] + '%');
-
-                    if(groupby.length>0){ groupby += " , "}else{ groupby += " GROUP BY " };
-                    groupby += " processes.id ";
 
                     break;
                 case "id":
@@ -92,7 +85,6 @@ module.exports = {
                     break;
                 case "filter":
                     // OBJEKT!
-
                     for(var avoidKey in filter[filterKey]){
                         switch(avoidKey){
                             case "id":
@@ -112,12 +104,15 @@ module.exports = {
             "processes.active, " +
             "processes.description, " +
             "GROUP_CONCAT(stages.name) as name, " +
+            "GROUP_CONCAT(stages.short ORDER BY name) as icon_alt, " +
             "CONCAT('[',GROUP_CONCAT(JSON_OBJECT('id',stages.id, 'name', stages.name, 'final', stagesets.final, 'icon', stages.icon)) ,']') as stages_json " +
             "FROM processes " +
             "LEFT JOIN stagesets ON stagesets.processID = processes.id " +
             "LEFT JOIN stages ON stages.id = stagesets.stageID " +
-            ""+where+" "+groupby+" "+having+" "+limit;
-
+            where +
+            " GROUP BY processes.id ORDER BY name " +
+            having +" "+limit;
+console.log(query)
         if(data_where.length>0){ data_to_insert.push(data_where); }
         if(data_having.length>0){ data_to_insert.push(data_having); }
         pool.getConnection(function (err, connection) {

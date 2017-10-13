@@ -1305,6 +1305,21 @@ module.exports = function (app, express, io) {
             }
         });
     });
+    router.get('/data/process',ensureAuthorized, function(req,res){
+        Location.get_process(null, function(err,data){
+            if(err) {
+                console.log(err)
+                err.debug = err.message;
+                res.status(500).json({
+                    error: err
+                });
+            }else if(data){
+                res.json(data);
+            }else{
+                res.json([])
+            }
+        });
+    });
 
     router.get('/order/latest/:count',ensureAuthorized, function(req,res){
         Order.get({latest:req.params.count}, function(err,data){

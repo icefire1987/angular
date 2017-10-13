@@ -27,6 +27,10 @@ angular.module('myApp').service('dbDataCollectorService', function ($localStorag
             }
 
         };
+        vm.getProcess = function(){
+            return $http.get("/api/data/process/");
+        };
+
 
        return vm;
     });

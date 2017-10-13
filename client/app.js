@@ -566,12 +566,16 @@ var myApp = angular.module('myApp', ['ui.router','ngStorage','ngMessages','ngMat
 
         //$mdIconProvider.fontSet('fa', 'fa');
 
+        /*$mdThemingProvider.theme('default')
+            .primaryPalette('light-blue')
+            .accentPalette('pink')
+            .warnPalette('orange')
+            .backgroundPalette('grey')*/
         $mdThemingProvider.theme('default')
             .primaryPalette('light-blue')
             .accentPalette('pink')
             .warnPalette('orange')
             .backgroundPalette('grey')
-
         /*$mdThemingProvider.theme('default')
             .primaryPalette('pink')
             .accentPalette('deep-purple')

@@ -129,6 +129,10 @@ md-list-item.child{
 md-option md-icon{
     text-align: center;
 }
+md-option .process_short {
+    display: block;
+
+}
 .depth_1{
     border-top: 1px dashed grey;
 }
@@ -175,6 +179,11 @@ md-option md-icon{
     padding: 4px 8px;
     font-weight: lighter;
     margin: 0;
+}
+
+form h4{
+    color: #333;
+    text-decoration: underline solid grey;
 }
 
 .border-all-solid-grey{
